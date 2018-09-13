@@ -2,9 +2,9 @@
 // @name         Drawception ANBT
 // @author       Grom PE
 // @namespace    http://grompe.org.ru/
-// @version      1.142.2018.09
+// @version      1.143.2018.09
 // @description  Enhancement script for Drawception.com - Artists Need Better Tools
-// @downloadURL  https://raw.github.com/grompe/Drawception-ANBT/master/drawception-anbt.user.js
+// @downloadURL  https://raw.github.com/EnderDragonneau/Drawception-ANBT/master/drawception-anbt.user.js
 // @match        http://drawception.com/*
 // @match        https://drawception.com/*
 // @grant        none
@@ -14,8 +14,8 @@
 
 function wrapped() {
 
-var SCRIPT_VERSION = "1.142.2018.09";
-var NEWCANVAS_VERSION = 43; // Increase to update the cached canvas
+var SCRIPT_VERSION = "1.143.2018.09";
+var NEWCANVAS_VERSION = 44; // Increase to update the cached canvas
 var SITE_VERSION = "a84e6c5f"; // Last seen site version
 
 // == DEFAULT OPTIONS ==
@@ -137,7 +137,7 @@ function setupNewCanvas(insandbox, url, origpage)
   if (!canvasHTML || canvasHTMLver < NEWCANVAS_VERSION || canvasHTML.length < 10000)
   {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', "https://api.github.com/repos/grompe/Drawception-ANBT/contents/newcanvas_embedding.html");
+    xhr.open('GET', "https://api.github.com/repos/EnderDragonneau/Drawception-ANBT/contents/newcanvas_embedding.html");
     xhr.setRequestHeader("Accept", "application/vnd.github.3.raw");
     xhr.onload = function()
     {

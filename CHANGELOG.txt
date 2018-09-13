@@ -1,3 +1,12 @@
+1.143.2018.09
+- Fix getItem with favorite button
+- Dark Theme: new users are green now, modif on search section, disabled buttons on profile
+- Fixed "Favorite" button
+- Fixed "ANBT Stuff" section on profile page
+- Adding new rules in caption guidelines
+- Tide Pool palette's name is good now
+- Add support for the new palette: Fury Road
+
 1.142.2018.09
 The following changes are made by EnderDragonneau:
 - Palette revamped: Grayscale, new name for Beach classic and Beach, new palette: Grimby Grays
