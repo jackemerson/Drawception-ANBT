@@ -1,3 +1,8 @@
+1.144.2018.10
+- Add ANBT Sandbox in forum section
+- The Background Button is back
+- Dark Theme: some modifications
+
 1.143.2018.09
 - Fix getItem with favorite button
 - Dark Theme: new users are green now, modif on search section, disabled buttons on profile
