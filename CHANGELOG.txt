@@ -1,3 +1,6 @@
+1.145.2018.10
+- Add support for the new palette: Candy
+
 1.144.2018.10
 - Add ANBT Sandbox in forum section
 - The Background Button is back
