@@ -521,7 +521,8 @@ function handlePlayParameters()
     theme_juice: ["Juice", "#fced95"],
     theme_tropical: ["Tropical", "#2f0946"],
     theme_grimby_grays: ["Grimby Grays", "#f0efeb"],
-    theme_fury_road: ["Fury Road", "#893f1d"]
+    theme_fury_road: ["Fury Road", "#893f1d"],
+    theme_candy: ["Candy", "#793abd"]
   };
   var pal = info.palette;
   var paldata;
