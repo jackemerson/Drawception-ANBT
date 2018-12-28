@@ -1,3 +1,7 @@
+1.147.2018.12
+- Fix for the new canvas
+- Little forgetfulness...
+
 1.146.2018.12
 - New canvas: change palette chooser size
 - Add support for the new palette: Holiday
