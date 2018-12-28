@@ -123,12 +123,12 @@ const wrapped = () => {
       const req = new XMLHttpRequest()
       req.open('GET', 'https://api.github.com/repos/EnderDragonneau/Drawception-ANBT/contents/newcanvas_embedding.html')
       req.setRequestHeader('Accept', 'application/vnd.github.3.raw')
-      req.onload = x => {
-        if (x.length < 10000) {
-          alert(`Error: instead of new canvas code, got this response from GitHub:\n${x}`)
+      req.onload = function() {
+        if (this.responseText.length < 10000) {
+          alert(`Error: instead of new canvas code, got this response from GitHub:\n${this.responseText}`)
           location.pathname = '/'
         } else {
-          localStorage.setItem('anbt_canvasHTML', x)
+          localStorage.setItem('anbt_canvasHTML', this.responseText)
           localStorage.setItem('anbt_canvasHTMLver', NEWCANVAS_VERSION)
           setupNewCanvas(insandbox, url)
         }
