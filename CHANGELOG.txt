@@ -1,3 +1,8 @@
+1.146.2018.12
+- New canvas: change palette chooser size
+- Add support for the new palette: Holiday
+- Rewrite of the script (it no longer uses JQuery)
+
 1.145.2018.10
 - Add support for the new palette: Candy
 

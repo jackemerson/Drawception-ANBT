@@ -3,7 +3,7 @@ Drawception ANBT [![Public domain](http://i.creativecommons.org/p/zero/1.0/88x31
 
 A userscript to make Drawception.com better: more drawing tools, tablet support, sandbox with palettes and uploading to imgur, like all, quick menu buttons with old browser support, and other enhancements.
 
-[**Direct script link**](https://raw.github.com/grompe/Drawception-ANBT/master/drawception-anbt.user.js) (use to install/update manually, or "save as...")
+[**Direct script link**](https://raw.github.com/EnderDragonneau/Drawception-ANBT/master/drawception-anbt.user.js) (use to install/update manually, or "save as...")
 
 [New canvas with recording and playback, standalone version](http://grompe.org.ru/drawit/)
 
