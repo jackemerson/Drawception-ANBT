@@ -445,7 +445,7 @@ const wrapped = () => {
       anbt.unsaved = false
       const palettemap = {
         default: ['Normal', '#fffdc9'],
-        theme_holiday: ['Holiday', '#ffffff'],
+        theme_holiday: ['Holiday_old', '#ffffff'],
         theme_thanksgiving: ['Thanksgiving', '#f5e9ce'],
         halloween: ['Halloween', '#444444'],
         theme_cga: ['CGA', '#ffff55'],
@@ -468,7 +468,8 @@ const wrapped = () => {
         theme_tropical: ['Tropical', '#2f0946'],
         theme_grimby_grays: ['Grimby Grays', '#f0efeb'],
         theme_fury_road: ['Fury Road', '#893f1d'],
-        theme_candy: ['Candy', '#793abd']
+        theme_candy: ['Candy', '#793abd'],
+        theme_holiday_2: ['Holiday', '#f6f6f6']
       }
       const pal = info.palette
       let paldata
