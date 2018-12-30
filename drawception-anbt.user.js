@@ -26,7 +26,6 @@ const wrapped = () => {
     pressureExponent: 0.5, // Smaller = softer tablet response, bigger = sharper
     brushSizes: [2, 5, 12, 35], // Brush sizes for choosing via keyboard
     chatAutoConnect: 0, // Whether to automatically connect to the chat
-    ownPanelLikesSecret: 0,
     backup: 1,
     timeoutSound: 0,
     timeoutSoundBlitz: 0,
@@ -1095,18 +1094,6 @@ const wrapped = () => {
     // TODO: also fix if script is executed after page load
     drawings.forEach(x => x.addEventListener('error', tryNextPanel(x)))*/
 
-    // Hide your own number of likes
-    if (options.ownPanelLikesSecret) {
-      const panels = $('.panel-user')
-      $('.panel-user').forEach(x => {
-        const userLink = x.querySelector(`a[href*="/${userid}/"]`)
-        if (!userLink) return
-        const numlikes = userLink.parentNode.parentNode.querySelector('span.disabled .numlikes')
-        numlikes.textContent = '?'
-        numlikes.style.opacity = '0.5'
-      })
-    }
-
     // Reverse panels button and like all button
     $('#btn-copy-url').insertAdjacentHTML('afterend', ' <a href="#" class="btn btn-default" onclick="return reversePanels()" title="Reverse panels"><span class="fas fa-sort-amount-up"></span> Reverse</a>')
 
@@ -2063,7 +2050,7 @@ const wrapped = () => {
       //["pressureExponent", "number", "Pressure exponent (smaller = softer tablet response, bigger = sharper)"],
     ])
     addGroup('Play (most settings are for the new canvas only)', [['newCanvas', 'boolean', 'New drawing canvas (also allows <a href="http://grompe.org.ru/replayable-drawception/">watching playback</a>)'], ['submitConfirm', 'boolean', 'Confirm submitting if more than a minute is left'], ['smoothening', 'boolean', 'Smoothing of strokes'], ['hideCross', 'boolean', 'Hide the cross when drawing'], ['enterToCaption', 'boolean', 'Submit captions (and start games) by pressing Enter'], ['backup', 'boolean', 'Save the drawing in case of error and restore it in sandbox'], ['timeoutSound', 'boolean', 'Warning sound when only a minute is left (normal games)'], ['timeoutSoundBlitz', 'boolean', 'Warning sound when only 5 seconds left (blitz)'], ['timeoutSoundVolume', 'number', 'Volume of the warning sound, in %'], ['rememberPosition', 'boolean', 'Show your panel position and track changes in unfinished games list'], ['colorNumberShortcuts', 'boolean', 'Use 0-9 keys to select the color'], ['colorUnderCursorHint', 'boolean', 'Show the color under the cursor in the palette'], ['colorDoublePress', 'boolean', 'Double press 0-9 keys to select color without pressing shift'], ['bookmarkOwnCaptions', 'boolean', 'Automatically bookmark your own captions in case of dustcatchers']])
-    addGroup('Miscellaneous', [['localeTimestamp', 'boolean', `Format timestamps as your system locale (${new Date().toLocaleString()})`], ['ownPanelLikesSecret', 'boolean', "Hide your own panels' number of Likes (in game only)"], /*['proxyImgur', 'boolean', 'Replace imgur.com links to filmot.com to load, in case your ISP blocks them'],*/ ['ajaxRetry', 'boolean', 'Retry failed AJAX requests'], ['autoplay', 'boolean', 'Automatically start replay when watching playback'], ['autoBypassNSFW', 'boolean', 'Automatically bypass NSFW game warning'], ['markStalePosts', 'boolean', 'Mark stale forum posts'], ['maxCommentHeight', 'number', 'Maximum comments and posts height until directly linked (px, 0 = no limit)'], ['useOldFont', 'boolean', 'Use old Nunito font (which is usually bolder and less wiggly)'], ['useOldFontSize', 'boolean', 'Use old, smaller font size']])
+    addGroup('Miscellaneous', [['localeTimestamp', 'boolean', `Format timestamps as your system locale (${new Date().toLocaleString()})`], /*['proxyImgur', 'boolean', 'Replace imgur.com links to filmot.com to load, in case your ISP blocks them'],*/ ['ajaxRetry', 'boolean', 'Retry failed AJAX requests'], ['autoplay', 'boolean', 'Automatically start replay when watching playback'], ['autoBypassNSFW', 'boolean', 'Automatically bypass NSFW game warning'], ['markStalePosts', 'boolean', 'Mark stale forum posts'], ['maxCommentHeight', 'number', 'Maximum comments and posts height until directly linked (px, 0 = no limit)'], ['useOldFont', 'boolean', 'Use old Nunito font (which is usually bolder and less wiggly)'], ['useOldFontSize', 'boolean', 'Use old, smaller font size']])
     addGroup('Advanced', [['newCanvasCSS', 'longstr', 'Custom CSS for new canvas (experimental, <a href="https://github.com/grompe/Drawception-ANBT/tree/master/newcanvas_styles">get styles here</a>)'], ['forumHiddenUsers', 'longstr', 'Comma-separated list of user IDs whose forum posts are hidden']])
     $('<br><div class="control-group"><div class="controls"><input name="submit" type="submit" class="btn btn-primary" value="Apply"> <b id="anbtSettingsOK" class="label label-theme_holiday" style="display:none">Saved!</b></div></div>').forEach(x => theForm.appendChild(x))
     $('#main').insertAdjacentHTML('afterbegin', theForm.outerHTML)
