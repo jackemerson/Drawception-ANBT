@@ -1954,8 +1954,8 @@ const wrapped = () => {
           let ht = localStorage.getItem('gpe_forumHiddenTopics')
           ht = ht ? JSON.parse(ht) : []
           if (hidden_topics.includes(id)) {
-            if (ht.includes(id)) ht.slice(ht.indexOf(id), 1)
-            hidden_topics.slice(hidden_topics.indexOf(id), 1)
+            if (ht.includes(id)) ht = ht.filter(y => y !== id)
+            hidden_topics = hidden_topics.filter(y => y !== id)
             x.classList.remove('anbt_hidden')
             hidden--
           } else {
@@ -1975,7 +1975,7 @@ const wrapped = () => {
         $('#main').classList.toggle('anbt_showt')
       })
       if (!hidden) tempUnhideLink.style.display = 'none'
-      $('.forum-thread', true).forEach(({firstChild}) => firstChild.insertAdjacentHTML('beforebegin', tempUnhideLink.outerHTML))
+      $('#js-btn-toggle-thread').parentNode.appendChild(tempUnhideLink)
     }
     $('.btn.btn-default', true).forEach(x =>
       x.addEventListener('click', e => {
