@@ -1536,7 +1536,7 @@ const wrapped = () => {
       result += `<div id="${id}" style="float: left; position: relative; min-width: 150px;"><div class="thumbpanel-holder" style="overflow:hidden"><a class="anbt_paneldel" href="#" title="Remove">X</a><a href="/panel/-/${id}/-/" class="thumbpanel" rel="tooltip" title="${panels[id].caption}">${panels[id].image ? `<img src="${panels[id].image}" width="125" height="104" alt="${panels[id].caption}" />` : panels[id].caption}</a><span class="text-muted" style="white-space:nowrap">by <a href="${panels[id].userLink}">${panels[id].by}</a></span><br><small class="text-muted"><span class="fas fa-heart text-danger"></span> ${formatTimestamp(panels[id].time)}</small></div></div>`
     }
     if (needsupdate) localStorage.setItem('gpe_panelFavorites', JSON.stringify(panels))
-    result = result ? `${result}<div style="clear:left"></div>'` : "You don't have any favorited panels."
+    result = result ? `${result}<div style="clear:left"></div>` : "You don't have any favorited panels."
     $('#anbt_userpage').innerHTML = result
     $('#anbt_userpage .anbt_paneldel', true).forEach(x =>
       x.addEventListener('click', e => {
