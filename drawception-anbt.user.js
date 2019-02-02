@@ -1175,7 +1175,6 @@ const wrapped = () => {
       comments = [...$('#comments').nextElementSibling.children].slice(1)
       comments.forEach(x => {
         x.parentNode.parentNode.classList.add('comment-holder')
-        linkifyNodeText(x)
       })
       // Interlink game panels and comments
       const gamePlayers = []
@@ -1646,7 +1645,7 @@ const wrapped = () => {
 
   const betterPlayer = () => {
     // Linkify the links in location
-    const pubinfo = $('.profile-header-info .text-mutad:last-child')
+    const pubinfo = $('.profile-header-info .text-muted > span:last-child')
     if (pubinfo) linkifyNodeText(pubinfo.parentNode)
 
     const loc = document.location.href
