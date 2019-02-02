@@ -1841,24 +1841,24 @@ const wrapped = () => {
 
     // Linkify drawing panels
     $('img[src*="/images/panels/"], img[src*="/pub/panels/"]', true).forEach(x => {
-      if (!x.parentNode.nodeName === 'A') x.outerHTML = `<a href="/game/${x.src.match(/\/([^-]+)-\d+.png/)[1]}/-/">${x.innerHTML}</a>`
+      if (x.parentNode.nodeName !== 'A') x.outerHTML = `<a href="/game/${x.src.match(/\/([^-]+)-\d+.png/)[1]}/-/">${x.outerHTML}</a>`
     })
     $('img[src*="/drawings/"]', true).forEach(x => {
-      if (!x.parentNode.nodeName === 'A') x.outerHTML = `<a href="/panel/drawing/${x.src.match(/(\w+).png$/)[1]}/-/">${x.innerHTML}</a>`
+      if (x.parentNode.nodeName !== 'A') x.outerHTML = `<a href="/panel/drawing/${x.src.match(/(\w+).png$/)[1]}/-/">${x.outerHTML}</a>`
     })
     $('img[src*="/panel/"]', true).forEach(x => {
-      if (!x.parentNode.nodeName === 'A') x.outerHTML = `<a href="${x.src}-/">${x.innerHTML}</a>`
+      if (x.parentNode.nodeName !== 'A') x.outerHTML = `<a href="${x.src}-/">${x.outerHTML}</a>`
     })
     // Linkify full game image
     $('img[src*="/images/games/"], img[src*="/pub/games/"]', true).forEach(x => {
-      if (!x.parentNode.nodeName === 'A') x.outerHTML = `<a href="/game/${x.src.match(/\/([^\/]+)\.png/)[1]}/-/">${x.innerHTML}</a>`
+      if (x.parentNode.nodeName !== 'A') x.outerHTML = `<a href="/game/${x.src.match(/\/([^\/]+)\.png/)[1]}/-/">${x.outerHTML}</a>`
     })
     // Fix the dead link
     $('img[src*="/display-panel.php?"]', true).forEach(x => {
-      if (!x.parentNode.nodeName === 'A') {
+      if (x.parentNode.nodeName !== 'A') {
         const newsrc = `/panel/drawing/${scrambleID(x.src.match(/x=(\d+)/)[1])}/`
         x.setAttribute('src', newsrc)
-        x.outerHTML = `<a href="${newsrc}-/">${x.innerHTML}</a>`
+        x.outerHTML = `<a href="${newsrc}-/">${x.outerHTML}</a>`
       }
     })
 
