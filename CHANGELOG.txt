@@ -1,3 +1,12 @@
+1.150.2019.02
+- Fix "Blues" palette
+- Adding Markdown Tools for messages
+- Fix tooltip with sticky navigation bar
+- Fix drawings embedded link in forum
+- Remove unwanted character in the "panel favorites" section
+- Fix problem with messages containing https links (can't emote/reply)
+- Fix ANBT version display under navigation bar
+
 1.149.2018.12
 - Fix "proxyImgur" option (mistake)
 - Delete "hide own number of likes" option
