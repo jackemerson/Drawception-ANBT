@@ -2539,7 +2539,7 @@ const wrapped = () => {
           title: 'insert link',
           replaceFunc: (val, len, start, end, sel) => {
             debugger
-            const selRegex = /(?<!!)\[(.*)\]\((\S*)( ".*")?\)/
+            const selRegex = /^(?!!)\[(.*)\]\((\S*)( ".*")?\)/
             if (sel.match(selRegex)) {
               textarea.value = val.substring(0, start) + sel.replace(selRegex, '$1 $2') + val.substring(end, len)
             } else {
@@ -2560,11 +2560,13 @@ const wrapped = () => {
               $('#markdown-text').value = sel ? sel : ''
               $('#markdown-link').value = link ? link[0] : ''
               $('.close').addEventListener('click', () => {
+                document.body.classList.remove('v--modal-block-scroll')
                 $('#markdown').outerHTML = ''
               })
               $('#markdown-done').addEventListener('click', () => {
                 sel = `[${$('#markdown-text').value}](${$('#markdown-link').value}${$('#markdown-hover').value ? ` "${$('#markdown-hover').value}"` : ''})`
                 textarea.value = val.substring(0, start) + sel + val.substring(end, len)
+                document.body.classList.remove('v--modal-block-scroll')
                 $('#markdown').outerHTML = ''
               })
             }
@@ -2597,6 +2599,7 @@ const wrapped = () => {
               $('#markdown-text').value = sel ? sel : ''
               $('#markdown-link').value = link ? link[0] : ''
               $('.close').addEventListener('click', () => {
+                document.body.classList.remove('v--modal-block-scroll')
                 $('#markdown').outerHTML = ''
               })
               $('#markdown-done').addEventListener('click', () => {
@@ -2607,6 +2610,7 @@ const wrapped = () => {
                 } else {
                   textarea.value = val.substring(0, start) + sel.replace(/\[.*\]/, `[${tag}]`) + val.substring(end, len)
                 }
+                document.body.classList.remove('v--modal-block-scroll')
                 $('#markdown').outerHTML = ''
               })
             }
