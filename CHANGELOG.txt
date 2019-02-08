@@ -1,3 +1,8 @@
+1.151.2019.02
+- Dark mode: fix some white things
+- Fix Draw button on forum
+- Fix markdown tools for Mozilla and scroll bar with images/link pop-up
+
 1.150.2019.02
 - Fix "Blues" palette
 - Adding Markdown Tools for messages
