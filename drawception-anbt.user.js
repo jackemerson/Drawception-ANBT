@@ -1967,7 +1967,7 @@ const wrapped = () => {
     }
     $('.btn.btn-default', true).forEach(x =>
       x.addEventListener('click', e => {
-        if (x.textContent === 'Draw beta') {
+        if (x.textContent === 'Draw') {
           if (!x.classList.contains('click')) {
             let delModal = setInterval(() => {
               if (!$('.v--modal-overlay')) return
