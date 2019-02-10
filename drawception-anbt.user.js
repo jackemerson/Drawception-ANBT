@@ -473,7 +473,8 @@ const wrapped = () => {
         theme_fury_road: ['Fury Road', '#893f1d'],
         theme_candy: ['Candy', '#793abd'],
         theme_holiday_2: ['Holiday', '#f6f6f6'],
-        theme_blues_2: ['Blues', '#0f1328']
+        theme_blues_2: ['Blues', '#0f1328'],
+        theme_sin_city: ['Sin City', '#000000']
       }
       const pal = info.palette
       let paldata
