@@ -2270,7 +2270,6 @@ const wrapped = () => {
           title: 'bold text',
           replaceFunc: (val, len, start, end, sel) => {
             const selRegex = new RegExp(`\\*\\*(${sel.replace(/\*/g, '')})\\*\\*`)
-            debugger
             if (sel.match(selRegex)) {
               sel = sel.replace(selRegex, '$1')
             } else if (start > 0 && end < len) {
@@ -2348,7 +2347,6 @@ const wrapped = () => {
           title: 'enlarges/reduces the text',
           replaceFunc: (val, len, start, end, sel) => {
             const selRegex = /^#+ .*/gm
-            debugger
             if (sel.match(selRegex)) {
               if (sel.match(/^#{2,} /gm)) {
                 sel = sel.replace(/^# /gm, '')
@@ -2374,7 +2372,6 @@ const wrapped = () => {
           title: 'strikethrough text',
           replaceFunc: (val, len, start, end, sel) => {
             const selRegex = /~~((.*\W?)*)~~/
-            debugger
             if (sel.match(selRegex)) {
               sel = sel.replace(selRegex, '$1')
             } else if (start > 0 && end < len) {
@@ -2417,7 +2414,6 @@ const wrapped = () => {
           title: 'highlighted text',
           replaceFunc: (val, len, start, end, sel) => {
             const selRegex = new RegExp(`\`(${sel.replace(/`/g, '')})\``)
-            debugger
             if (sel.match(selRegex)) {
               sel = sel.replace(selRegex, '$1')
             } else if (start > 0 && end < len) {
@@ -2453,7 +2449,6 @@ const wrapped = () => {
         'list-ul': {
           title: 'unordered list',
           replaceFunc: (val, len, start, end, sel) => {
-            debugger
             const selRegex = /^( {3})*- (.*)/
             if (sel.match(selRegex)) {
               if (sel.match(/^ {3}/)) {
@@ -2478,7 +2473,6 @@ const wrapped = () => {
         'list-ol': {
           title: 'ordered list',
           replaceFunc: (val, len, start, end, sel) => {
-            debugger
             const selRegex = /^( {3})*\d+\. (.*)/gm
             if (sel.match(selRegex)) {
               if (sel.match(/^ {3}/)) {
@@ -2494,11 +2488,9 @@ const wrapped = () => {
               })}${val.substring(end, end + 2).match(/\n\n/) ? '' : val.substring(end, end + 1).match(/\n/) ? '\n' : '\n\n'}`
             } else if (val.substring(start - 4, end).match(/( {3})*\d+\. (.*)/)) {
               start -= 4
-              console.log(val.substring(start, end))
               sel = val.substring(start, end).replace(/( {3})*(\d+\.) /g, '   $1$2 ')
             } else if (val.substring(start - 5, end).match(/( {3})*\d+\. (.*)/)) {
               start -= 5
-              console.log(val.substring(start, end))
               sel = val.substring(start, end).replace(/( {3})*(\d+\.) /g, '   $1$2 ')
             } else {
               let countOl = 0
@@ -2513,7 +2505,6 @@ const wrapped = () => {
         'quote-right': {
           title: 'quote',
           replaceFunc: (val, len, start, end, sel) => {
-            debugger
             const selRegex = /^>+\s.*/gm
             if (sel.match(selRegex)) {
               if (sel.match(/^> /gm)) {
@@ -2538,7 +2529,6 @@ const wrapped = () => {
         code: {
           title: 'block of code',
           replaceFunc: (val, len, start, end, sel) => {
-            debugger
             const selRegex = new RegExp(`^ {4}(.*)`, 'gm')
             if (sel.match(selRegex)) {
               sel = sel.replace(/^ {4}/gm, '')
@@ -2557,7 +2547,6 @@ const wrapped = () => {
         link: {
           title: 'insert link',
           replaceFunc: (val, len, start, end, sel) => {
-            debugger
             const selRegex = /^(?!!)\[(.*)\]\((\S*)( ".*")?\)/
             if (sel.match(selRegex)) {
               textarea.value = val.substring(0, start) + sel.replace(selRegex, '$1 $2') + val.substring(end, len)
@@ -2594,7 +2583,6 @@ const wrapped = () => {
         image: {
           title: 'insert image',
           replaceFunc: (val, len, start, end, sel) => {
-            debugger
             const selRegex = /!\[(.*)\]\((\S*)( ".*")?\)/
             if (sel.match(selRegex)) {
               textarea.value = val.substring(0, start) + sel.replace(selRegex, '$1 $2') + val.substring(end, len)
@@ -2826,7 +2814,10 @@ localStorage.setItem(
     .replace(/\$/g, ' !important')
 )
 
-if (JSON.parse(localStorage.getItem('gpe_anbtSettings')).anbtDarkMode) {
+let settings = localStorage.getItem('gpe_anbtSettings')
+settings = settings ? JSON.parse(settings) : {}
+
+if (settings.anbtDarkMode || typeof settings.anbtDarkMode === 'undefined') {
   if (parseInt(localStorage.getItem('gpe_inDark'), 10) == 1) {
     const css = document.createElement('style')
     css.id = 'darkgraycss'
