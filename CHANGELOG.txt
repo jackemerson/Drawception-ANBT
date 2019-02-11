@@ -1,3 +1,6 @@
+1.153.2019.02
+- Fix some mistakes and omissions
+
 1.152.2019.02
 - Fix text shadow in navigation bar's icons
 - Add support for the new palette: Sin City
