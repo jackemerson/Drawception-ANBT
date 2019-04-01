@@ -1259,7 +1259,7 @@ const wrapped = () => {
             const id = m[1]
             if (gamePlayers.includes(id)) {
               const drew = playerdata[id].drew ? 'drew' : 'wrote'
-              dateel.insertAdjacentHTML('beforebegin', `<a href="#${playerdata[id].panel_id}">(${drew} #${playerdata[id].panel_number})</a> `)
+              dateel.insertAdjacentHTML('beforebegin', `<a href="#panel-${playerdata[id].panel_id}">(${drew} #${playerdata[id].panel_number})</a> `)
               playerdata[id].comments += 1
             }
           }
