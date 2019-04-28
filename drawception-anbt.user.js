@@ -477,7 +477,8 @@ const wrapped = () => {
         theme_sin_city: ['Sin City', '#000000'],
         theme_lucky_clover: ['Lucky Clover', '#0c442c'],
         theme_drawception: ["D's Exclusive", '#0ee446'],
-        theme_retina_burn: ['Retina Burn', '#ff0b11']
+        theme_retina_burn: ['Retina Burn', '#ff0b11'],
+        theme_easter: ['Easter', '#ddf7a8']
       }
       const pal = info.palette
       let paldata
