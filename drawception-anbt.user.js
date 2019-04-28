@@ -1063,7 +1063,7 @@ const wrapped = () => {
   }
 
   const fixLocationToCanonical = m => {
-    let ogurl = $('meta[property="og:url"]').content
+    let ogurl = $('meta[property="og:url"]') ? $('meta[property="og:url"]').content : ''
     if (ogurl && ogurl.match(m)) {
       ogurl = ogurl.replace('https://drawception.com', '')
       try {
@@ -1076,11 +1076,13 @@ const wrapped = () => {
 
   const betterCreateGame = () => {
     if (!options.enterToCaption) {
-      $('#prompt').addEventListener('keydown', e => {
-        if (e.keyCode == 13) {
-          e.preventDefault()
-        }
-      })
+      if ($('#prompt')) {
+        $('#prompt').addEventListener('keydown', e => {
+          if (e.keyCode == 13) {
+            e.preventDefault()
+          }
+        })
+      }
     }
   }
 
@@ -1097,7 +1099,7 @@ const wrapped = () => {
     const drawings = $('img[src^="https://cdn.drawception.com/images/panels/"],img[src^="https://cdn.drawception.com/drawings/"]')
 
     // Show each drawing make date
-    drawings.forEach(x => {
+    if (drawings) drawings.forEach(x => {
       const d = panelUrlToDate(x.src)
       if (d) x.title = `Made on ${d}`
     })
@@ -1114,7 +1116,7 @@ const wrapped = () => {
     drawings.forEach(x => x.addEventListener('error', tryNextPanel(x)))*/
 
     // Reverse panels button and like all button
-    $('#btn-copy-url').insertAdjacentHTML('afterend', ' <a href="#" class="btn btn-default" onclick="return reversePanels()" title="Reverse panels"><span class="fas fa-sort-amount-up"></span> Reverse</a>')
+    if ($('#btn-copy-url')) $('#btn-copy-url').insertAdjacentHTML('afterend', ' <a href="#" class="btn btn-default" onclick="return reversePanels()" title="Reverse panels"><span class="fas fa-sort-amount-up"></span> Reverse</a>')
 
     // Panel favorite buttons
     const favButton = $('<span class="panel-number anbt_favpanel fas fa-heart text-muted" title="Favorite"></span>')
@@ -1184,7 +1186,7 @@ const wrapped = () => {
           panel.insertAdjacentHTML('beforebegin', replayButton.outerHTML)
         })
       }
-      drawings.forEach(x => x.addEventListener('load', addReplayButton(x)))
+      if (drawings) drawings.forEach(x => x.addEventListener('load', addReplayButton(x)))
     }
 
     let comments
@@ -1290,9 +1292,8 @@ const wrapped = () => {
         )
       }
     }
-    ;[...$('#comments').nextElementSibling.children]
     const waitForComments = () => {
-      const comments = [...$('#comments').nextElementSibling.children].slice(1)
+      const comments = $('#comments') ? [...$('#comments').nextElementSibling.children].slice(1) : ''
       if (comments.length && !comments[0].classList.contains('spinner')) {
         betterComments()
       } else {
@@ -1333,7 +1334,7 @@ const wrapped = () => {
 
   const betterPanel = () => {
     // Just for quickly opening a panel by its numerical ID
-    if (!$('.gamepanel').length && location.hash) {
+    if ($('.gamepanel') && !$('.gamepanel').length && location.hash) {
       const id = location.hash.match(/\d+/)
       location.pathname = `/panel/-/${scrambleID(id)}/-/`
     }
@@ -1341,43 +1342,44 @@ const wrapped = () => {
     fixLocationToCanonical('/panel/')
 
     const favButton = $('<button class="btn btn-info" style="margin-top: 20px"><span class="fas fa-heart"></span> <b>Favorite</b></button>')
-    $('.panel-caption-display>.flex,.gamepanel-holder>.gamepanel').insertAdjacentHTML('afterend', favButton.outerHTML)
+    if ($('.panel-caption-display>.flex,.gamepanel-holder>.gamepanel')) $('.panel-caption-display>.flex,.gamepanel-holder>.gamepanel').insertAdjacentHTML('afterend', favButton.outerHTML)
     const favBtn = $('.btn.btn-info')
-    favBtn.addEventListener('click', e => {
-      e.preventDefault()
-      let panels = localStorage.getItem('gpe_panelFavorites')
-      panels = panels ? JSON.parse(panels) : {}
-      const panel = {
-        time: Date.now(),
-        by: $('.lead a').textContent
-      }
-      const id = document.location.href.match(/\/panel\/[^\/]+\/([^\/]+)\//)[1]
-      panel.userLink = $('.lead a').href.match(/\/player\/[^\/]+\/[^\/]+\//)[0]
-      const img = $('.gamepanel img')
-      if (img) {
-        // Drawing panel
-        panel.image = img.src
-        panel.caption = img.alt
-      } else {
-        // Caption panel
-        panel.caption = $('.gamepanel').textContent.trim()
-      }
-      panels[id] = panel
-      localStorage.setItem('gpe_panelFavorites', JSON.stringify(panels))
-      favBtn.setAttribute('disabled', 'disabled')
-      favBtn.querySelector('b').textContent = 'Favorited!'
-      e.preventDefault()
-    })
+    if (favBtn) {
+      favBtn.addEventListener('click', e => {
+        e.preventDefault()
+        let panels = localStorage.getItem('gpe_panelFavorites')
+        panels = panels ? JSON.parse(panels) : {}
+        const panel = {
+          time: Date.now(),
+          by: $('.lead a').textContent
+        }
+        const id = document.location.href.match(/\/panel\/[^\/]+\/([^\/]+)\//)[1]
+        panel.userLink = $('.lead a').href.match(/\/player\/[^\/]+\/[^\/]+\//)[0]
+        const img = $('.gamepanel img')
+        if (img) {
+          // Drawing panel
+          panel.image = img.src
+          panel.caption = img.alt
+        } else {
+          // Caption panel
+          panel.caption = $('.gamepanel').textContent.trim()
+        }
+        panels[id] = panel
+        localStorage.setItem('gpe_panelFavorites', JSON.stringify(panels))
+        favBtn.setAttribute('disabled', 'disabled')
+        favBtn.querySelector('b').textContent = 'Favorited!'
+      })
+    }
     let panels = localStorage.getItem('gpe_panelFavorites')
     panels = panels ? JSON.parse(panels) : {}
-    if (panels[document.location.href.match(/\/panel\/[^\/]+\/([^\/]+)\//)[1]]) {
+    if (document.location.href.match(/\/panel\/[^\/]+\/([^\/]+)\//) && panels[document.location.href.match(/\/panel\/[^\/]+\/([^\/]+)\//)[1]]) {
       favBtn.setAttribute('disabled', 'disabled')
       favBtn.querySelector('b').textContent = 'Favorited!'
     }
     const panelId = getPanelId(location.pathname)
 
     // Only panels after 14924553 might have a recording
-    if (options.newCanvas && unscrambleID(panelId) >= 14924553) {
+    if (options.newCanvas && panelId && unscrambleID(panelId) >= 14924553) {
       const img = $('.gamepanel img')
       if (img) {
         checkForRecording(img.src, () => {
@@ -1928,7 +1930,7 @@ const wrapped = () => {
       })
 
       // Warn about posting to another page
-      if ($('.comment-holder').length === 20 && $('#comment-form .btn-primary')) $('#comment-form .btn-primary').insertAdjacentHTML('afterend', '<div>Note: posting to another page</div>')
+      if ($('.comment-holder') && $('.comment-holder').length === 20 && $('#comment-form .btn-primary')) $('#comment-form .btn-primary').insertAdjacentHTML('afterend', '<div>Note: posting to another page</div>')
     }
 
     if (options.proxyImgur) $('img[src*="imgur.com/"]', true).forEach(x => x.setAttribute('src', x.src.replace('imgur.com', 'filmot.com').replace('https', 'http')))
@@ -1980,7 +1982,7 @@ const wrapped = () => {
         $('#main').classList.toggle('anbt_showt')
       })
       if (!hidden) tempUnhideLink.style.display = 'none'
-      $('#js-btn-toggle-thread').parentNode.appendChild(tempUnhideLink)
+      if ($('#js-btn-toggle-thread')) $('#js-btn-toggle-thread').parentNode.appendChild(tempUnhideLink)
     }
     $('.btn.btn-default', true).forEach(x =>
       x.addEventListener('click', e => {
@@ -2074,7 +2076,7 @@ const wrapped = () => {
     $('#main').insertAdjacentHTML('afterbegin', theForm.outerHTML)
 
     // Extend "location" input to max server-accepted 65 characters
-    $('input[name="location"]').setAttribute('maxlength', '65')
+    if ($('input[name="location"]')) $('input[name="location"]').setAttribute('maxlength', '65')
   }
 
   /*const autoSkip = (reason) => {
