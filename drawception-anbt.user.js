@@ -1255,7 +1255,7 @@ const wrapped = () => {
             }
           }
           // Add game perticipation info
-          const m = x.querySelector('.text-bold a').href.match(/\/player\/(\d+)\//)
+          const m = x.querySelector('.text-bold a') ? x.querySelector('.text-bold a').href.match(/\/player\/(\d+)\//) : ''
           if (m) {
             const id = m[1]
             if (gamePlayers.includes(id)) {
