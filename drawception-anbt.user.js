@@ -1170,13 +1170,8 @@ const wrapped = () => {
         const panel = x.parentNode
         const src = x.src
         checkForRecording(src, () => {
-          let id
-          const newid = src.match(/(\w+).png$/)[1]
-          if (newid.length > 8) {
-            id = newid
-          } else {
-            id = scrambleID(panel.id.slice(6))
-          }
+          const newid = $(`img[src='${src}']`).parentNode.querySelector('a[href^="/panel/"]').href.match(/\/panel\/[^\/]+\/([^\/]+)/)[1]
+          const id = newid.length >= 8 ? newid : scrambleID(panel.id.slice(6))
           const replayButton = $(`<a href="/sandbox/#${id}" class="panel-number anbt_replaypanel fas fa-redo-alt text-muted" title="Replay"></span>`)
           replayButton.addEventListener('click', e => {
             if (e.which === 2) return
@@ -1750,18 +1745,8 @@ const wrapped = () => {
           const panel = x.parentNode.parentNode
           const src = x.src
           checkForRecording(src, () => {
-            let replaySign
             const newid = src.match(/(\w+).png$/)[1]
-            if (newid.length > 8) {
-              replaySign = $(`<a href="/sandbox/#${newid}" class="pull-right fas fa-redo-alt" style="color:#8af;margin-right:4px" title="Replay!"></a>`)
-              replaySign.addEventListener('click', e => {
-                if (e.which === 2) return
-                e.preventDefault()
-                setupNewCanvas(true, `/sandbox/#${newid}`)
-              })
-            } else {
-              replaySign = $('<span class="pull-right fas fa-redo-alt" style="color:#8af;margin-right:4px" title="Replayable!"></span>')
-            }
+            const replaySign = newid.length >= 8 ? $(`<a href="/sandbox/#${newid}" class="pull-right fas fa-redo-alt" style="color:#8af;margin-right:4px" title="Replay!"></a>`) : $('<span class="pull-right fas fa-redo-alt" style="color:#8af;margin-right:4px" title="Replayable!"></span>')
             panel.appendChild(replaySign)
             //replaySign.tooltip();
           })
