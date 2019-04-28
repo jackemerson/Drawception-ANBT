@@ -1342,7 +1342,7 @@ const wrapped = () => {
 
     const favButton = $('<button class="btn btn-info" style="margin-top: 20px"><span class="fas fa-heart"></span> <b>Favorite</b></button>')
     $('.panel-caption-display>.flex,.gamepanel-holder>.gamepanel').insertAdjacentHTML('afterend', favButton.outerHTML)
-    const favBtn = $('.btn.btn-info')[1]
+    const favBtn = $('.btn.btn-info')
     favBtn.addEventListener('click', e => {
       e.preventDefault()
       let panels = localStorage.getItem('gpe_panelFavorites')
