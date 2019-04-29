@@ -2010,8 +2010,9 @@ var anbt =
     }
     if (el.nodeName == "path")
     {
-      var c = el.getAttribute("stroke");
-      ctx.strokeStyle = el.pattern ? this.MakePattern(c, el.pattern) : c;
+      //var c = el.getAttribute("stroke");
+      //ctx.strokeStyle = el.pattern ? this.MakePattern(c, el.pattern) : c;
+      ctx.strokeStyle = el.getAttribute("stroke")
       ctx.lineWidth = el.getAttribute("stroke-width");
       ctx.beginPath();
       for (var i = 0; i < el.pathSegList.numberOfItems; i++)
@@ -2058,8 +2059,9 @@ var anbt =
   DrawDispLine: function(x1, y1, x2, y2, first)
   {
     var ctx = this.ctxDisp;
-    var c = this.lastcolor;
-    ctx.strokeStyle = this.pattern ? this.MakePattern(c, this.pattern) : c;
+    // var c = this.lastcolor;
+    // ctx.strokeStyle = this.pattern ? this.MakePattern(c, this.pattern) : c;
+    ctx.strokeStyle = this.lastcolor
     ctx.lineWidth = this.size;
     ctx.beginPath();
     ctx.moveTo(x1, y1);
