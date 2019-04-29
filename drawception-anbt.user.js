@@ -1346,10 +1346,10 @@ const wrapped = () => {
         panels = panels ? JSON.parse(panels) : {}
         const panel = {
           time: Date.now(),
-          by: $('.lead a').textContent
+          by: $('.lead a', true)[0].textContent
         }
         const id = document.location.href.match(/\/panel\/[^\/]+\/([^\/]+)\//)[1]
-        panel.userLink = $('.lead a').href.match(/\/player\/[^\/]+\/[^\/]+\//)[0]
+        panel.userLink = $('.lead a', true)[0].href.match(/\/player\/[^\/]+\/[^\/]+\//)[0]
         const img = $('.gamepanel img')
         if (img) {
           // Drawing panel
