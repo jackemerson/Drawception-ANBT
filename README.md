@@ -24,7 +24,7 @@ A userscript to make Drawception.com better: more drawing tools, tablet support,
 - Mobile browsers / other / single use:
   - create a bookmark with the following URL:
 
-    `javascript:void($.ajax({dataType:"script",cache:!0,url:"//rawgit.com/grompe/Drawception-ANBT/master/drawception-anbt.user.js"}))`
+    `javascript:(()=>(x=new XMLHttpRequest,x.open('GET','https://raw.githubusercontent.com/EnderDragonneau/Drawception-ANBT/master/drawception-anbt.user.js'),x.onload=()=>eval(x.responseText),x.send()))()`
     
     and follow it while being on drawception.com site; if that doesn't work, try pasting it in the address bar.
 
