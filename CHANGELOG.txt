@@ -1,3 +1,14 @@
+1.155.2019.05
+- Fix Javascript URL in README.md
+- Fix "favorite" button with gold account
+- Fix MakePattern error with replay
+- Fix replay link for old drawings
+- Better support for 404 error pages
+- Fix replay button on panel page
+- Fix comment date in game
+- Add support for the new palette: Easter
+- Fix new color of "D's Exclusive" palette
+
 1.154.2019.04
 - Dark Mode modification: game panel highlight
 - Fix panel redirection link
