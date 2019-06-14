@@ -448,7 +448,6 @@ const wrapped = () => {
       anbt.unsaved = false
       const palettemap = {
         default: ['Normal', '#fffdc9'],
-        theme_holiday: ['Holiday_old', '#ffffff'],
         theme_thanksgiving: ['Thanksgiving', '#f5e9ce'],
         halloween: ['Halloween', '#444444'],
         theme_cga: ['CGA', '#ffff55'],
