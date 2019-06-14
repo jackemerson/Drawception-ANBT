@@ -1,3 +1,7 @@
+1.156.2019.06
+- Remove old Holiday palette from ANBT roulette
+- Add support for the new palette: Neapolitan
+
 1.155.2019.05
 - Fix Javascript URL in README.md
 - Fix "favorite" button with gold account
