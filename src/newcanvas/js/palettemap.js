@@ -30,7 +30,8 @@ const palettemap = {
   theme_drawception: ["D's Exclusive", '#0ee446'],
   theme_retina_burn: ['Retina Burn', '#ff0b11'],
   theme_easter: ['Easter', '#ddf7a8'],
-  theme_neapolitan: ['Neapolitan', '#fff7e1']
+  theme_neapolitan: ['Neapolitan', '#fff7e1'],
+  theme_lemonade: ['Lemonade', '#ffebaa']
 }
 
 export default palettemap

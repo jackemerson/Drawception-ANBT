@@ -62,7 +62,9 @@ const palettes = {
   "Retina Burn":     ['#bc0bff', '#ff0b11'],
   "Easter":          ['#9678ba', '#bc9ff0', '#e4ccff', '#ffa1f1', '#fbd0ee', '#e6f2ff',
                       '#aaedfb', '#f4dc7b', '#fdfabd', '#a1ef85', '#ddf7a8'],
-  "Neapolitan":      ['#3f3245', '#ff5c98', '#ecb2a4', '#fff7e1']
+  "Neapolitan":      ['#3f3245', '#ff5c98', '#ecb2a4', '#fff7e1'],
+  "Lemonade":        ['#645f87', '#37aab4', '#8ce6c3', '#d7ffb4',
+                      '#ff7d91', '#ffaaa5', '#ffd2af', '#ffebaa']
 }
 
 export default palettes
