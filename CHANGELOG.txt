@@ -1,3 +1,7 @@
+2.0.2019.07
+- Add support for the new palette: Lemonade
+- Complete rewrite of the script
+
 1.156.2019.06
 - Remove old Holiday palette from ANBT roulette
 - Add support for the new palette: Neapolitan
