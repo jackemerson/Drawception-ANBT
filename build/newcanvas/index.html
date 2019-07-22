@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <link rel="author" href="http://grompe.org.ru/">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
+  <title>New Canvas - Drawception</title>
+  <style>
+    /*NEWCANVAS_STYLE*/
+  </style>
+</head>
+
+<body id="newcanvasyo" class="sandbox">
+  <div id="myheader">
+    <div id="headercont">
+      <div class="headerleft">
+        <a href="/" title="Home" id="quit"><img src="/img/logo-d.png"></a>
+        <span id="headerinfo" class="hideonsmall">New Canvas v53</span>
+      </div>
+      <div class="headerright">
+        <a id="start" title="Play Drawception!" class="headerbutton active onlysandbox">Play</a>
+        <a href="/create/" class="headerbutton active" title="Create new game">+</a>
+        <a href="/player/" id="infoprofile" title="Profile"><img id="infoavatar" src="" width="25" height="25"></a>
+        <a href="/store/" class="headerbutton hideonsmall"><img src="/img/icon-box.png"></a>
+        <a href="/store/" class="headerbutton hideonsmall">
+          <img src="/img/icon-coins.png">
+          <span id="infocoins">0</span>
+        </a>
+        <a href="/player/" class="headerbutton">
+          <img src="/img/icon-public-games.png">
+          <span id="infogames">0/32</span>
+        </a>
+        <a class="headerbutton hideonsmall">
+          <img src="/img/icon-friend-games.png">
+          <span id="infofriendgames">0</span>
+        </a>
+        <a class="headerbutton">
+          <img src="/img/icon-notifications.png">
+          <span id="infonotifications">0</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div id="drawthis" class="onlyplay">Fetching your Drawception game...</div>
+  <div id="emptytitle" class="onlysandbox"></div>
+  <div id="bl" class="noselect">
+    <div id="toolpane">
+      <div id="timer" class="panel">00:00
+        <button id="timeplus" class="onlyplay onlydraw onlyfriend" title="Add extra 60 seconds"></button>
+      </div>
+      <div id="colors" class="panel onlydraw">
+        <div id="palettename">Normal</div>
+        <div id="palettechooser" class="onlysandbox"></div>
+        <div id="palette">
+          <b style="background-color:#000000"></b>
+          <b style="background-color:#444444"></b>
+          <b style="background-color:#999999"></b>
+          <b style="background-color:#ffffff"></b>
+          <b style="background-color:#603913"></b>
+          <b style="background-color:#c69c6d"></b>
+          <b style="background-color:#ffdab9"></b>
+          <b style="background-color:#ff0000"></b>
+          <b style="background-color:#ffd700"></b>
+          <b style="background-color:#ff6600"></b>
+          <b style="background-color:#16ff00"></b>
+          <b style="background-color:#0fad00"></b>
+          <b style="background-color:#00ffff"></b>
+          <b style="background-color:#0247fe"></b>
+          <b style="background-color:#ec008c"></b>
+          <b style="background-color:#8601af"></b>
+          <b style="background-color:#fffdc9"></b>
+          <b id="eraser"></b>
+        </div>
+        <div id="indicator">
+          <div id="primary" title="Primary color (Left button or pen)" style="background-color:#000">L</div>
+          <div id="secondary" title="Secondary color (Right button or pen eraser)" class="eraser">R</div>
+        </div>
+      </div>
+      <div id="tools" class="panel onlydraw">
+        <button id="brush0" class="brush" title="Tiny brush (-)"></button>
+        <button id="brush1" class="brush" title="Small brush"></button>
+        <button id="brush2" class="brush sel" title="Medium brush"></button>
+        <button id="brush3" class="brush" title="Large brush (=)"></button>
+        <hr>
+        <button id="setbackground" title="Set background (B)"></button>
+        <button id="undo" title="Undo (Ctrl+Z)"></button>
+        <button id="redo" title="Redo (Ctrl+Y)"></button>
+        <button id="trash" title="Clear the canvas"></button>
+      </div>
+    </div>
+    <div id="popup">
+      <div id="popupclose"></div>
+      <div id="popuptitle">Imgur upload result</div>
+      <a id="imgururl" class="prominent">Imgur URL</a>
+      <hr>
+      <a id="imgurdelete" target="_blank">Imgur delete</a>
+      <div id="imgurerror">...</div>
+    </div>
+    <div id="lockwarn">Time's up!<br><br>Submit now or miss the game!</div>
+    <div id="svgContainer" class="loadingbg onlydraw"></div>
+    <div id="drawingtocaption" class="onlycaption">
+      <img id="tocaption" class="loadingbg">
+      <br>
+      <input id="caption" type="text" maxlength="46" value="" placeholder="What is it?">
+      <div id="usedchars">46</div>
+    </div>
+    <div id="seekbar" class="onlydraw onlyunlocked">
+      <div id="play" title="Play (Ctrl+Space)"></div>
+      <div id="knob"></div>
+    </div>
+    <div id="infopanel">
+      <div id="gamemode" class="panel">
+        <span class="onlysandbox">Sandbox</span>
+        <span class="onlyplay">Public safe for work game</span>
+      </div>
+      <div id="gamebuttons" class="panel">
+        <button id="bookmark" class="onlyplay no-friend">Bookmark</button>
+        <button id="options" class="onlyplay no-friend">Options</button>
+        <button id="skip" class="onlyplay no-friend">Skip</button>
+        <button id="report" class="onlyplay no-friend">Report</button>
+        <button id="exit" class="onlyplay">Exit</button>
+        <button id="import" class="onlysandbox">Import drawing</button>
+        <button id="export" class="onlysandbox">Export drawing</button>
+        <button id="imgur" class="onlysandbox">Upload to imgur</button>
+      </div>
+      <button id="submit" class="submit onlyplay onlydraw">Submit!</button>
+      <button id="submitcaption" class="submit onlyplay onlycaption">Submit</button>
+      <div class="guidelines onlyplay onlydraw">Guidelines
+        <ul>
+          <li>Simple drawings are welcome! Just give it your best shot</li>
+          <li>If the phrase is too difficult, use the skip button</li>
+          <li>Don't draw text - always draw a picture</li>
+          <li class="no-nsfw">Explicit (NSFW) drawings will get you banned</li>
+        </ul>
+      </div>
+      <div class="guidelines onlyplay onlycaption">Tips
+        <ul>
+          <li>No explicit language allowed</li>
+          <li>Keep descriptions short and simple!</li>
+          <li>Avoid unnecessary detail, just describe the main subject</li>
+          <li>No metacommentary (e.g., don't comment on drawing quality)</li>
+          <li>No idea? Use the skip button</li>
+        </ul>
+      </div>
+      <div class="guidelines onlysandbox">Sandbox
+        <ul>
+          <li>Welcome to the sandbox! Here you can play with all the palettes and drawing tools.</li>
+          <li>Saved drawings will contain your drawing process in PNG format.</li>
+          <li>After loading a drawing you can continue to draw or watch its playback.</li>
+          <li>Note that editing the PNG with playback with other programs will likely destroy the playback data.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div id="wacomContainer"></div>
+  <script>
+    /*PAKO_SCRIPT*/
+  </script>
+  <script>
+    /*PATHSEG_SCRIPT*/
+  </script>
+  <script>
+    /*NEWCANVAS_SCRIPT*/
+  </script>
+</body>
+
+</html>
