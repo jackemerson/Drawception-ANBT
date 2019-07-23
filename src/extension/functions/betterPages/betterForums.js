@@ -101,7 +101,7 @@ const betterForums = () => {
         .querySelector('a:first-child')
         .href.match(/\/forums\/\w+\/(\d+)\//)
       // Don't let them hide the ANBT topic ;)
-      if (!href || !href[1] || href[1] === 11830) return
+      if (!href || !href[1] || href[1] === '11830') return
 
       const id = href[1]
       if (hiddenTopics.includes(id)) {
