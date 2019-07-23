@@ -2096,6 +2096,32 @@
     }
   }
 
+  const toggleLight = () => {
+    if (options.anbtDarkMode) {
+      const inDark = getLocalStorageItem('gpe_inDark', 0)
+      if (!inDark) {
+        const css = document.createElement('style')
+        css.id = 'darkgraycss'
+        css.type = 'text/css'
+        css.appendChild(
+          document.createTextNode(getLocalStorageItem('gpe_darkCSS'))
+        )
+        document.head.appendChild(css)
+      } else {
+        document.head.removeChild(document.getElementById('darkgraycss'))
+      }
+      localStorage.setItem('gpe_inDark', `${inDark ? 0 : 1}`)
+    } else {
+      if (document.body.classList.contains('theme-night')) {
+        document.body.classList.remove('theme-night')
+        setCookie('theme-night')
+      } else {
+        document.body.classList.add('theme-night')
+        setCookie('theme-night', 1, 365)
+      }
+    }
+  }
+
   const pageEnhancements = () => {
     loadScriptSettings()
     if (typeof DrawceptionPlay === 'undefined') return
@@ -2220,7 +2246,7 @@
         '<a href="/sandbox/" title="Sandbox" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item" style="background:#5A5"><span class="fas fa-edit" style="color:#BFB" /></a>',
         '<a href="/browse/all-games/" title="Browse Games" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item"><span class="fas fa-folder-open" /></a>',
         '<a href="/contests/" title="Contests" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item"><span class="fas fa-trophy" /></a>',
-        '<a href="#" title="Toggle light" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item toggleLight" style="background:#AA5"><span class="fas fa-eye" style="color:#FFB" /></a>',
+        '<a href="#" title="Toggle light" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item toggle-light" style="background:#AA5"><span class="fas fa-eye" style="color:#FFB" /></a>',
         '<a href="/leaderboard/" title="Leaderboards" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item"><span class="fas fa-fire" /></a>',
         '<a href="/faq/" title="FAQ" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item"><span class="fas fa-question-circle " /></a>',
         '<a href="/forums/" title="Forums" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item" style="background:#55A"><span class="fas fa-comments" style="color:#BBF" /></a>',
@@ -2232,9 +2258,12 @@
       navbarButtonsList.forEach(button => navbarToggle.appendChild($(button)))
       $('#main-menu').insertAdjacentHTML(
         'afterbegin',
-        '<a href="#" class="list-group-item toggleLight"><span class="fas fa-eye"></span> Toggle light</a>'
+        '<a href="#" class="list-group-item toggle-light"><span class="fas fa-eye"></span> Toggle light</a>'
       )
     }
+    $('.toggle-light').forEach(button =>
+      button.addEventListener('click', toggleLight)
+    )
     const menuPlayer = $('.btn-menu-player')
     if (menuPlayer) {
       const userlink = $('.player-dropdown a[href^="/player/"]').href

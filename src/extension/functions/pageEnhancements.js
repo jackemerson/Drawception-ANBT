@@ -8,6 +8,7 @@ import getNotifications from './getNotifications'
 import $ from './selector'
 import loadScriptSettings from './settings/loadScriptSettings'
 import setupNewCanvas from './setupNewCanvas'
+import toggleLight from './darkMode/toggleLight'
 
 const pageEnhancements = () => {
   loadScriptSettings()
@@ -132,7 +133,7 @@ const pageEnhancements = () => {
       '<a href="/sandbox/" title="Sandbox" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item" style="background:#5A5"><span class="fas fa-edit" style="color:#BFB" /></a>',
       '<a href="/browse/all-games/" title="Browse Games" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item"><span class="fas fa-folder-open" /></a>',
       '<a href="/contests/" title="Contests" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item"><span class="fas fa-trophy" /></a>',
-      '<a href="#" title="Toggle light" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item toggleLight" style="background:#AA5"><span class="fas fa-eye" style="color:#FFB" /></a>',
+      '<a href="#" title="Toggle light" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item toggle-light" style="background:#AA5"><span class="fas fa-eye" style="color:#FFB" /></a>',
       '<a href="/leaderboard/" title="Leaderboards" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item"><span class="fas fa-fire" /></a>',
       '<a href="/faq/" title="FAQ" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item"><span class="fas fa-question-circle " /></a>',
       '<a href="/forums/" title="Forums" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item" style="background:#55A"><span class="fas fa-comments" style="color:#BBF" /></a>',
@@ -145,9 +146,13 @@ const pageEnhancements = () => {
     // Let users with screens narrow enough so top bar isn't visible still use toggle light function
     $('#main-menu').insertAdjacentHTML(
       'afterbegin',
-      '<a href="#" class="list-group-item toggleLight"><span class="fas fa-eye"></span> Toggle light</a>'
+      '<a href="#" class="list-group-item toggle-light"><span class="fas fa-eye"></span> Toggle light</a>'
     )
   }
+
+  $('.toggle-light').forEach(button =>
+    button.addEventListener('click', toggleLight)
+  )
 
   const menuPlayer = $('.btn-menu-player')
   if (menuPlayer) {
