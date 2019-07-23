@@ -1,8 +1,8 @@
-import anbt from '../../anbt';
-import bytesToStrings from '../conversions/bytesToStrings';
-import colorToDword from '../conversions/colorToDword';
-import stringToBytes from '../conversions/stringToBytes';
-import packUint16be from '../pack/packUint16be';
+import anbt from '../../anbt'
+import bytesToStrings from '../conversions/bytesToStrings'
+import colorToDword from '../conversions/colorToDword'
+import stringToBytes from '../conversions/stringToBytes'
+import packUint16be from '../pack/packUint16be'
 
 const packPlayback = svg => {
   const { pako } = window

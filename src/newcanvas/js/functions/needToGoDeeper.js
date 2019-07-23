@@ -1,14 +1,14 @@
-import anbt from '../anbt';
-import fromPng from './anbt/fromPng';
-import fromUrl from './anbt/fromUrl';
-import base64ToBytes from './conversions/base64ToBytes';
-import fixTabletPluginGoingAwol from './fixTabletPluginGoingAwol';
-import ID from './idSelector';
-import ajax from './needToGoDeeper/ajax';
-import bindCanvasEvents from './needToGoDeeper/bindCanvasEvents';
-import extractInfoFromHTML from './needToGoDeeper/extractInfoFromHTML';
-import getParametersFromPlay from './needToGoDeeper/getParametersFromPlay';
-import handleSandboxParameters from './needToGoDeeper/handleSandboxParameters';
+import anbt from '../anbt'
+import fromPng from './anbt/fromPng'
+import fromUrl from './anbt/fromUrl'
+import base64ToBytes from './conversions/base64ToBytes'
+import fixTabletPluginGoingAwol from './fixTabletPluginGoingAwol'
+import ID from './idSelector'
+import ajax from './needToGoDeeper/ajax'
+import bindCanvasEvents from './needToGoDeeper/bindCanvasEvents'
+import extractInfoFromHTML from './needToGoDeeper/extractInfoFromHTML'
+import getParametersFromPlay from './needToGoDeeper/getParametersFromPlay'
+import handleSandboxParameters from './needToGoDeeper/handleSandboxParameters'
 
 const needToGoDeeper = () => {
   const { options, insandbox, panelid } = window

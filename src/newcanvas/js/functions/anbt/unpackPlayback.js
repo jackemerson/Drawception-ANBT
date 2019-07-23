@@ -28,7 +28,7 @@ const unpackPlayback = bytes => {
     y: 0,
     pattern: 0
   }
-  const points = []
+  let points = []
   // Ignore background alpha
   const background = `rgb(${bytes[start]}, ${bytes[start + 1]}, ${
     bytes[start + 2]
@@ -73,7 +73,7 @@ const unpackPlayback = bytes => {
         path.orig = points
         path.pattern = last.pattern
         svg.appendChild(path)
-        points.length = 0
+        points = []
       } else {
         last.x = x += last.x
         last.y = y += last.y
