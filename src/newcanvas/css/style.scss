@@ -486,6 +486,9 @@ hr {
     color: #ccc;
   }
 }
+.sandbox #palettename:after {
+  content: " \25BC";
+}
 #tools {
   width: 68px;
   float: right;
