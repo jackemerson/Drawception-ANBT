@@ -1,6 +1,7 @@
 import ID from '../../idSelector'
 import ajax from '../ajax'
 import onCaptionSuccess from '../onCaptionSuccess'
+import anbt from '../../../anbt'
 
 const submitCaption = () => {
   const { incontest, gameInfo } = window
@@ -41,6 +42,7 @@ const submitCaption = () => {
         alert(response.message)
       } else if (response.url) {
         onCaptionSuccess(title)
+        anbt.unsaved = false
         location.replace(response.url)
       }
     },

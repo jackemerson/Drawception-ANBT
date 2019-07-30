@@ -46,6 +46,7 @@ const submitDrawing = () => {
         alert(response.message)
       } else if (response.url) {
         window.onbeforeunload = () => {}
+        anbt.unsaved = false
         location.replace(response.url)
       }
     },
