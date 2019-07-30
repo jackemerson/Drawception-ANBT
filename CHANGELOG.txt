@@ -1,3 +1,11 @@
+2.1.2019.07
+- Fix exit confirmation after submit
+- Fix addch.py
+- Fix hide button on forum
+- Fix button to switch the light
+- Fix dropdown arrow for palette in sandbox
+- Fix export drawing with replay from URL
+
 2.0.2019.07
 - Add support for the new palette: Lemonade
 - Complete rewrite of the script

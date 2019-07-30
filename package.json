@@ -1,6 +1,6 @@
 {
   "name": "drawception-anbt",
-  "version": "2.0.2019.07",
+  "version": "2.1.2019.07",
   "description": "ANBT is a script that will improve the comfort in drawing.",
   "main": "index.js",
   "scripts": {
