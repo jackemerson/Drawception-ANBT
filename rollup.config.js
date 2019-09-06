@@ -21,6 +21,11 @@ const waitFile = path => {
   })
 }
 
+clear({
+  targets: ['build/'],
+  watch: true
+})
+
 export default [
   {
     input: 'src/newcanvas/js/pako.js',
@@ -29,10 +34,6 @@ export default [
       file: 'build/newcanvas/pako.js'
     },
     plugins: [
-      clear({
-        targets: ['build/'],
-        watch: true
-      }),
       commonjs(),
       resolve(),
       cleanup(),
@@ -75,7 +76,10 @@ export default [
       eslint({
         exclude: ['/build/*.js']
       }),
-      terser(),
+      prettier({
+        cwd: __dirname,
+        semi: true
+      }),
       copy({
         targets: [
           { src: 'src/newcanvas/html/index.html', dest: 'build/newcanvas' }
@@ -98,7 +102,8 @@ export default [
         exclude: ['/build/*.js']
       }),
       prettier({
-        cwd: __dirname
+        cwd: __dirname,
+        semi: true
       }),
       copy({
         targets: [{ src: 'build/newcanvas/index.html', dest: 'build/' }]
