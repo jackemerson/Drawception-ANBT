@@ -4,6 +4,7 @@ import betterGame from './functions/betterPages/betterGame'
 import betterPanel from './functions/betterPages/betterPanel'
 import betterPlayer from './functions/betterPages/betterPlayer'
 import betterSettings from './functions/betterPages/betterSettings'
+import betterStore from './functions/betterPages/betterStore'
 
 const betterPages = {
   betterCreate,
@@ -11,7 +12,8 @@ const betterPages = {
   betterGame,
   betterPanel,
   betterPlayer,
-  betterSettings
+  betterSettings,
+  betterStore
 }
 
 export default betterPages
