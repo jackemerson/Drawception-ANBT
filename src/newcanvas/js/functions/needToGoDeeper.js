@@ -9,9 +9,12 @@ import bindCanvasEvents from './needToGoDeeper/bindCanvasEvents'
 import extractInfoFromHTML from './needToGoDeeper/extractInfoFromHTML'
 import getParametersFromPlay from './needToGoDeeper/getParametersFromPlay'
 import handleSandboxParameters from './needToGoDeeper/handleSandboxParameters'
+import setPaletteByName from './bindEvents/palette/setPaletteByName'
+import setBackground from './anbt/setBackground'
+import updateColorIndicators from './bindEvents/updateColorIndicators'
 
 const needToGoDeeper = () => {
-  const { options, insandbox, panelid } = window
+  const { options, insandbox, panelid, paletteInfo } = window
   window.onerror = (error, file, line) => {
     // Silence the bogus error message from the overwritten page's timer
     if (error.toString().includes('periodsToSeconds')) return
@@ -66,6 +69,13 @@ const needToGoDeeper = () => {
           localStorage.removeItem('anbt_drawingbackup_newcanvas')
         }
       }
+    }
+    if (paletteInfo) {
+      const palette = paletteInfo.split(',').map(color => `#${color}`)
+      setPaletteByName('Custom', palette)
+      setBackground(palette[palette.length - 1])
+      anbt.colors = [palette[0], 'eraser']
+      updateColorIndicators()
     }
   } else {
     ID('newcanvasyo').className = 'play'

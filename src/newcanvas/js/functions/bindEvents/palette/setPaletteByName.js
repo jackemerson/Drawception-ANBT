@@ -4,9 +4,9 @@ import ID from '../../idSelector'
 import colorClick from '../colorClick'
 import noDefault from '../noDefault'
 
-const setPaletteByName = name => {
+const setPaletteByName = (name, customColors) => {
   ID('palettename').childNodes[0].nodeValue = name
-  const colors = palettes[name]
+  const colors = palettes[name] || customColors
   anbt.palette = colors
   const palette = ID('palette')
   const elements = palette.querySelectorAll('b')

@@ -1804,9 +1804,9 @@
 
   const noDefault = event => event.preventDefault();
 
-  const setPaletteByName = name => {
+  const setPaletteByName = (name, customColors) => {
     ID('palettename').childNodes[0].nodeValue = name;
-    const colors = palettes[name];
+    const colors = palettes[name] || customColors;
     anbt.palette = colors;
     const palette = ID('palette');
     const elements = palette.querySelectorAll('b');
@@ -2758,7 +2758,7 @@
   };
 
   const needToGoDeeper = () => {
-    const { options, insandbox, panelid } = window;
+    const { options, insandbox, panelid, paletteInfo } = window;
     window.onerror = (error, file, line) => {
       if (error.toString().includes('periodsToSeconds')) return;
       if (error.toString().match(/script error/i)) return;
@@ -2811,6 +2811,13 @@
             localStorage.removeItem('anbt_drawingbackup_newcanvas');
           }
         }
+      }
+      if (paletteInfo) {
+        const palette = paletteInfo.split(',').map(color => `#${color}`);
+        setPaletteByName('Custom', palette);
+        setBackground(palette[palette.length - 1]);
+        anbt.colors = [palette[0], 'eraser'];
+        updateColorIndicators();
       }
     } else {
       ID('newcanvasyo').className = 'play';

@@ -296,21 +296,28 @@
     }
     const inforum = url.match(/forums\//);
     const friendgameid = url.match(/play\/(.+)\//);
-    const panelid = url.match(/sandbox\/#?([^/]+)/);
+    const paletteInfo =
+      url.includes('/sandbox/') && url.match(/\?palette=([^/]+)/);
+    const panelid = url.match(/sandbox\/(?!\?palette=)#?([^/]+)\/?/);
     const incontest =
       url.match(/contests\/play\//) && document.getElementById('canvas-holder');
     const vertitle = `ANBT v${versions.scriptVersion}`;
     if (incontest) window.onbeforeunload = () => {};
     const normalurl =
       insandbox && !inforum
-        ? `/sandbox/${panelid ? `#${panelid[1]}` : ''}`
+        ? `/sandbox/${panelid ? `#${panelid[1]}/` : ''}${
+            paletteInfo ? `?palette=${paletteInfo[1]}` : ''
+          }`
         : incontest
         ? '/contests/play/'
         : inforum
         ? url.match(/\/forums\/?.+/)
         : `/play/${friendgameid ? `${friendgameid[1]}/` : ''}`;
     try {
-      if (location.pathname + location.hash !== normalurl)
+      if (
+        location.pathname + (panelid ? location.hash : paletteInfo[0]) !==
+        normalurl
+      )
         history.pushState({}, document.title, normalurl);
     } catch (e) {}
     const alarmSoundOgg =
@@ -351,6 +358,7 @@
     window.anbtReady = () => {
       if (friendgameid) window.friendgameid = friendgameid[1];
       if (panelid) window.panelid = panelid[1];
+      if (paletteInfo) window.paletteInfo = paletteInfo[1];
       window.inforum = inforum;
       window.insandbox = insandbox;
       window.incontest = incontest;

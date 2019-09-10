@@ -19,9 +19,7 @@ const setupNewCanvas = (insandbox, url) => {
     request.onload = () => {
       if (request.responseText.length < 10000) {
         alert(
-          `Error: instead of new canvas code, got this response from GitHub:\n${
-            request.responseText
-          }`
+          `Error: instead of new canvas code, got this response from GitHub:\n${request.responseText}`
         )
         location.pathname = '/'
       } else {
@@ -39,7 +37,9 @@ const setupNewCanvas = (insandbox, url) => {
   }
   const inforum = url.match(/forums\//)
   const friendgameid = url.match(/play\/(.+)\//) // Save friend game id if any
-  const panelid = url.match(/sandbox\/#?([^/]+)/)
+  const paletteInfo =
+    url.includes('/sandbox/') && url.match(/\?palette=([^/]+)/)
+  const panelid = url.match(/sandbox\/(?!\?palette=)#?([^/]+)\/?/)
   const incontest =
     url.match(/contests\/play\//) && document.getElementById('canvas-holder') // Handle drawing contests only
   const vertitle = `ANBT v${versions.scriptVersion}`
@@ -50,14 +50,20 @@ const setupNewCanvas = (insandbox, url) => {
   // Show normal address
   const normalurl =
     insandbox && !inforum
-      ? `/sandbox/${panelid ? `#${panelid[1]}` : ''}`
+      ? `/sandbox/${panelid ? `#${panelid[1]}/` : ''}${
+          paletteInfo ? `?palette=${paletteInfo[1]}` : ''
+        }`
       : incontest
       ? '/contests/play/'
       : inforum
       ? url.match(/\/forums\/?.+/)
       : `/play/${friendgameid ? `${friendgameid[1]}/` : ''}`
+
   try {
-    if (location.pathname + location.hash !== normalurl)
+    if (
+      location.pathname + (panelid ? location.hash : paletteInfo[0]) !==
+      normalurl
+    )
       history.pushState({}, document.title, normalurl)
   } catch (e) {}
 
@@ -100,6 +106,7 @@ const setupNewCanvas = (insandbox, url) => {
   window.anbtReady = () => {
     if (friendgameid) window.friendgameid = friendgameid[1]
     if (panelid) window.panelid = panelid[1]
+    if (paletteInfo) window.paletteInfo = paletteInfo[1]
     window.inforum = inforum
     window.insandbox = insandbox
     window.incontest = incontest
