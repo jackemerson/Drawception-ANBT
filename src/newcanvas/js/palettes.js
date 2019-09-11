@@ -65,7 +65,9 @@ const palettes = {
   "Neapolitan":      ['#3f3245', '#ff5c98', '#ecb2a4', '#fff7e1'],
   "Lemonade":        ['#645f87', '#37aab4', '#8ce6c3', '#d7ffb4',
                       '#ff7d91', '#ffaaa5', '#ffd2af', '#ffebaa'],
-  "School Pen":      ['#07207a', '#000000', '#d8110c', '#097536', '#fbfcfd']
+  "School Pen":      ['#07207a', '#000000', '#d8110c', '#097536', '#fbfcfd'],
+  "Dimmed":          ['#c2aa78', '#fcfeb4', '#92c67d', '#5cab8b', '#182e45',
+                      '#221b30', '#722c31', '#441a23', '#1c0b11']
 }
 
 export default palettes

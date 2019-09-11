@@ -32,7 +32,8 @@ const paletteMap = {
   theme_easter: ['Easter', '#ddf7a8'],
   theme_neapolitan: ['Neapolitan', '#fff7e1'],
   theme_lemonade: ['Lemonade', '#ffebaa'],
-  theme_school_pen: ['School Pen', '#fbfcfd']
+  theme_school_pen: ['School Pen', '#fbfcfd'],
+  theme_dimmed: ['Dimmed', '#1c0b11']
 }
 
 export default paletteMap

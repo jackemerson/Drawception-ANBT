@@ -1394,7 +1394,18 @@
       '#ffd2af',
       '#ffebaa'
     ],
-    'School Pen': ['#07207a', '#000000', '#d8110c', '#097536', '#fbfcfd']
+    'School Pen': ['#07207a', '#000000', '#d8110c', '#097536', '#fbfcfd'],
+    Dimmed: [
+      '#c2aa78',
+      '#fcfeb4',
+      '#92c67d',
+      '#5cab8b',
+      '#182e45',
+      '#221b30',
+      '#722c31',
+      '#441a23',
+      '#1c0b11'
+    ]
   };
 
   const anbt = {
@@ -2345,7 +2356,8 @@
     theme_easter: ['Easter', '#ddf7a8'],
     theme_neapolitan: ['Neapolitan', '#fff7e1'],
     theme_lemonade: ['Lemonade', '#ffebaa'],
-    theme_school_pen: ['School Pen', '#fbfcfd']
+    theme_school_pen: ['School Pen', '#fbfcfd'],
+    theme_dimmed: ['Dimmed', '#1c0b11']
   };
 
   const getPalData = palette => {
