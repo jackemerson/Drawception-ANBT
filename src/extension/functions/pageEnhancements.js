@@ -64,7 +64,9 @@ const pageEnhancements = () => {
       '.grid-settings div[class^="grid-"] label {display: inline-flex}' +
       'input[type="checkbox"], input[type="radio"] {margin:4px 4px 0 0}' +
       '@-moz-document url-prefix() {input[type="checkbox"], input[type="radio"] {margin:0 4px 0 0}}' +
-      '.tooltip {z-index: 3000;}'
+      '.tooltip {z-index: 3000;}' +
+      '.bg-color {position: relative; width: 100%; top: 6rem}' +
+      '.text-right > a[href*="store"] {margin-top: 1rem}'
   )
   if (options.maxCommentHeight) {
     const maxHeight = options.maxCommentHeight

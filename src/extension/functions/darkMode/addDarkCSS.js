@@ -40,6 +40,7 @@ const addDarkCSS = () =>
       '.player-name-new{color:#33b73f$}.gsc-tabsArea>div{overflow:hidden$}.gs-image-popup-box{~#333$;border-color:#222$}.gs-size{color:#6f6f6f$}.gsc-result-info{color:#EEE$}.gsc-refinementsArea{border:none$}.gsc-tabsArea{border-bottom-color:#333$}.gsc-cursor-page{color:#EEE$}.gsc-cursor-current-page{color:#AAA$}.profile-nav>.disabled>a{color:#555$;~#3a3a3a$}.profile-nav>.disabled>a:hover{~#3a3a3a$}.sleek-select:hover{border-color:#EEE$}' +
       '.btn-menu{border-color:#1e1e1e$;text-shadow:0px 0px 3px #777$}.btn-menu:hover{border-color:#1e1e1e$}.pagination>.active>span{color:#EEE$}#btn-notifications{color:#EEE$}.btn-warning{color:#EEE$}.alert-nice{color:#EEE$}.emotes-popup{~#2e2e2e$}.navbar-toggle{~#2e2e2e$;border-color:#1e1e1e$}.navbar-toggle .icon-bar{~#EEE$}' +
       '.gamepanel-highlight{box-shadow:0 0 20px #111$;~#222$}' +
+      '.bg-color{~#444$}.progressbar{~#666$}' +
       // We have entered specificity hell...
       'a.anbt_replaypanel:hover{color:#8af$}' +
       '.anbt_favedpanel{color:#d9534f$}' +
