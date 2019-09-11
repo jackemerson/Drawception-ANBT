@@ -1,6 +1,7 @@
 import getLocalStorageItem from './functions/getLocalStorageItem'
 import $ from './functions/selector'
 
+// prettier-ignore
 const globals = {
   userId: getLocalStorageItem(
     'gpe_lastSeenId',
@@ -9,20 +10,7 @@ const globals = {
         /\/player\/(\d+)\//
       )[1]
   ),
-  months: [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec'
-  ],
+  months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   alphabet: '36QtfkmuFds0UjlvCGIXZ125bEMhz48JSYgipwKn7OVHRBPoy9DLWaceqxANTr',
   greetings: [
     'Oruvaq lbh!',

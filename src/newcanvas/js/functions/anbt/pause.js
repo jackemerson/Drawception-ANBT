@@ -6,7 +6,7 @@ const pause = noSeekbar => {
   if (anbt.isPlaying) {
     if (anbt.isAnimating) {
       anbt.isAnimating = false
-      anbt.svgDisp.removeChild(anbt.path)
+      anbt.svgDisplay.removeChild(anbt.path)
       drawSvgElement(anbt.animatePath)
       anbt.position++
       if (!noSeekbar)

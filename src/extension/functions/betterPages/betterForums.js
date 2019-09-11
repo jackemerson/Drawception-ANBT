@@ -15,7 +15,7 @@ const betterForums = () => {
   $('img', true).forEach(img => linkifyDrawingPanels(img))
 
   // Show posts IDs and link
-  if (document.location.pathname.match(/\/forums\/(\w+|-)\/.+/)) {
+  if (location.pathname.match(/\/forums\/(\w+|-)\/.+/)) {
     const hideUserIds = options.forumHiddenUsers
       ? options.forumHiddenUsers.split(',')
       : ''
@@ -25,10 +25,10 @@ const betterForums = () => {
           '.anbt_hideUserPost:not(:target) .comment-body, .anbt_hideUserPost:not(:target) .avatar {display: none}' +
           ''
       )
-    let lastid = 0
+    let lastId = 0
     $('.comment-avatar', true).forEach(({ parentNode }) => {
       const commentHolder = parentNode.parentNode.parentNode
-      const anch = commentHolder.id || ''
+      const anchor = commentHolder.id || ''
       commentHolder.classList.add('comment-holder') // No identification for these anymore, this is unhelpful!
       const textMuted = commentHolder.querySelector('a.text-muted')
       const vue = commentHolder.childNodes[0].__vue__
@@ -37,19 +37,21 @@ const betterForums = () => {
           vue.comment_date * 1000
         )}`
         if (vue.edit_date > 0) {
-          const el = textMuted.parentNode.querySelector('span[rel="tooltip"]')
-          const text = `${el.title}, ${formatTimestamp(
+          const element = textMuted.parentNode.querySelector(
+            'span[rel="tooltip"]'
+          )
+          const text = `${element.title}, ${formatTimestamp(
             vue.edit_date * 1000
           ).replace(/ /g, '\u00A0')}` // prevent the short tooltip width from breaking date apart
-          el.setAttribute('title', text)
+          element.setAttribute('title', text)
         }
       }
-      if (anch) {
-        const id = parseInt(anch.substring(1), 10)
+      if (anchor) {
+        const id = parseInt(anchor.substring(1), 10)
         const text = textMuted.textContent.trim()
         textMuted.textContent = `${text} #${id}`
         textMuted.setAttribute('title', 'Link to post')
-        if (id < lastid) textMuted.classList.add('wrong-order')
+        if (id < lastId) textMuted.classList.add('wrong-order')
         try {
           const { href } = commentHolder.querySelector('a[href^="/player/"]')
           if (href) {
@@ -58,7 +60,7 @@ const betterForums = () => {
               commentHolder.classList.add('anbt_hideUserPost')
           }
         } catch (e) {}
-        lastid = id
+        lastId = id
       }
     })
 
@@ -90,7 +92,7 @@ const betterForums = () => {
     )
 
   // For the topic list pages only
-  if (document.location.pathname.match(/\/forums\/(\w+)\/$/)) {
+  if (location.pathname.match(/\/forums\/(\w+)\/$/)) {
     const hiddenTopics = getLocalStorageItem('gpe_forumHiddenTopics', [])
     let hidden = 0
 
@@ -142,8 +144,7 @@ const betterForums = () => {
   }
   $('.btn.btn-default', true).forEach(button =>
     button.addEventListener('click', () => {
-      if (button.textContent === 'Draw')
-        setupNewCanvas(true, document.location.href)
+      if (button.textContent === 'Draw') setupNewCanvas(true, location.href)
     })
   )
 }

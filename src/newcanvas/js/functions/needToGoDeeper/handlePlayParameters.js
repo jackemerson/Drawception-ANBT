@@ -17,43 +17,43 @@ import handleCommonParameters from './handleCommonParameters'
 import timerCallback from './timerCallback'
 
 const handlePlayParameters = () => {
-  const { options, gameInfo, incontest, vertitle } = window
-  ID('skip').disabled = gameInfo.drawfirst || incontest
-  ID('report').disabled = gameInfo.drawfirst || incontest
+  const { options, gameInfo, inContest, versionTitle } = window
+  ID('skip').disabled = gameInfo.drawFirst || inContest
+  ID('report').disabled = gameInfo.drawFirst || inContest
   ID('exit').disabled = false
   ID('start').disabled = false
-  ID('bookmark').disabled = gameInfo.drawfirst || incontest
+  ID('bookmark').disabled = gameInfo.drawFirst || inContest
   ID('options').disabled = true // Not implemented yet!
-  ID('timeplus').disabled = incontest
+  ID('timeplus').disabled = inContest
   ID('submit').disabled = false
-  ID('headerinfo').innerHTML = `Playing with ${vertitle}`
+  ID('headerinfo').innerHTML = `Playing with ${versionTitle}`
   ID('drawthis').classList.add('onlyplay')
   ID('emptytitle').classList.remove('onlyplay')
   window.submitting = false
-  window.drawing_aborted = false
+  window.drawingAborted = false
   if (gameInfo.error) {
     alert(`Play Error:\n${gameInfo.error}`)
     return exitToSandbox()
   }
-  if (gameInfo.limitreached) {
+  if (gameInfo.limitReached) {
     alert('Play limit reached!')
     return exitToSandbox()
   }
-  ID('gamemode').innerHTML = incontest
+  ID('gamemode').innerHTML = inContest
     ? 'Contest'
     : `${(gameInfo.friend ? 'Friend ' : 'Public ') +
         (gameInfo.nsfw ? 'Not Safe For Work (18+) ' : 'safe for work ') +
         (gameInfo.blitz ? 'BLITZ ' : '')}Game`
   ID('drawthis').innerHTML =
-    gameInfo.caption || (gameInfo.drawfirst && '(Start your game!)') || ''
+    gameInfo.caption || (gameInfo.drawFirst && '(Start your game!)') || ''
   ID('tocaption').src = ''
-  const newcanvas = ID('newcanvasyo')
-  newcanvas.className = 'play'
-  if (gameInfo.friend) newcanvas.classList.add('friend')
+  const newCanvas = ID('newcanvasyo')
+  newCanvas.className = 'play'
+  if (gameInfo.friend) newCanvas.classList.add('friend')
   ID('palettechooser').className = gameInfo.friend ? '' : 'onlysandbox'
-  if (gameInfo.nsfw) newcanvas.classList.add('nsfw')
-  if (gameInfo.blitz) newcanvas.classList.add('blitz')
-  newcanvas.classList.add(gameInfo.image ? 'captioning' : 'drawing')
+  if (gameInfo.nsfw) newCanvas.classList.add('nsfw')
+  if (gameInfo.blitz) newCanvas.classList.add('blitz')
+  newCanvas.classList.add(gameInfo.image ? 'captioning' : 'drawing')
   // Clear
   if (anbt.isStroking) strokeEnd()
   unlock()
@@ -83,7 +83,7 @@ const handlePlayParameters = () => {
       anbt.color = [palettes[paletteData[0]][0], 'eraser']
       updateColorIndicators()
     }
-    ID('setbackground').hidden = !gameInfo.bgbutton
+    ID('setbackground').hidden = !gameInfo.backgroundButton
   } else {
     // Check broken drawing
     ID('tocaption').src =
@@ -96,17 +96,17 @@ const handlePlayParameters = () => {
     ID('usedchars').textContent = '45'
   }
   if (
-    (options.timeoutSound && !gameInfo.blitz) ||
-    (options.timeoutSoundBlitz && gameInfo.blitz)
+    (options.timeOutSound && !gameInfo.blitz) ||
+    (options.timeOutSoundBlitz && gameInfo.blitz)
   ) {
     window.playedWarningSound = false
     window.alarm = new Audio(window.alarmSoundOgg)
-    window.alarm.volume = options.timeoutSoundVolume / 100
+    window.alarm.volume = options.timeOutSoundVolume / 100
   }
-  globals.timerStart = Date.now() + 1000 * gameInfo.timeleft
+  globals.timerStart = Date.now() + 1000 * gameInfo.timeLeft
   window.timerCallback = timerCallback
   handleCommonParameters()
-  window.timesup = false
+  window.timesUp = false
   updateTimer()
 }
 

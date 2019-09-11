@@ -2,8 +2,8 @@ import addToSvg from './functions/anbt/addToSvg'
 import bindContainer from './functions/anbt/bindContainer'
 import clearWithColor from './functions/anbt/clearWithColor'
 import cutHistoryBeforeClearAndAfterPosition from './functions/anbt/cutHistoryBeforeClearAndAfterPosition'
-import drawDispLine from './functions/anbt/drawDispLine'
-import drawDispLinePresto from './functions/anbt/drawDispLinePresto'
+import drawDisplayLine from './functions/anbt/drawDisplayLine'
+import drawDisplayLinePresto from './functions/anbt/drawDisplayLinePresto'
 import drawSvgElement from './functions/anbt/drawSvgElement'
 import eyedropper from './functions/anbt/eyedropper'
 import findLastRect from './functions/anbt/findLastRect'
@@ -51,19 +51,18 @@ const anbt = {
     height: '500'
   }),
   canvas: document.createElement('canvas'),
-  canvasDisp: document.createElement('canvas'),
-  svgDisp: createSvgElement('svg', {
+  canvasDisplay: document.createElement('canvas'),
+  svgDisplay: createSvgElement('svg', {
     //xmlns: "http://www.w3.org/2000/svg",
     version: '1.1',
     width: '600',
     height: '500',
     'pointer-events': 'none'
   }),
-  svgHist: null,
   path: null,
   points: null,
   pngBase64: null,
-  lastrect: 0,
+  lastRect: 0,
   position: 0,
   isStroking: false,
   isPlaying: false,
@@ -92,8 +91,8 @@ const anbt = {
   setSize,
   drawSvgElement,
   updateView,
-  drawDispLinePresto,
-  drawDispLine,
+  drawDisplayLinePresto,
+  drawDisplayLine,
   strokeBegin,
   strokeEnd,
   strokeAdd,

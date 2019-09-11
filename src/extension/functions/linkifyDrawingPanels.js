@@ -21,11 +21,11 @@ const linkifyDrawingPanels = img => {
       }/-/">${img.outerHTML}</a>`
 
     if (img.src.match(/\/display-panel.php?/)) {
-      const newsrc = `/panel/drawing/${scrambleID(
+      const newSrc = `/panel/drawing/${scrambleID(
         img.src.match(/x=(\d+)/)[1]
       )}/`
-      img.setAttribute('src', newsrc)
-      img.outerHTML = `<a href="${newsrc}-/">${img.outerHTML}</a>`
+      img.setAttribute('src', newSrc)
+      img.outerHTML = `<a href="${newSrc}-/">${img.outerHTML}</a>`
     }
   }
 }

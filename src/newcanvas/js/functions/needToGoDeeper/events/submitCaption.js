@@ -4,7 +4,7 @@ import onCaptionSuccess from '../onCaptionSuccess'
 import anbt from '../../../anbt'
 
 const submitCaption = () => {
-  const { incontest, gameInfo } = window
+  const { inContest, gameInfo } = window
   const title = ID('caption').value
   if (!title) {
     ID('caption').focus()
@@ -12,12 +12,12 @@ const submitCaption = () => {
   }
   window.submitting = true
   ID('submitcaption').disabled = true
-  const url = incontest
+  const url = inContest
     ? '/contests/submit-caption.json'
     : '/play/describe.json'
   ajax('POST', url, {
     obj: {
-      game_token: gameInfo.gameid,
+      game_token: gameInfo.gameId,
       title
     },
     load: response => {
@@ -33,7 +33,7 @@ const submitCaption = () => {
         if (typeof response.error === 'object')
           alert(
             `Error! Please report this data:\ngame: ${
-              gameInfo.gameid
+              gameInfo.gameId
             }\n\nresponse: \n${JSON.stringify(response.error)}`
           )
         else alert(response.error)

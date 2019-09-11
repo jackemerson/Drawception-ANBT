@@ -6,17 +6,17 @@ const bindContainer = element => {
   anbt.canvas.width = 600
   anbt.canvas.height = 500
   anbt.canvas.style.background = anbt.background
-  anbt.ctx = anbt.canvas.getContext('2d')
-  anbt.ctx.lineJoin = anbt.ctx.lineCap = 'round'
+  anbt.context = anbt.canvas.getContext('2d')
+  anbt.context.lineJoin = anbt.context.lineCap = 'round'
   anbt.container.appendChild(anbt.canvas)
   if (!navigator.userAgent.match(/\bPresto\b/)) {
-    anbt.canvasDisp.width = 600
-    anbt.canvasDisp.height = 500
-    anbt.ctxDisp = anbt.canvasDisp.getContext('2d')
-    anbt.ctxDisp.lineJoin = anbt.ctxDisp.lineCap = 'round'
-    anbt.container.appendChild(anbt.canvasDisp)
-  } else anbt.DrawDispLine = anbt.DrawDispLinePresto // Opera Presto is faster with SVG redrawing
-  anbt.container.appendChild(anbt.svgDisp)
+    anbt.canvasDisplay.width = 600
+    anbt.canvasDisplay.height = 500
+    anbt.contextDisplay = anbt.canvasDisplay.getContext('2d')
+    anbt.contextDisplay.lineJoin = anbt.contextDisplay.lineCap = 'round'
+    anbt.container.appendChild(anbt.canvasDisplay)
+  } else anbt.drawDisplayLine = anbt.drawDisplayLinePresto // Opera Presto is faster with SVG redrawing
+  anbt.container.appendChild(anbt.svgDisplay)
   const rect = createSvgElement('rect', {
     class: 'eraser',
     x: 0,

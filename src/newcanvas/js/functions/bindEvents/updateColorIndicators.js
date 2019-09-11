@@ -1,5 +1,5 @@
-import anbt from '../../anbt';
-import ID from '../idSelector';
+import anbt from '../../anbt'
+import ID from '../idSelector'
 
 const updateColorIndicators = () => {
   const { colors } = anbt

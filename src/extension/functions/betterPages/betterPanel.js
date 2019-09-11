@@ -9,16 +9,17 @@ import setupNewCanvas from '../setupNewCanvas'
 import unscrambleID from '../unscrambleID'
 
 const betterPanel = () => {
-  const favButton = $(
+  let favoriteButton = $(
     '<button class="btn btn-info" style="margin-top: 20px"><span class="fas fa-heart"></span> <b>Favorite</b></button>'
   )
   const gamePanel = $(
     '.panel-caption-display>.flex,.gamepanel-holder>.gamepanel'
   )
-  if (gamePanel) gamePanel.insertAdjacentHTML('afterend', favButton.outerHTML)
-  const favBtn = $('.btn.btn-info')
-  if (favBtn) {
-    favBtn.addEventListener('click', event => {
+  if (gamePanel)
+    gamePanel.insertAdjacentHTML('afterend', favoriteButton.outerHTML)
+  favoriteButton = $('.btn.btn-info')
+  if (favoriteButton) {
+    favoriteButton.addEventListener('click', event => {
       event.preventDefault()
       const panels = getLocalStorageItem('gpe_panelFavorites', {})
       const panel = {
@@ -28,7 +29,7 @@ const betterPanel = () => {
           /\/player\/[^/]+\/[^/]+\//
         )[0]
       }
-      const id = document.location.href.match(/\/panel\/[^/]+\/([^/]+)\//)[1]
+      const id = location.href.match(/\/panel\/[^/]+\/([^/]+)\//)[1]
       const img = $('.gamepanel img')
       if (img) {
         // Drawing panel
@@ -40,17 +41,17 @@ const betterPanel = () => {
       }
       panels[id] = panel
       localStorage.setItem('gpe_panelFavorites', JSON.stringify(panels))
-      favBtn.setAttribute('disabled', 'disabled')
-      favBtn.querySelector('b').textContent = 'Favorited!'
+      favoriteButton.setAttribute('disabled', 'disabled')
+      favoriteButton.querySelector('b').textContent = 'Favorited!'
     })
   }
   const panels = getLocalStorageItem('gpe_panelFavorites', {})
   if (
-    document.location.href.match(/\/panel\/[^/]+\/([^/]+)\//) &&
-    panels[document.location.href.match(/\/panel\/[^/]+\/([^/]+)\//)[1]]
+    location.href.match(/\/panel\/[^/]+\/([^/]+)\//) &&
+    panels[location.href.match(/\/panel\/[^/]+\/([^/]+)\//)[1]]
   ) {
-    favBtn.setAttribute('disabled', 'disabled')
-    favBtn.querySelector('b').textContent = 'Favorited!'
+    favoriteButton.setAttribute('disabled', 'disabled')
+    favoriteButton.querySelector('b').textContent = 'Favorited!'
   }
   const panelId = getPanelId(location.pathname)
 
@@ -75,33 +76,33 @@ const betterPanel = () => {
     $('.btn-primary')[1].textContent === 'Play again'
   ) {
     // Allow adding to cover creator
-    const ccButton = $(
+    const coverButton = $(
       '<button class="btn btn-info" style="margin-top: 20px"><span class="fas fa-plus"></span> <b>Add to Cover Creator</b></button>'
     )
-    ccButton.addEventListener('click', event => {
+    coverButton.addEventListener('click', event => {
       event.preventDefault()
       const id = unscrambleID(panelId)
       const cookie = getCookie('covercreatorids')
-      const ids = cookie ? JSON.parse(cookie) : []
-      if (!ids.includes(id)) {
-        if (ids.length > 98) {
+      const idList = cookie ? JSON.parse(cookie) : []
+      if (!idList.includes(id)) {
+        if (idList.length > 98) {
           window.apprise(
             'Max cover creator drawings selected. Please remove some before adding more.'
           )
           return
-        } else ids.push(id.toString())
+        } else idList.push(id.toString())
       } else {
-        ccButton
+        coverButton
           .setAttribute('disabled', 'disabled')
           .querySelector('b').textContent = 'Already added!'
         return
       }
-      setCookie('covercreatorids', JSON.stringify(ids))
-      ccButton
+      setCookie('covercreatorids', JSON.stringify(idList))
+      coverButton
         .setAttribute('disabled', 'disabled')
         .querySelector('b').textContent = 'Added!'
     })
-    $('.gamepanel').insertAdjacentHTML('afterend', ccButton.outerHTML)
+    $('.gamepanel').insertAdjacentHTML('afterend', coverButton.outerHTML)
   }
 }
 

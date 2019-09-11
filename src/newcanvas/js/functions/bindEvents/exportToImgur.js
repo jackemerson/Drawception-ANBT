@@ -19,11 +19,11 @@ const exportToImgur = event => {
       //history.replaceState(null, null, "#" + r.data.id);
       ID('imgururl').href = `http://imgur.com/${request.data.id}`
       ID('imgururl').childNodes[0].nodeValue = 'Uploaded image'
-      ID('imgurdelete').href = `http://imgur.com/delete/${
-        request.data.deletehash
-      }`
+      ID(
+        'imgurdelete'
+      ).href = `http://imgur.com/delete/${request.data.deletehash}`
       ID('imgurerror').childNodes[0].nodeValue = ''
-      if (window.inforum)
+      if (window.inForum)
         window.frameElement.ownerDocument.getElementById(
           'input-comment'
         ).value += `![](http://i.imgur.com/${request.data.id}.png)`

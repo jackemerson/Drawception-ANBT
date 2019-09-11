@@ -6,18 +6,18 @@ import unpackPlayback from './unpackPlayback'
 import updateView from './updateView'
 
 const fromPng = buffer => {
-  const dv = new DataView(buffer)
-  const magic = dv.getUint32(0)
+  const dataView = new DataView(buffer)
+  const magic = dataView.getUint32(0)
   if (magic !== 0x89504e47)
     throw new Error(`Invalid PNG format: ${packUint32be(magic)}`)
   for (let i = 8; i < buffer.byteLength; i += 4 /* Skip CRC */) {
-    const chunklen = dv.getUint32(i)
+    const chunkLength = dataView.getUint32(i)
     i += 4
-    const chunkname = packUint32be(dv.getUint32(i))
+    const chunkName = packUint32be(dataView.getUint32(i))
     i += 4
-    if (chunkname === 'svGb') {
-      anbt.svg = unpackPlayback(new Uint8Array(buffer, i, chunklen))
-      anbt.lastrect = 0
+    if (chunkName === 'svGb') {
+      anbt.svg = unpackPlayback(new Uint8Array(buffer, i, chunkLength))
+      anbt.lastRect = 0
       anbt.rewindCache.length = 0
       anbt.position = anbt.svg.childNodes.length - 1
       updateView()
@@ -26,8 +26,8 @@ const fromPng = buffer => {
       setBackground(anbt.svg.background)
       return
     } else {
-      if (chunkname === 'IEND') break
-      i += chunklen
+      if (chunkName === 'IEND') break
+      i += chunkLength
     }
   }
   throw new Error('No vector data found!')

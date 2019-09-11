@@ -10,11 +10,13 @@ import viewMyPanelFavorites from '../viewMyPanelFavorites'
 
 const betterPlayer = () => {
   // Linkify the links in location
-  const pubinfo = $('.profile-header-info .text-muted > span:last-child')
-  if (pubinfo) linkifyNodeText(pubinfo.parentNode)
-  const loc = document.location.href
+  const publicInfo = $('.profile-header-info .text-muted > span:last-child')
+  if (publicInfo) linkifyNodeText(publicInfo.parentNode)
+  const currentLocation = location.href
   // If it's user's homepage, add new buttons in there
-  if (loc.match(new RegExp(`/player/${globals.userId}/[^/]+/(?:$|#)`))) {
+  if (
+    currentLocation.match(new RegExp(`/player/${globals.userId}/[^/]+/(?:$|#)`))
+  ) {
     const anbtSection = $('<h2>ANBT stuff: </h2>')
     const panelFavoritesButton = $(
       '<a class="btn btn-primary viewFavorites" href="#anbt_panelfavorites">Panel Favorites</a>'
@@ -39,16 +41,16 @@ const betterPlayer = () => {
       viewMyGameBookmarks()
     })
 
-    if (document.location.hash.includes('#anbt_panelfavorites'))
+    if (location.hash.includes('#anbt_panelfavorites'))
       viewMyPanelFavorites()
-    if (document.location.hash.includes('#anbt_gamebookmarks'))
+    if (location.hash.includes('#anbt_gamebookmarks'))
       viewMyGameBookmarks()
 
     // Show your exact registration date
     if (window.date) {
-      const pubinfo = $('.profile-user-header>div.row>div>h1+p')
-      if (pubinfo)
-        [...pubinfo.childNodes][4].nodeValue = ` ${formatTimestamp(
+      const publicInfo = $('.profile-user-header>div.row>div>h1+p')
+      if (publicInfo)
+        [...publicInfo.childNodes][4].nodeValue = ` ${formatTimestamp(
           window.date
         )} \xa0`
     }
@@ -76,41 +78,41 @@ const betterPlayer = () => {
   }
 
   // Convert timestamps in user profile's forum posts and game comments
-  if (loc.match(/player\/\d+\/[^/]+\/(posts)|(comments)\//)) {
+  if (currentLocation.match(/player\/\d+\/[^/]+\/(posts)|(comments)\//)) {
     // Show topic title at the top of the posts instead and display subforum
     // Show game title at the top of the posts
     $('.forum-thread-starter', true).forEach(threadStarter => {
       const vue = threadStarter.childNodes[0].__vue__
       if (vue) {
-        const ts = threadStarter.querySelector('a.text-muted').firstChild
-        ts.textContent = `${ts.textContent.trim()}, ${formatTimestamp(
+        const time = threadStarter.querySelector('a.text-muted').firstChild
+        time.textContent = `${time.textContent.trim()}, ${formatTimestamp(
           vue.comment_date * 1000
         )}`
         if (vue.edit_date > 0) {
-          const el = ts.parentNode.parentNode.querySelector(
+          const element = time.parentNode.parentNode.querySelector(
             'span[rel="tooltip"]'
           )
-          const text = `${el.title}, ${formatTimestamp(
+          const text = `${element.title}, ${formatTimestamp(
             vue.edit_date * 1000
           ).replace(/ /g, '\u00A0')}` // prevent the short tooltip width from breaking date apart
-          el.setAttribute('title', text)
+          element.setAttribute('title', text)
         }
       }
-      const postlink = threadStarter.querySelector(
+      const postLink = threadStarter.querySelector(
         '.add-margin-top small.text-muted'
       )
-      const created = postlink.textContent.match(/^\s*Created/)
-      const commented = postlink.textContent.match(/^\s*Commented/)
+      const created = postLink.textContent.match(/^\s*Created/)
+      const commented = postLink.textContent.match(/^\s*Commented/)
       const prefix = commented
         ? 'Comment in the game'
         : created
         ? 'New thread'
         : 'Reply in'
-      const n = $(`<h4 class="anbt_threadtitle">${prefix}: </h4>`)
-      const thread = postlink.querySelector('a')
-      n.appendChild(thread)
-      threadStarter.insertAdjacentHTML('afterbegin', n.outerHTML)
-      postlink.parentNode.parentNode.removeChild(postlink.parentNode)
+      const prefixeTitle = $(`<h4 class="anbt_threadtitle">${prefix}: </h4>`)
+      const thread = postLink.querySelector('a')
+      prefixeTitle.appendChild(thread)
+      threadStarter.insertAdjacentHTML('afterbegin', prefixeTitle.outerHTML)
+      postLink.parentNode.parentNode.removeChild(postLink.parentNode)
     })
   }
 }

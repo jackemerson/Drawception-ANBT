@@ -5,14 +5,14 @@ const options = {
   enterToCaption: 0, // Whether to submit caption by pressing Enter
   pressureExponent: 0.5, // Smaller = softer tablet response, bigger = sharper
   backup: 1,
-  timeoutSound: 0,
-  timeoutSoundBlitz: 0,
-  timeoutSoundVolume: 100,
+  timeOutSound: 0,
+  timeOutSoundBlitz: 0,
+  timeOutSoundVolume: 100,
   newCanvas: 1,
   proxyImgur: 0,
   ajaxRetry: 1,
   localeTimestamp: 0,
-  autoplay: 1, // Whether to automatically start playback of a recorded drawing
+  autoPlay: 1, // Whether to automatically start playback of a recorded drawing
   submitConfirm: 1,
   smoothening: 1,
   autoBypassNSFW: 0,

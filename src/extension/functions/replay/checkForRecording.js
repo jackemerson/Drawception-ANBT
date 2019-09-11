@@ -8,14 +8,14 @@ const checkForRecording = (url, success, retrying) => {
     const magic = dataView.getUint32(0)
     if (magic != 0x89504e47) return request.onerror() // Drawception started hijacking XHR errors and putting HTML in there
     for (let i = 8; i < buffer.byteLength; i += 4 /* Skip CRC */) {
-      const chunklen = dataView.getUint32(i)
+      const chunkLength = dataView.getUint32(i)
       i += 4
-      const chunkname = dataView.getUint32(i)
+      const chunkName = dataView.getUint32(i)
       i += 4
-      if (chunkname === 0x73764762) return success()
+      if (chunkName === 0x73764762) return success()
       else {
-        if (chunkname === 0x49454e44) break
-        i += chunklen
+        if (chunkName === 0x49454e44) break
+        i += chunkLength
       }
     }
   }

@@ -6,7 +6,7 @@ const getSelectedText = event => {
   const { value, selectionStart, selectionEnd } = textarea
   const { length } = value
   const selection = value.substring(selectionStart, selectionEnd)
-  markdown[`${event.currentTarget.id}`].replaceFunc(
+  markdown[`${event.currentTarget.id}`].replace(
     value,
     length,
     selectionStart,

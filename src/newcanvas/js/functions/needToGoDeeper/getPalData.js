@@ -1,5 +1,5 @@
-import palettemap from '../../palettemap';
-import palettes from '../../palettes';
+import paletteMap from '../../paletteMap'
+import palettes from '../../palettes'
 
 const getPalData = palette => {
   if (palette === 'theme_roulette') {
@@ -9,12 +9,12 @@ const getPalData = palette => {
       "Warning: Drawception roulette didn't give a theme. ANBT will choose a random palette."
     )
     delete palettes.Roulette
-    const keys = Object.keys(palettemap)
+    const keys = Object.keys(paletteMap)
     const paletteName = keys[(keys.length * Math.random()) << 0]
-    palettes.Roulette = palettes[palettemap[paletteName][0]]
-    return ['Roulette', palettemap[paletteName][1]]
+    palettes.Roulette = palettes[paletteMap[paletteName][0]]
+    return ['Roulette', paletteMap[paletteName][1]]
   } else {
-    if (palette) return palettemap[palette.toLowerCase()]
+    if (palette) return paletteMap[palette.toLowerCase()]
   }
 }
 

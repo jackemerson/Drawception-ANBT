@@ -8,7 +8,7 @@ const skip = () => {
   ID('skip').disabled = true
   ajax('POST', '/play/skip.json', {
     obj: {
-      game_token: window.gameInfo.gameid
+      game_token: window.gameInfo.gameId
     },
     load: () => getParametersFromPlay(), // Postpone enabling skip until we get game info
     error: () => {

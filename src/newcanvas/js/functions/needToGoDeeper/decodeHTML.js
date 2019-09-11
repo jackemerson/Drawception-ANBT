@@ -1,7 +1,7 @@
 const decodeHTML = html => {
-  const txt = document.createElement('textarea')
-  txt.innerHTML = html
-  return txt.value
+  const textArea = document.createElement('textarea')
+  textArea.innerHTML = html
+  return textArea.value
 }
 
 export default decodeHTML

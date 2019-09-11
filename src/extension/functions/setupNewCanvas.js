@@ -2,12 +2,12 @@ import options from '../options'
 import versions from '../versions'
 import getLocalStorageItem from './getLocalStorageItem'
 
-const setupNewCanvas = (insandbox, url) => {
+const setupNewCanvas = (inSandbox, url) => {
   const canvasHTML = localStorage.getItem('anbt_canvasHTML')
-  const canvasHTMLver = localStorage.getItem('anbt_canvasHTMLver')
+  const canvasHTMLVersion = localStorage.getItem('anbt_canvasHTMLver')
   if (
     !canvasHTML ||
-    canvasHTMLver < versions.newCanvasVersion ||
+    canvasHTMLVersion < versions.newCanvasVersion ||
     canvasHTML.length < 10000
   ) {
     const request = new XMLHttpRequest()
@@ -25,7 +25,7 @@ const setupNewCanvas = (insandbox, url) => {
       } else {
         localStorage.setItem('anbt_canvasHTML', request.responseText)
         localStorage.setItem('anbt_canvasHTMLver', versions.newCanvasVersion)
-        setupNewCanvas(insandbox, url)
+        setupNewCanvas(inSandbox, url)
       }
     }
     request.onerror = () => {
@@ -35,36 +35,36 @@ const setupNewCanvas = (insandbox, url) => {
     request.send()
     return
   }
-  const inforum = url.match(/forums\//)
-  const friendgameid = url.match(/play\/(.+)\//) // Save friend game id if any
+  const inForum = url.match(/forums\//)
+  const friendGameId = url.match(/play\/(.+)\//) // Save friend game id if any
   const paletteInfo =
     url.includes('/sandbox/') && url.match(/\?palette=([^/]+)/)
-  const panelid = url.match(/sandbox\/(?!\?palette=)#?([^/]+)\/?/)
-  const incontest =
+  const panelId = url.match(/sandbox\/(?!\?palette=)#?([^/]+)\/?/)
+  const inContest =
     url.match(/contests\/play\//) && document.getElementById('canvas-holder') // Handle drawing contests only
-  const vertitle = `ANBT v${versions.scriptVersion}`
+  const versionTitle = `ANBT v${versions.scriptVersion}`
 
   // Disable built-in safety warning
-  if (incontest) window.onbeforeunload = () => {}
+  if (inContest) window.onbeforeunload = () => {}
 
   // Show normal address
-  const normalurl =
-    insandbox && !inforum
-      ? `/sandbox/${panelid ? `#${panelid[1]}/` : ''}${
+  const normalUrl =
+    inSandbox && !inForum
+      ? `/sandbox/${panelId ? `#${panelId[1]}/` : ''}${
           paletteInfo ? `?palette=${paletteInfo[1]}` : ''
         }`
-      : incontest
+      : inContest
       ? '/contests/play/'
-      : inforum
+      : inForum
       ? url.match(/\/forums\/?.+/)
-      : `/play/${friendgameid ? `${friendgameid[1]}/` : ''}`
+      : `/play/${friendGameId ? `${friendGameId[1]}/` : ''}`
 
   try {
     if (
-      location.pathname + (panelid ? location.hash : paletteInfo[0]) !==
-      normalurl
+      location.pathname + (panelId ? location.hash : paletteInfo[0]) !==
+      normalUrl
     )
-      history.pushState({}, document.title, normalurl)
+      history.pushState({}, document.title, normalUrl)
   } catch (e) {}
 
   const alarmSoundOgg =
@@ -76,7 +76,7 @@ const setupNewCanvas = (insandbox, url) => {
     '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'
 
-  if (inforum) {
+  if (inForum) {
     if (document.querySelector('.v--modal-overlay'))
       document.querySelector('.v--modal-overlay').outerHTML = ''
     const div = document.querySelector('.wrapper').children[1]
@@ -89,12 +89,12 @@ const setupNewCanvas = (insandbox, url) => {
     div.appendChild(modalOverlay)
     iframe.contentWindow.document.open()
     iframe.contentWindow.anbtReady = () => {
-      iframe.contentWindow.inforum = inforum
-      iframe.contentWindow.insandbox = insandbox
-      iframe.contentWindow.incontest = incontest
+      iframe.contentWindow.inForum = inForum
+      iframe.contentWindow.inSandbox = inSandbox
+      iframe.contentWindow.inContest = inContest
       iframe.contentWindow.options = options
       iframe.contentWindow.alarmSoundOgg = alarmSoundOgg
-      iframe.contentWindow.vertitle = vertitle
+      iframe.contentWindow.versionTitle = versionTitle
       iframe.contentWindow.getLocalStorageItem = getLocalStorageItem
       iframe.contentWindow.needToGoDeeper()
     }
@@ -104,15 +104,15 @@ const setupNewCanvas = (insandbox, url) => {
   }
   document.open()
   window.anbtReady = () => {
-    if (friendgameid) window.friendgameid = friendgameid[1]
-    if (panelid) window.panelid = panelid[1]
+    if (friendGameId) window.friendGameId = friendGameId[1]
+    if (panelId) window.panelId = panelId[1]
     if (paletteInfo) window.paletteInfo = paletteInfo[1]
-    window.inforum = inforum
-    window.insandbox = insandbox
-    window.incontest = incontest
+    window.inForum = inForum
+    window.inSandbox = inSandbox
+    window.inContest = inContest
     window.options = options
     window.alarmSoundOgg = alarmSoundOgg
-    window.vertitle = vertitle
+    window.versionTitle = versionTitle
     window.getLocalStorageItem = getLocalStorageItem
     window.needToGoDeeper()
   }

@@ -9,9 +9,7 @@ const addMarkdownTools = () => {
   Object.keys(markdown).forEach(toolName =>
     markdownDiv.appendChild(
       $(
-        `<div id="${toolName}" class="test-markdown fas fa-${toolName} btn btn-default" title="${
-          markdown[toolName].title
-        }"></div>`
+        `<div id="${toolName}" class="test-markdown fas fa-${toolName} btn btn-default" title="${markdown[toolName].title}"></div>`
       )
     )
   )

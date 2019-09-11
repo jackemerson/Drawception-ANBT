@@ -1,4 +1,4 @@
-const palettemap = {
+const paletteMap = {
   default: ['Normal', '#fffdc9'],
   theme_thanksgiving: ['Thanksgiving', '#f5e9ce'],
   halloween: ['Halloween', '#444444'],
@@ -35,4 +35,4 @@ const palettemap = {
   theme_school_pen: ['School Pen', '#fbfcfd']
 }
 
-export default palettemap
+export default paletteMap

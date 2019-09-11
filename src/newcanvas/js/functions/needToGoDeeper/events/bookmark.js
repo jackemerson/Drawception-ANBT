@@ -6,7 +6,7 @@ const bookmark = () => {
   ID('bookmark').disabled = true
   const games = getLocalStorageItem('gpe_gameBookmarks', {})
   const caption = window.gameInfo.caption
-  games[window.gameInfo.gameid] = {
+  games[window.gameInfo.gameId] = {
     time: Date.now(),
     caption: caption ? decodeHTML(caption) : ''
   }

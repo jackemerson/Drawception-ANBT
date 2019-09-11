@@ -15,17 +15,17 @@ const pageEnhancements = () => {
   if (typeof DrawceptionPlay === 'undefined') return // Firefox Greasemonkey seems to call pageEnhancements() after document.write...
   if (document.getElementById('newcanvasyo')) return // Chrome, I'm looking at you too...
   try {
-    const tmpuserlink = $('.player-dropdown a[href^="/player/"]')
-    const username = tmpuserlink.querySelector('strong').textContent
-    const userid = tmpuserlink.href.match(/\/player\/(\d+)\//)[1]
+    const temporaryUserLink = $('.player-dropdown a[href^="/player/"]')
+    const username = temporaryUserLink.querySelector('strong').textContent
+    const userId = temporaryUserLink.href.match(/\/player\/(\d+)\//)[1]
     localStorage.setItem('gpe_lastSeenName', username)
-    localStorage.setItem('gpe_lastSeenId', userid)
+    localStorage.setItem('gpe_lastSeenId', userId)
   } catch (e) {}
   const currentPage = location.href.match(/drawception\.com\/([^/]+)/)
   if (currentPage) {
     const page = currentPage[1]
-    const functionName = `better${page.replace(page[0], page[0].toUpperCase())}`
-    if (betterPages[functionName]) betterPages[functionName]()
+    const pageName = `better${page.replace(page[0], page[0].toUpperCase())}`
+    if (betterPages[pageName]) betterPages[pageName]()
   }
 
   addStyle(
@@ -156,19 +156,19 @@ const pageEnhancements = () => {
 
   const menuPlayer = $('.btn-menu-player')
   if (menuPlayer) {
-    const userlink = $('.player-dropdown a[href^="/player/"]').href
-    const useravatar = $('.btn-menu-player').innerHTML
+    const userLink = $('.player-dropdown a[href^="/player/"]').href
+    const userAvatar = $('.btn-menu-player').innerHTML
     const element = $(
-      `<a href="${userlink}" title="View Profile" class="gpe-wide-block navbar-btn navbar-user-item" style="margin-top:8px">${useravatar}</a>`
+      `<a href="${userLink}" title="View Profile" class="gpe-wide-block navbar-btn navbar-user-item" style="margin-top:8px">${userAvatar}</a>`
     )
     menuPlayer.parentNode.appendChild(element)
   }
 
   // Make new notifications actually discernable from the old ones
-  const num =
+  const number =
     $('#user-notify-count') && $('#user-notify-count').textContent.trim()
   addStyle(
-    `#user-notify-list .list-group .list-group-item .fas {color: #888}#user-notify-list .list-group .list-group-item:nth-child(-n+${num}) .fas {color: #2F5}a.wrong-order {color: #F99} div.comment-holder:target {background-color: #DFD}.comment-new a.text-muted:last-child:after {content: 'New'; color: #2F5; font-weight: bold; background-color: #183; border-radius: 9px; display: inline-block; padding: 0px 6px; margin-left: 10px;}`
+    `#user-notify-list .list-group .list-group-item .fas {color: #888}#user-notify-list .list-group .list-group-item:nth-child(-n+${number}) .fas {color: #2F5}a.wrong-order {color: #F99} div.comment-holder:target {background-color: #DFD}.comment-new a.text-muted:last-child:after {content: 'New'; color: #2F5; font-weight: bold; background-color: #183; border-radius: 9px; display: inline-block; padding: 0px 6px; margin-left: 10px;}`
   )
 
   // Show an error if it occurs instead of "loading forever"
@@ -176,14 +176,14 @@ const pageEnhancements = () => {
 
   let versionDisplay = `ANBT v${versions.scriptVersion}`
   try {
-    const appver = $('script[src^="/build/app"]').src.match(/(\w+)\.js$/)[1]
-    const runtimever = $('script[src^="/build/runtime"]').src.match(
+    const appVersion = $('script[src^="/build/app"]').src.match(/(\w+)\.js$/)[1]
+    const runtimeVersion = $('script[src^="/build/runtime"]').src.match(
       /(\w+)\.js$/
     )[1]
-    versionDisplay += ` | app ${appver}`
-    if (appver !== versions.siteVersion) versionDisplay += '*'
-    versionDisplay += ` | runtime ${runtimever}`
-    if (runtimever !== versions.runtimeVersion) versionDisplay += '*!!!' // didn't break with one update, hurray
+    versionDisplay += ` | app ${appVersion}`
+    if (appVersion !== versions.siteVersion) versionDisplay += '*'
+    versionDisplay += ` | runtime ${runtimeVersion}`
+    if (runtimeVersion !== versions.runtimeVersion) versionDisplay += '*!!!' // didn't break with one update, hurray
   } catch (e) {}
   const wrapperSection = $('.wrapper')
   if (wrapperSection)

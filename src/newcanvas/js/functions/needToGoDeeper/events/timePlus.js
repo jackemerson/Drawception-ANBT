@@ -9,10 +9,10 @@ const timePlus = () => {
   ID('timeplus').disabled = true
   ajax('POST', '/play/exit.json', {
     obj: {
-      game_token: gameInfo.gameid
+      game_token: gameInfo.gameId
     },
     load: () => {
-      ajax('GET', `/play/${gameInfo.gameid}/?${Date.now()}`, {
+      ajax('GET', `/play/${gameInfo.gameId}/?${Date.now()}`, {
         load: response => {
           ID('timeplus').disabled = false
           gameInfo = response
@@ -20,7 +20,7 @@ const timePlus = () => {
             : {
                 error: 'Server returned a blank response :('
               }
-          globals.timerStart = Date.now() + 1000 * gameInfo.timeleft
+          globals.timerStart = Date.now() + 1000 * gameInfo.timeLeft
         },
         error: () => {
           ID('timeplus').disabled = false

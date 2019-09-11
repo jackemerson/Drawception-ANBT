@@ -5,7 +5,7 @@ import ID from '../../idSelector'
 import ajax from '../ajax'
 
 const submitDrawing = () => {
-  const { incontest, gameInfo, options } = window
+  const { inContest, gameInfo, options } = window
   const moreThanMinuteLeft = globals.timerStart - Date.now() > 60000
   if (
     options.submitConfirm &&
@@ -18,10 +18,10 @@ const submitDrawing = () => {
   if (options.backup)
     localStorage.setItem('anbt_drawingbackup_newcanvas', anbt.pngBase64)
   window.submitting = true
-  const url = incontest ? '/contests/submit-drawing.json' : '/play/draw.json'
+  const url = inContest ? '/contests/submit-drawing.json' : '/play/draw.json'
   ajax('POST', url, {
     obj: {
-      game_token: gameInfo.gameid,
+      game_token: gameInfo.gameId,
       panel: anbt.pngBase64
     },
     load: response => {
@@ -37,7 +37,7 @@ const submitDrawing = () => {
         if (typeof response.error === 'object')
           alert(
             `Error! Please report this data:\ngame: ${
-              gameInfo.gameid
+              gameInfo.gameId
             }\n\nresponse:\n${JSON.stringify(response.error)}`
           )
         else alert(response.error)

@@ -9,13 +9,13 @@ const moveCursor = (x, y) => {
       stroke: '#000',
       fill: 'none'
     })
-    anbt.svgDisp.appendChild(anbt.brushCursor)
+    anbt.svgDisplay.appendChild(anbt.brushCursor)
     anbt.brushCursor2 = createSvgElement('circle', {
       'stroke-width': '1',
       stroke: '#fff',
       fill: 'none'
     })
-    anbt.svgDisp.appendChild(anbt.brushCursor2)
+    anbt.svgDisplay.appendChild(anbt.brushCursor2)
     anbt.eyedropperCursor = createSvgElement('image', {
       width: 16,
       height: 16,
@@ -26,7 +26,7 @@ const moveCursor = (x, y) => {
       'href',
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAARklEQVR4XoXRwQoAIAgEUf//pzeGDgq5G3PrCQqVbIAqsDz9WM2qhTX4GZgPV+JpSFxAC0PwbeVZZIpMgXvAMwoj4U9B3wGySxvzk6ZjvwAAAABJRU5ErkJggg=='
     )
-    anbt.svgDisp.appendChild(anbt.eyedropperCursor)
+    anbt.svgDisplay.appendChild(anbt.eyedropperCursor)
   }
   // Assume just size change if called with no parameters
   if (typeof x !== 'undefined') {

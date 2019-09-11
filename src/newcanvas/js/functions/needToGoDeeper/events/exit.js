@@ -3,16 +3,16 @@ import ajax from '../ajax'
 import exitToSandbox from '../exitToSandbox'
 
 const exit = () => {
-  const { gameInfo, incontest } = window
-  if (incontest) {
+  const { gameInfo, inContest } = window
+  if (inContest) {
     if (!confirm('Quit the contest? Entry coins will be lost!')) return
     ID('exit').disabled = true
     ajax('POST', '/contests/exit.json', {
       load: () => {
         ID('exit').disabled = false
-        window.drawing_aborted = true
+        window.drawingAborted = true
         exitToSandbox()
-        document.location.pathname = '/contests/'
+        location.pathname = '/contests/'
       },
       error: () => {
         ID('exit').disabled = false
@@ -21,18 +21,18 @@ const exit = () => {
     })
     return
   }
-  if (gameInfo.drawfirst) {
+  if (gameInfo.drawFirst) {
     if (!confirm('Abort creating a draw first game?')) return
     ID('exit').disabled = true
     ajax('POST', '/play/abort-start.json', {
       obj: {
-        game_token: gameInfo.gameid
+        game_token: gameInfo.gameId
       },
       load: () => {
         ID('exit').disabled = false
-        window.drawing_aborted = true
+        window.drawingAborted = true
         exitToSandbox()
-        document.location.pathname = '/create/'
+        location.pathname = '/create/'
       },
       error: () => {
         ID('exit').disabled = false
@@ -45,7 +45,7 @@ const exit = () => {
   ID('exit').disabled = true
   ajax('POST', '/play/exit.json', {
     obj: {
-      game_token: gameInfo.gameid
+      game_token: gameInfo.gameId
     },
     load: () => {
       ID('exit').disabled = false

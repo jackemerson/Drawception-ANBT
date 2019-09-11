@@ -24,11 +24,11 @@ const betterGame = () => {
   $('.reversePanels').addEventListener('click', reversePanels)
 
   // Panel favorite buttons
-  const favButton = $(
+  const favoriteButton = $(
     '<span class="panel-number anbt_favpanel fas fa-heart text-muted" title="Favorite"></span>'
   )
   $('.panel-number', true).forEach(panelNumber =>
-    panelNumber.insertAdjacentHTML('afterend', favButton.outerHTML)
+    panelNumber.insertAdjacentHTML('afterend', favoriteButton.outerHTML)
   )
   $('.gamepanel', true).forEach(({ parentNode }) => {
     if (parentNode.querySelector('.gamepanel-tools>a:last-child') === null)
@@ -42,10 +42,10 @@ const betterGame = () => {
         .querySelector('.anbt_favpanel')
         .classList.add('anbt_favedpanel')
   })
-  $('.anbt_favpanel', true).forEach(favPanelButton => {
-    favPanelButton.addEventListener('click', () => {
-      if (favPanelButton.classList.contains('anbt_favedpanel')) return
-      const { parentNode } = favPanelButton
+  $('.anbt_favpanel', true).forEach(favoritePanelButton => {
+    favoritePanelButton.addEventListener('click', () => {
+      if (favoritePanelButton.classList.contains('anbt_favedpanel')) return
+      const { parentNode } = favoritePanelButton
       const id = parentNode
         .querySelector('.gamepanel-tools>a:last-child')
         .href.match(/\/panel\/[^/]+\/([^/]+)\/[^/]+\//)[1]
@@ -70,7 +70,7 @@ const betterGame = () => {
       }
       panels[id] = panel
       localStorage.setItem('gpe_panelFavorites', JSON.stringify(panels))
-      favPanelButton.classList.add('anbt_favedpanel')
+      favoritePanelButton.classList.add('anbt_favedpanel')
     })
   })
 

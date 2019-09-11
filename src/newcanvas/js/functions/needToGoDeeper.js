@@ -14,7 +14,7 @@ import setBackground from './anbt/setBackground'
 import updateColorIndicators from './bindEvents/updateColorIndicators'
 
 const needToGoDeeper = () => {
-  const { options, insandbox, panelid, paletteInfo } = window
+  const { options, inSandbox, panelId, paletteInfo } = window
   window.onerror = (error, file, line) => {
     // Silence the bogus error message from the overwritten page's timer
     if (error.toString().includes('periodsToSeconds')) return
@@ -42,12 +42,12 @@ const needToGoDeeper = () => {
     if (options.fixTabletPluginGoingAWOL) fixTabletPluginGoingAwol()
   }
   bindCanvasEvents()
-  if (insandbox) {
-    if (panelid)
-      ajax('GET', `/panel/drawing/${panelid}/-/`, {
+  if (inSandbox) {
+    if (panelId)
+      ajax('GET', `/panel/drawing/${panelId}/-/`, {
         load: response => {
           window.gameInfo = extractInfoFromHTML(response)
-          fromUrl(`${window.gameInfo.drawinglink}?anbt`) // workaround for non-CORS cached image
+          fromUrl(`${window.gameInfo.drawingLink}?anbt`) // workaround for non-CORS cached image
           handleSandboxParameters()
         },
         error: () => {

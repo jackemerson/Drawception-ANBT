@@ -6,7 +6,7 @@ const report = () => {
   if (!confirm('Report this panel?')) return
   ajax('POST', '/play/flag.json', {
     obj: {
-      game_token: window.gameInfo.gameid
+      game_token: window.gameInfo.gameId
     },
     load: () => {
       ID('report').disabled = false

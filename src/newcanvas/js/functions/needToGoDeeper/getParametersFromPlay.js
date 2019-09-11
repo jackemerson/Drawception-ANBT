@@ -3,10 +3,10 @@ import extractInfoFromHTML from './extractInfoFromHTML'
 import handlePlayParameters from './handlePlayParameters'
 
 const getParametersFromPlay = () => {
-  const { incontest, friendgameid } = window
-  const url = incontest
+  const { inContest, friendGameId } = window
+  const url = inContest
     ? '/contests/play/'
-    : `/play/${friendgameid ? `${friendgameid}/` : ''}`
+    : `/play/${friendGameId ? `${friendGameId}/` : ''}`
   try {
     if (location.pathname !== url) history.replaceState({}, null, url)
   } catch (e) {}

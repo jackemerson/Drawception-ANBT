@@ -18,16 +18,16 @@ const openPaletteList = event => {
     if (chooser.childNodes.length < keys.length) {
       const canvas = document.createElement('canvas')
       canvas.height = 10
-      const ctx = canvas.getContext('2d')
+      const context = canvas.getContext('2d')
       for (let i = chooser.childNodes.length; i < keys.length; i++) {
         canvas.width = 8 * palettes[keys[i]].length + 2
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-        ctx.globalAlpha = 0.5
-        ctx.fillRect(0, 0, canvas.width, canvas.height)
-        ctx.globalAlpha = 1
+        context.clearRect(0, 0, canvas.width, canvas.height)
+        context.globalAlpha = 0.5
+        context.fillRect(0, 0, canvas.width, canvas.height)
+        context.globalAlpha = 1
         palettes[keys[i]].forEach((color, index) => {
-          ctx.fillStyle = color
-          ctx.fillRect(index * 8 + 1, 1, 8, 8)
+          context.fillStyle = color
+          context.fillRect(index * 8 + 1, 1, 8, 8)
         })
         const div = document.createElement('div')
         div.appendChild(document.createTextNode(keys[i]))

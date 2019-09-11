@@ -47,16 +47,16 @@ const betterSettings = () => {
         'Save the drawing in case of error and restore it in sandbox'
       ],
       [
-        'timeoutSound',
+        'timeOutSound',
         'boolean',
         'Warning sound when only a minute is left (normal games)'
       ],
       [
-        'timeoutSoundBlitz',
+        'timeOutSoundBlitz',
         'boolean',
         'Warning sound when only 5 seconds left (blitz)'
       ],
-      ['timeoutSoundVolume', 'number', 'Volume of the warning sound, in %'],
+      ['timeOutSoundVolume', 'number', 'Volume of the warning sound, in %'],
       [
         'rememberPosition',
         'boolean',
@@ -94,7 +94,7 @@ const betterSettings = () => {
       ],
       ['ajaxRetry', 'boolean', 'Retry failed AJAX requests'],
       [
-        'autoplay',
+        'autoPlay',
         'boolean',
         'Automatically start replay when watching playback'
       ],

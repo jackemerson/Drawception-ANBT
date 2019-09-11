@@ -13,7 +13,7 @@ const clearWithColor = color => {
       fill: anbt.background
     })
   )
-  anbt.lastrect = anbt.position
+  anbt.lastRect = anbt.position
 }
 
 export default clearWithColor

@@ -67,13 +67,13 @@ const keyDown = event => {
     let index = event.keyCode === 48 ? 9 : event.keyCode - 49
     if (
       event.shiftKey ||
-      (options.colorDoublePress && anbt.prevColorKey === index)
+      (options.colorDoublePress && anbt.previousColorKey === index)
     )
       index += 8
-    anbt.prevColorKey = index
+    anbt.previousColorKey = index
     if (options.colorDoublePress) {
-      if (anbt.prevColorKeyTimer) clearTimeout(anbt.prevColorKeyTimer)
-      anbt.prevColorKeyTimer = setTimeout(() => (anbt.prevColorKey = -1), 500)
+      if (anbt.previousColorKeyTimer) clearTimeout(anbt.previousColorKeyTimer)
+      anbt.previousColorKeyTimer = setTimeout(() => (anbt.previousColorKey = -1), 500)
     }
     const elements = ID('colors').querySelectorAll('b')
     if (index < elements.length) {

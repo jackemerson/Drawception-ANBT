@@ -13,47 +13,47 @@ import strikethrough from './functions/markdown/strikethrough'
 const markdown = {
   bold: {
     title: 'bold text',
-    replaceFunc: bold
+    replace: bold
   },
   italic: {
     title: 'italic text',
-    replaceFunc: italic
+    replace: italic
   },
   heading: {
     title: 'enlarges/reduces the text',
-    replaceFunc: heading
+    replace: heading
   },
   strikethrough: {
     title: 'strikethrough text',
-    replaceFunc: strikethrough
+    replace: strikethrough
   },
   highlighter: {
     title: 'highlighted text',
-    replaceFunc: highlighter
+    replace: highlighter
   },
   'list-ul': {
     title: 'unordered list',
-    replaceFunc: listUl
+    replace: listUl
   },
   'list-ol': {
     title: 'ordered list',
-    replaceFunc: listOl
+    replace: listOl
   },
   'quote-right': {
     title: 'quote',
-    replaceFunc: quoteRight
+    replace: quoteRight
   },
   code: {
     title: 'block of code',
-    replaceFunc: code
+    replace: code
   },
   link: {
     title: 'insert link',
-    replaceFunc: link
+    replace: link
   },
   image: {
     title: 'insert image',
-    replaceFunc: image
+    replace: image
   }
 }
 

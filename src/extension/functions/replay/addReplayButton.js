@@ -8,10 +8,10 @@ const addReplayButton = drawing => {
   drawing.replayAdded = true
   const { parentNode, src } = drawing
   checkForRecording(src, () => {
-    const newid = $(`img[src='${src}']`)
+    const newId = $(`img[src='${src}']`)
       .parentNode.querySelector('a[href^="/panel/"]')
       .href.match(/\/panel\/[^/]+\/([^/]+)/)[1]
-    const id = newid.length >= 8 ? newid : scrambleID(parentNode.id.slice(6))
+    const id = newId.length >= 8 ? newId : scrambleID(parentNode.id.slice(6))
     const replayButton = $(
       `<a href="/sandbox/#${id}" class="panel-number anbt_replaypanel fas fa-redo-alt text-muted" title="Replay"></a>`
     )

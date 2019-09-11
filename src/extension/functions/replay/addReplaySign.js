@@ -7,11 +7,11 @@ const addReplaySign = drawing => {
   const panel = drawing.parentNode.parentNode
   const { src } = drawing
   checkForRecording(src, () => {
-    const newid = src.match(/(\w+).png$/)[1]
+    const newId = src.match(/(\w+).png$/)[1]
     const replaySign =
-      newid.length >= 8
+      newId.length >= 8
         ? $(
-            `<a href="/sandbox/#${newid}" class="pull-right fas fa-redo-alt" style="color:#8af;margin-right:4px" title="Replay!"></a>`
+            `<a href="/sandbox/#${newId}" class="pull-right fas fa-redo-alt" style="color:#8af;margin-right:4px" title="Replay!"></a>`
           )
         : $(
             '<span class="pull-right fas fa-redo-alt" style="color:#8af;margin-right:4px" title="Replayable!"></span>'

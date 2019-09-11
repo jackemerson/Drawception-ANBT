@@ -6,13 +6,9 @@ import ID from '../idSelector'
 const playCommonDown = event => {
   event.stopPropagation()
   event.preventDefault()
-  if (anbt.isPlaying) {
-    ID('play').classList.remove('pause')
-    pause()
-  } else {
-    ID('play').classList.add('pause')
-    play()
-  }
+  ID('play').classList.toggle('pause')
+  if (anbt.isPlaying) pause()
+  else play()
 }
 
 export default playCommonDown

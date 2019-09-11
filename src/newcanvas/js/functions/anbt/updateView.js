@@ -3,7 +3,7 @@ import drawSvgElement from './drawSvgElement'
 
 const updateView = () =>
   [...anbt.svg.childNodes]
-    .splice(anbt.lastrect < anbt.position ? anbt.lastrect : 0)
+    .splice(anbt.lastRect < anbt.position ? anbt.lastRect : 0)
     .forEach(child => drawSvgElement(child))
 
 export default updateView

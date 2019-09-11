@@ -4,14 +4,14 @@ const base62ToDecimal = number => {
   number = number.toString()
   const cachePosition = {}
   let result = 0
-  let pow = 1
+  let power = 1
   for (let i = number.length - 1; i >= 0; i--) {
     const character = number[i]
     if (typeof cachePosition[character] === 'undefined') {
       cachePosition[character] = globals.alphabet.indexOf(character)
     }
-    result += pow * cachePosition[character]
-    pow *= 62
+    result += power * cachePosition[character]
+    power *= 62
   }
   return result
 }

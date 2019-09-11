@@ -3,6 +3,7 @@ import addStyle from '../addStyle'
 
 const betterStore = () => {
   const storeSections = $('.grid-store')
+  if (!storeSections) return
   storeSections.shift()
   storeSections.forEach(section => {
     const buySections = section.querySelectorAll('.grid-store-btn>.btn-group')

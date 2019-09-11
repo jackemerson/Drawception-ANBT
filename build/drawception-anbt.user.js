@@ -102,14 +102,14 @@
     enterToCaption: 0,
     pressureExponent: 0.5,
     backup: 1,
-    timeoutSound: 0,
-    timeoutSoundBlitz: 0,
-    timeoutSoundVolume: 100,
+    timeOutSound: 0,
+    timeOutSoundBlitz: 0,
+    timeOutSoundVolume: 100,
     newCanvas: 1,
     proxyImgur: 0,
     ajaxRetry: 1,
     localeTimestamp: 0,
-    autoplay: 1,
+    autoPlay: 1,
     submitConfirm: 1,
     smoothening: 1,
     autoBypassNSFW: 0,
@@ -237,11 +237,11 @@
           img.src.match(/\/([^/]+)\.png/)[1]
         }/-/">${img.outerHTML}</a>`;
       if (img.src.match(/\/display-panel.php?/)) {
-        const newsrc = `/panel/drawing/${scrambleID(
+        const newSrc = `/panel/drawing/${scrambleID(
           img.src.match(/x=(\d+)/)[1]
         )}/`;
-        img.setAttribute('src', newsrc);
-        img.outerHTML = `<a href="${newsrc}-/">${img.outerHTML}</a>`;
+        img.setAttribute('src', newSrc);
+        img.outerHTML = `<a href="${newSrc}-/">${img.outerHTML}</a>`;
       }
     }
   };
@@ -261,12 +261,12 @@
     runtimeVersion: '1ba6bf05'
   };
 
-  const setupNewCanvas = (insandbox, url) => {
+  const setupNewCanvas = (inSandbox, url) => {
     const canvasHTML = localStorage.getItem('anbt_canvasHTML');
-    const canvasHTMLver = localStorage.getItem('anbt_canvasHTMLver');
+    const canvasHTMLVersion = localStorage.getItem('anbt_canvasHTMLver');
     if (
       !canvasHTML ||
-      canvasHTMLver < versions.newCanvasVersion ||
+      canvasHTMLVersion < versions.newCanvasVersion ||
       canvasHTML.length < 10000
     ) {
       const request = new XMLHttpRequest();
@@ -284,7 +284,7 @@
         } else {
           localStorage.setItem('anbt_canvasHTML', request.responseText);
           localStorage.setItem('anbt_canvasHTMLver', versions.newCanvasVersion);
-          setupNewCanvas(insandbox, url);
+          setupNewCanvas(inSandbox, url);
         }
       };
       request.onerror = () => {
@@ -294,31 +294,31 @@
       request.send();
       return;
     }
-    const inforum = url.match(/forums\//);
-    const friendgameid = url.match(/play\/(.+)\//);
+    const inForum = url.match(/forums\//);
+    const friendGameId = url.match(/play\/(.+)\//);
     const paletteInfo =
       url.includes('/sandbox/') && url.match(/\?palette=([^/]+)/);
-    const panelid = url.match(/sandbox\/(?!\?palette=)#?([^/]+)\/?/);
-    const incontest =
+    const panelId = url.match(/sandbox\/(?!\?palette=)#?([^/]+)\/?/);
+    const inContest =
       url.match(/contests\/play\//) && document.getElementById('canvas-holder');
-    const vertitle = `ANBT v${versions.scriptVersion}`;
-    if (incontest) window.onbeforeunload = () => {};
-    const normalurl =
-      insandbox && !inforum
-        ? `/sandbox/${panelid ? `#${panelid[1]}/` : ''}${
+    const versionTitle = `ANBT v${versions.scriptVersion}`;
+    if (inContest) window.onbeforeunload = () => {};
+    const normalUrl =
+      inSandbox && !inForum
+        ? `/sandbox/${panelId ? `#${panelId[1]}/` : ''}${
             paletteInfo ? `?palette=${paletteInfo[1]}` : ''
           }`
-        : incontest
+        : inContest
         ? '/contests/play/'
-        : inforum
+        : inForum
         ? url.match(/\/forums\/?.+/)
-        : `/play/${friendgameid ? `${friendgameid[1]}/` : ''}`;
+        : `/play/${friendGameId ? `${friendGameId[1]}/` : ''}`;
     try {
       if (
-        location.pathname + (panelid ? location.hash : paletteInfo[0]) !==
-        normalurl
+        location.pathname + (panelId ? location.hash : paletteInfo[0]) !==
+        normalUrl
       )
-        history.pushState({}, document.title, normalurl);
+        history.pushState({}, document.title, normalUrl);
     } catch (e) {}
     const alarmSoundOgg =
       'data:audio/ogg;base64,T2dnUwACAAAAAAAAAABnHAAAAAAAAHQUSFoBHgF2b3JiaXMAAAAAAUSsAAAAAAAAYG0AAAAAAADJAU9nZ1MAAAAAAAAAAAAAZxwAAAEAAABq35G0DxD/////////////////NQN2b3JiaXMAAAAAAAAAAAEFdm9yYmlzH0JDVgEAAAEAFGNWKWaZUpJbihlzmDFnGWPUWoolhBRCKKVzVlurKbWaWsq5xZxzzpViUilFmVJQW4oZY1IpBhlTEltpIYQUQgehcxJbaa2l2FpqObacc62VUk4ppBhTiEromFJMKaQYU4pK6Jxz0DnmnFOMSgg1lVpTyTGFlFtLKXROQgephM5SS7F0kEoHJXRQOms5lRJTKZ1jVkJquaUcU8qtpphzjIHQkFUAAAEAwEAQGrIKAFAAABCGoSiKAoSGrAIAMgAABOAojuIokiI5kmM5FhAasgoAAAIAEAAAwHAUSZEUy9EcTdIszdI8U5ZlWZZlWZZlWZZd13VdIDRkFQAAAQBAKAcZxRgQhJSyEggNWQUAIAAAAIIowxADQkNWAQAAAQAIUR4h5qGj3nvvEXIeIeYdg9577yG0XjnqoaTee++99x5777n33nvvkWFeIeehk9577xFiHBnFmXLee+8hpJwx6J2D3nvvvfeec+451957752j3kHpqdTee++Vk14x6Z2jXnvvJdUeQuqlpN5777333nvvvffee++9955777333nvvrefeau+9995777333nvvvffee++9995777333nvvgdCQVQAAEAAAYRg2iHHHpPfae2GYJ4Zp56T3nnvlqGcMegqx9557773X3nvvvffeeyA0ZBUAAAgAACGEEFJIIYUUUkghhhhiyCGHHIIIKqmkoooqqqiiiiqqLKOMMsook4wyyiyjjjrqqMPOQgoppNJKC620VFtvLdUehBBCCCGEEEIIIYQQvvceCA1ZBQCAAAAwxhhjjEEIIYQQQkgppZRiiimmmAJCQ1YBAIAAAAIAAAAsSZM0R3M8x3M8x1M8R3RER3RER5RESbRETfREUTRFVbRF3dRN3dRNXdVN27VVW7ZlXdddXddlXdZlXdd1Xdd1Xdd1Xdd1XbeB0JBVAAAIAABhkEEGGYQQQkghhZRSijHGGHPOOSA0ZBUAAAgAIAAAAEBxFEdxHMmRJMmyLM3yLM8SNVMzNVNzNVdzRVd1Tdd0Vdd1Tdd0TVd0Vdd1XVd1Vdd1Xdd1Xdc0Xdd1XdN1Xdd1Xdd1Xdd1XRcIDVkFAEgAAOg4juM4juM4juM4jiQBoSGrAAAZAAABACiK4jiO4ziSJEmWpVma5VmiJmqiqIqu6QKhIasAAEAAAAEAAAAAACiWoimapGmaplmapmmapmmapmmapmmapmmapmmapmmapmmapmmapmmapmmapmmapmmapmmapmmapmkaEBqyCgCQAABQcRzHcRzHkRzJkRxHAkJDVgEAMgAAAgBQDEdxHEeSLMmSNMuyNE3zRFF0TdU0XdMEQkNWAQCAAAACAAAAAABQLEmTNE3TNEmTNEmTNE3TNEfTNE3TNE3TNE3TNE3TNE3TNE3TNE3TNE3TNE3TNE3TNE3TLMuyLMuyLCA0ZCUAAAQAwFpttdbaKuUgpNoaoRSjGivEHKQaO+SUs9oy5pyT2ipijGGaMqOUchoIDVkRAEQBAADGIMcQc8g5J6mTFDnnqHRUGggdpY5SZ6m0mmLMKJWYUqyNg45SRy2jlGosKXbUUoyltgIAAAIcAAACLIRCQ1YEAFEAAIQxSCmkFGKMOacYRIwpxxh0hjEGHXOOQeechFIq55h0UErEGHOOOaicg1IyJ5WDUEonnQAAgAAHAIAAC6HQkBUBQJwAgEGS' +
@@ -328,7 +328,7 @@
       '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';
-    if (inforum) {
+    if (inForum) {
       if (document.querySelector('.v--modal-overlay'))
         document.querySelector('.v--modal-overlay').outerHTML = '';
       const div = document.querySelector('.wrapper').children[1];
@@ -341,12 +341,12 @@
       div.appendChild(modalOverlay);
       iframe.contentWindow.document.open();
       iframe.contentWindow.anbtReady = () => {
-        iframe.contentWindow.inforum = inforum;
-        iframe.contentWindow.insandbox = insandbox;
-        iframe.contentWindow.incontest = incontest;
+        iframe.contentWindow.inForum = inForum;
+        iframe.contentWindow.inSandbox = inSandbox;
+        iframe.contentWindow.inContest = inContest;
         iframe.contentWindow.options = options;
         iframe.contentWindow.alarmSoundOgg = alarmSoundOgg;
-        iframe.contentWindow.vertitle = vertitle;
+        iframe.contentWindow.versionTitle = versionTitle;
         iframe.contentWindow.getLocalStorageItem = getLocalStorageItem;
         iframe.contentWindow.needToGoDeeper();
       };
@@ -356,15 +356,15 @@
     }
     document.open();
     window.anbtReady = () => {
-      if (friendgameid) window.friendgameid = friendgameid[1];
-      if (panelid) window.panelid = panelid[1];
+      if (friendGameId) window.friendGameId = friendGameId[1];
+      if (panelId) window.panelId = panelId[1];
       if (paletteInfo) window.paletteInfo = paletteInfo[1];
-      window.inforum = inforum;
-      window.insandbox = insandbox;
-      window.incontest = incontest;
+      window.inForum = inForum;
+      window.inSandbox = inSandbox;
+      window.inContest = inContest;
       window.options = options;
       window.alarmSoundOgg = alarmSoundOgg;
-      window.vertitle = vertitle;
+      window.versionTitle = versionTitle;
       window.getLocalStorageItem = getLocalStorageItem;
       window.needToGoDeeper();
     };
@@ -385,7 +385,7 @@
   const betterForums = () => {
     $('.comment-body *', true).forEach(comment => linkifyNodeText(comment));
     $('img', true).forEach(img => linkifyDrawingPanels(img));
-    if (document.location.pathname.match(/\/forums\/(\w+|-)\/.+/)) {
+    if (location.pathname.match(/\/forums\/(\w+|-)\/.+/)) {
       const hideUserIds = options.forumHiddenUsers
         ? options.forumHiddenUsers.split(',')
         : '';
@@ -395,10 +395,10 @@
             '.anbt_hideUserPost:not(:target) .comment-body, .anbt_hideUserPost:not(:target) .avatar {display: none}' +
             ''
         );
-      let lastid = 0;
+      let lastId = 0;
       $('.comment-avatar', true).forEach(({ parentNode }) => {
         const commentHolder = parentNode.parentNode.parentNode;
-        const anch = commentHolder.id || '';
+        const anchor = commentHolder.id || '';
         commentHolder.classList.add('comment-holder');
         const textMuted = commentHolder.querySelector('a.text-muted');
         const vue = commentHolder.childNodes[0].__vue__;
@@ -407,21 +407,21 @@
             vue.comment_date * 1000
           )}`;
           if (vue.edit_date > 0) {
-            const el = textMuted.parentNode.querySelector(
+            const element = textMuted.parentNode.querySelector(
               'span[rel="tooltip"]'
             );
-            const text = `${el.title}, ${formatTimestamp(
+            const text = `${element.title}, ${formatTimestamp(
               vue.edit_date * 1000
             ).replace(/ /g, '\u00A0')}`;
-            el.setAttribute('title', text);
+            element.setAttribute('title', text);
           }
         }
-        if (anch) {
-          const id = parseInt(anch.substring(1), 10);
+        if (anchor) {
+          const id = parseInt(anchor.substring(1), 10);
           const text = textMuted.textContent.trim();
           textMuted.textContent = `${text} #${id}`;
           textMuted.setAttribute('title', 'Link to post');
-          if (id < lastid) textMuted.classList.add('wrong-order');
+          if (id < lastId) textMuted.classList.add('wrong-order');
           try {
             const { href } = commentHolder.querySelector('a[href^="/player/"]');
             if (href) {
@@ -430,7 +430,7 @@
                 commentHolder.classList.add('anbt_hideUserPost');
             }
           } catch (e) {}
-          lastid = id;
+          lastId = id;
         }
       });
       if (
@@ -456,7 +456,7 @@
         'afterend',
         `<div class="text-center">${pagination[0].outerHTML}</div>`
       );
-    if (document.location.pathname.match(/\/forums\/(\w+)\/$/)) {
+    if (location.pathname.match(/\/forums\/(\w+)\/$/)) {
       const hiddenTopics = getLocalStorageItem('gpe_forumHiddenTopics', []);
       let hidden = 0;
       const tempUnhideLink = $('<a class="text-muted anbt_unhidet">');
@@ -504,8 +504,7 @@
     }
     $('.btn.btn-default', true).forEach(button =>
       button.addEventListener('click', () => {
-        if (button.textContent === 'Draw')
-          setupNewCanvas(true, document.location.href);
+        if (button.textContent === 'Draw') setupNewCanvas(true, location.href);
       })
     );
   };
@@ -516,30 +515,30 @@
       x.parentNode.parentNode.classList.add('comment-holder');
     });
     const gamePlayers = [];
-    const playerdata = {};
+    const playerData = {};
     $('.gamepanel-holder', true).forEach((gamePanel, index) => {
       const detail = gamePanel.querySelector('.panel-details');
-      const gamepanel = gamePanel.querySelector('.gamepanel');
+      const panel = gamePanel.querySelector('.gamepanel');
       const playerLink = detail.querySelector('.panel-user a');
       if (!playerLink) return;
       const id = playerLink.href.match(/\/player\/(\d+)\//)[1];
-      playerdata[id] = {
+      playerData[id] = {
         panel_number: index + 1,
         player_anchor: playerLink,
-        panel_id: gamepanel.id,
-        drew: gamepanel.querySelector('img') !== null,
+        panel_id: panel.id,
+        drew: panel.querySelector('img') !== null,
         comments: 0
       };
       gamePlayers.push(id);
     });
     const seenComments = getLocalStorageItem('gpe_seenComments', {});
-    const gameid = document.location.href.match(/game\/([^/]+)\//)[1];
+    const gameId = location.href.match(/game\/([^/]+)\//)[1];
     if (comments) {
       const hour = Math.floor(Date.now() / (1000 * 60 * 60));
-      for (const tempgame in seenComments)
-        if (seenComments[tempgame].h + 24 * 7 < hour)
-          delete seenComments[tempgame];
-      let maxseenid = 0;
+      for (const temporaryGame in seenComments)
+        if (seenComments[temporaryGame].h + 24 * 7 < hour)
+          delete seenComments[temporaryGame];
+      let maxSeenId = 0;
       comments.forEach(holder => {
         const dateElement = holder.querySelector('a.text-muted');
         const vue = holder.__vue__;
@@ -559,13 +558,13 @@
           }
         }
         const ago = dateElement.textContent;
-        const commentid = parseInt(holder.id.slice(1), 10);
+        const commentId = parseInt(holder.id.slice(1), 10);
         dateElement.setAttribute('title', 'Link to comment');
-        dateElement.textContent = `${dateElement.textContent.trim()} #${commentid}`;
+        dateElement.textContent = `${dateElement.textContent.trim()} #${commentId}`;
         if (ago.match(/just now|min|hour|a day| [1-7] day/)) {
-          if (!(seenComments[gameid] && seenComments[gameid].id >= commentid)) {
+          if (!(seenComments[gameId] && seenComments[gameId].id >= commentId)) {
             holder.classList.add('comment-new');
-            if (maxseenid < commentid) maxseenid = commentid;
+            if (maxSeenId < commentId) maxSeenId = commentId;
           }
         }
         const link = holder.querySelector('.text-bold a')
@@ -574,41 +573,40 @@
         if (link) {
           const id = link[1];
           if (gamePlayers.includes(id)) {
-            const drew = playerdata[id].drew ? 'drew' : 'wrote';
+            const drew = playerData[id].drew ? 'drew' : 'wrote';
             dateElement.insertAdjacentHTML(
               'beforebegin',
-              `<a href="#panel-${playerdata[id].panel_id}">(${drew} #${playerdata[id].panel_number})</a> `
+              `<a href="#panel-${playerData[id].panel_id}">(${drew} #${playerData[id].panel_number})</a> `
             );
-            playerdata[id].comments++;
+            playerData[id].comments++;
           }
         }
       });
-      if (maxseenid)
-        seenComments[gameid] = {
+      if (maxSeenId)
+        seenComments[gameId] = {
           h: hour,
-          id: maxseenid
+          id: maxSeenId
         };
       localStorage.setItem('gpe_seenComments', JSON.stringify(seenComments));
     }
     for (const playerId in gamePlayers) {
-      const data = playerdata[playerId];
+      const data = playerData[playerId];
       if (data && data.comments) {
-        const cmt2 = `Player left ${data.comments} comment${
+        const title = `Player left ${data.comments} comment${
           data.comments > 1 ? 's' : ''
         }`;
-        data.player_anchor.title = cmt2;
+        data.player_anchor.title = title;
         data.player_anchor.insertAdjacentHTML(
           'afterend',
-          `<sup title="${cmt2}">${data.comments}</sup>`
+          `<sup title="${title}">${data.comments}</sup>`
         );
       }
     }
     if (options.maxCommentHeight) {
-      const h = options.maxCommentHeight;
       comments.forEach(comment =>
         comment.addEventListener('click', () => {
           if (
-            comment.clientHeight > h - 50 &&
+            comment.clientHeight > options.maxCommentHeight - 50 &&
             !$(location.hash).has(comment).length
           )
             location.hash = `#${comment.parentNode.parentNode.id}`;
@@ -639,14 +637,14 @@
       const magic = dataView.getUint32(0);
       if (magic != 0x89504e47) return request.onerror();
       for (let i = 8; i < buffer.byteLength; i += 4) {
-        const chunklen = dataView.getUint32(i);
+        const chunkLength = dataView.getUint32(i);
         i += 4;
-        const chunkname = dataView.getUint32(i);
+        const chunkName = dataView.getUint32(i);
         i += 4;
-        if (chunkname === 0x73764762) return success();
+        if (chunkName === 0x73764762) return success();
         else {
-          if (chunkname === 0x49454e44) break;
-          i += chunklen;
+          if (chunkName === 0x49454e44) break;
+          i += chunkLength;
         }
       }
     };
@@ -664,10 +662,10 @@
     drawing.replayAdded = true;
     const { parentNode, src } = drawing;
     checkForRecording(src, () => {
-      const newid = $(`img[src='${src}']`)
+      const newId = $(`img[src='${src}']`)
         .parentNode.querySelector('a[href^="/panel/"]')
         .href.match(/\/panel\/[^/]+\/([^/]+)/)[1];
-      const id = newid.length >= 8 ? newid : scrambleID(parentNode.id.slice(6));
+      const id = newId.length >= 8 ? newId : scrambleID(parentNode.id.slice(6));
       const replayButton = $(
         `<a href="/sandbox/#${id}" class="panel-number anbt_replaypanel fas fa-redo-alt text-muted" title="Replay"></a>`
       );
@@ -701,11 +699,11 @@
         ' <a href="#" class="btn btn-default reversePanels" title="Reverse panels"><span class="fas fa-sort-amount-up"></span> Reverse</a>'
       );
     $('.reversePanels').addEventListener('click', reversePanels);
-    const favButton = $(
+    const favoriteButton = $(
       '<span class="panel-number anbt_favpanel fas fa-heart text-muted" title="Favorite"></span>'
     );
     $('.panel-number', true).forEach(panelNumber =>
-      panelNumber.insertAdjacentHTML('afterend', favButton.outerHTML)
+      panelNumber.insertAdjacentHTML('afterend', favoriteButton.outerHTML)
     );
     $('.gamepanel', true).forEach(({ parentNode }) => {
       if (parentNode.querySelector('.gamepanel-tools>a:last-child') === null)
@@ -719,10 +717,10 @@
           .querySelector('.anbt_favpanel')
           .classList.add('anbt_favedpanel');
     });
-    $('.anbt_favpanel', true).forEach(favPanelButton => {
-      favPanelButton.addEventListener('click', () => {
-        if (favPanelButton.classList.contains('anbt_favedpanel')) return;
-        const { parentNode } = favPanelButton;
+    $('.anbt_favpanel', true).forEach(favoritePanelButton => {
+      favoritePanelButton.addEventListener('click', () => {
+        if (favoritePanelButton.classList.contains('anbt_favedpanel')) return;
+        const { parentNode } = favoritePanelButton;
         const id = parentNode
           .querySelector('.gamepanel-tools>a:last-child')
           .href.match(/\/panel\/[^/]+\/([^/]+)\/[^/]+\//)[1];
@@ -745,7 +743,7 @@
         }
         panels[id] = panel;
         localStorage.setItem('gpe_panelFavorites', JSON.stringify(panels));
-        favPanelButton.classList.add('anbt_favedpanel');
+        favoritePanelButton.classList.add('anbt_favedpanel');
       });
     });
     if (options.newCanvas) {
@@ -780,14 +778,14 @@
     number = number.toString();
     const cachePosition = {};
     let result = 0;
-    let pow = 1;
+    let power = 1;
     for (let i = number.length - 1; i >= 0; i--) {
       const character = number[i];
       if (typeof cachePosition[character] === 'undefined') {
         cachePosition[character] = globals.alphabet.indexOf(character);
       }
-      result += pow * cachePosition[character];
-      pow *= 62;
+      result += power * cachePosition[character];
+      power *= 62;
     }
     return result;
   };
@@ -796,17 +794,17 @@
     base62ToDecimal([...string].reverse().join('')) - 3521614606208;
 
   const betterPanel = () => {
-    const favButton = $(
+    let favoriteButton = $(
       '<button class="btn btn-info" style="margin-top: 20px"><span class="fas fa-heart"></span> <b>Favorite</b></button>'
     );
     const gamePanel = $(
       '.panel-caption-display>.flex,.gamepanel-holder>.gamepanel'
     );
     if (gamePanel)
-      gamePanel.insertAdjacentHTML('afterend', favButton.outerHTML);
-    const favBtn = $('.btn.btn-info');
-    if (favBtn) {
-      favBtn.addEventListener('click', event => {
+      gamePanel.insertAdjacentHTML('afterend', favoriteButton.outerHTML);
+    favoriteButton = $('.btn.btn-info');
+    if (favoriteButton) {
+      favoriteButton.addEventListener('click', event => {
         event.preventDefault();
         const panels = getLocalStorageItem('gpe_panelFavorites', {});
         const panel = {
@@ -816,7 +814,7 @@
             /\/player\/[^/]+\/[^/]+\//
           )[0]
         };
-        const id = document.location.href.match(/\/panel\/[^/]+\/([^/]+)\//)[1];
+        const id = location.href.match(/\/panel\/[^/]+\/([^/]+)\//)[1];
         const img = $('.gamepanel img');
         if (img) {
           panel.image = img.src;
@@ -826,17 +824,17 @@
         }
         panels[id] = panel;
         localStorage.setItem('gpe_panelFavorites', JSON.stringify(panels));
-        favBtn.setAttribute('disabled', 'disabled');
-        favBtn.querySelector('b').textContent = 'Favorited!';
+        favoriteButton.setAttribute('disabled', 'disabled');
+        favoriteButton.querySelector('b').textContent = 'Favorited!';
       });
     }
     const panels = getLocalStorageItem('gpe_panelFavorites', {});
     if (
-      document.location.href.match(/\/panel\/[^/]+\/([^/]+)\//) &&
-      panels[document.location.href.match(/\/panel\/[^/]+\/([^/]+)\//)[1]]
+      location.href.match(/\/panel\/[^/]+\/([^/]+)\//) &&
+      panels[location.href.match(/\/panel\/[^/]+\/([^/]+)\//)[1]]
     ) {
-      favBtn.setAttribute('disabled', 'disabled');
-      favBtn.querySelector('b').textContent = 'Favorited!';
+      favoriteButton.setAttribute('disabled', 'disabled');
+      favoriteButton.querySelector('b').textContent = 'Favorited!';
     }
     const panelId = getPanelId(location.pathname);
     if (options.newCanvas && panelId && unscrambleID(panelId) >= 14924553) {
@@ -858,33 +856,33 @@
       $('.btn-primary').length > 1 &&
       $('.btn-primary')[1].textContent === 'Play again'
     ) {
-      const ccButton = $(
+      const coverButton = $(
         '<button class="btn btn-info" style="margin-top: 20px"><span class="fas fa-plus"></span> <b>Add to Cover Creator</b></button>'
       );
-      ccButton.addEventListener('click', event => {
+      coverButton.addEventListener('click', event => {
         event.preventDefault();
         const id = unscrambleID(panelId);
         const cookie = getCookie('covercreatorids');
-        const ids = cookie ? JSON.parse(cookie) : [];
-        if (!ids.includes(id)) {
-          if (ids.length > 98) {
+        const idList = cookie ? JSON.parse(cookie) : [];
+        if (!idList.includes(id)) {
+          if (idList.length > 98) {
             window.apprise(
               'Max cover creator drawings selected. Please remove some before adding more.'
             );
             return;
-          } else ids.push(id.toString());
+          } else idList.push(id.toString());
         } else {
-          ccButton
+          coverButton
             .setAttribute('disabled', 'disabled')
             .querySelector('b').textContent = 'Already added!';
           return;
         }
-        setCookie('covercreatorids', JSON.stringify(ids));
-        ccButton
+        setCookie('covercreatorids', JSON.stringify(idList));
+        coverButton
           .setAttribute('disabled', 'disabled')
           .querySelector('b').textContent = 'Added!';
       });
-      $('.gamepanel').insertAdjacentHTML('afterend', ccButton.outerHTML);
+      $('.gamepanel').insertAdjacentHTML('afterend', coverButton.outerHTML);
     }
   };
 
@@ -910,13 +908,11 @@
       }, 0);
 
   const randomGreeting = () => {
-    const change_every_half_day = Math.floor(
-      Date.now() / (1000 * 60 * 60 * 12)
+    const changeEveryHalfDay = Math.floor(Date.now() / (1000 * 60 * 60 * 12));
+    const rndData = simpleHash(
+      changeEveryHalfDay + parseInt(globals.userid, 10) + 178889
     );
-    const rnddata = simpleHash(
-      change_every_half_day + parseInt(globals.userid, 10) + 178889
-    );
-    return rot13(globals.greetings[rnddata % globals.greetings.length]);
+    return rot13(globals.greetings[rndData % globals.greetings.length]);
   };
 
   const addReplaySign = drawing => {
@@ -925,11 +921,11 @@
     const panel = drawing.parentNode.parentNode;
     const { src } = drawing;
     checkForRecording(src, () => {
-      const newid = src.match(/(\w+).png$/)[1];
+      const newId = src.match(/(\w+).png$/)[1];
       const replaySign =
-        newid.length >= 8
+        newId.length >= 8
           ? $(
-              `<a href="/sandbox/#${newid}" class="pull-right fas fa-redo-alt" style="color:#8af;margin-right:4px" title="Replay!"></a>`
+              `<a href="/sandbox/#${newId}" class="pull-right fas fa-redo-alt" style="color:#8af;margin-right:4px" title="Replay!"></a>`
             )
           : $(
               '<span class="pull-right fas fa-redo-alt" style="color:#8af;margin-right:4px" title="Replayable!"></span>'
@@ -1076,10 +1072,14 @@
   };
 
   const betterPlayer = () => {
-    const pubinfo = $('.profile-header-info .text-muted > span:last-child');
-    if (pubinfo) linkifyNodeText(pubinfo.parentNode);
-    const loc = document.location.href;
-    if (loc.match(new RegExp(`/player/${globals.userId}/[^/]+/(?:$|#)`))) {
+    const publicInfo = $('.profile-header-info .text-muted > span:last-child');
+    if (publicInfo) linkifyNodeText(publicInfo.parentNode);
+    const currentLocation = location.href;
+    if (
+      currentLocation.match(
+        new RegExp(`/player/${globals.userId}/[^/]+/(?:$|#)`)
+      )
+    ) {
       const anbtSection = $('<h2>ANBT stuff: </h2>');
       const panelFavoritesButton = $(
         '<a class="btn btn-primary viewFavorites" href="#anbt_panelfavorites">Panel Favorites</a>'
@@ -1103,14 +1103,13 @@
         event.preventDefault();
         viewMyGameBookmarks();
       });
-      if (document.location.hash.includes('#anbt_panelfavorites'))
+      if (location.hash.includes('#anbt_panelfavorites'))
         viewMyPanelFavorites();
-      if (document.location.hash.includes('#anbt_gamebookmarks'))
-        viewMyGameBookmarks();
+      if (location.hash.includes('#anbt_gamebookmarks')) viewMyGameBookmarks();
       if (window.date) {
-        const pubinfo = $('.profile-user-header>div.row>div>h1+p');
-        if (pubinfo)
-          [...pubinfo.childNodes][4].nodeValue = ` ${formatTimestamp(
+        const publicInfo = $('.profile-user-header>div.row>div>h1+p');
+        if (publicInfo)
+          [...publicInfo.childNodes][4].nodeValue = ` ${formatTimestamp(
             window.date
           )} \xa0`;
       }
@@ -1132,39 +1131,39 @@
           );
       });
     }
-    if (loc.match(/player\/\d+\/[^/]+\/(posts)|(comments)\//)) {
+    if (currentLocation.match(/player\/\d+\/[^/]+\/(posts)|(comments)\//)) {
       $('.forum-thread-starter', true).forEach(threadStarter => {
         const vue = threadStarter.childNodes[0].__vue__;
         if (vue) {
-          const ts = threadStarter.querySelector('a.text-muted').firstChild;
-          ts.textContent = `${ts.textContent.trim()}, ${formatTimestamp(
+          const time = threadStarter.querySelector('a.text-muted').firstChild;
+          time.textContent = `${time.textContent.trim()}, ${formatTimestamp(
             vue.comment_date * 1000
           )}`;
           if (vue.edit_date > 0) {
-            const el = ts.parentNode.parentNode.querySelector(
+            const element = time.parentNode.parentNode.querySelector(
               'span[rel="tooltip"]'
             );
-            const text = `${el.title}, ${formatTimestamp(
+            const text = `${element.title}, ${formatTimestamp(
               vue.edit_date * 1000
             ).replace(/ /g, '\u00A0')}`;
-            el.setAttribute('title', text);
+            element.setAttribute('title', text);
           }
         }
-        const postlink = threadStarter.querySelector(
+        const postLink = threadStarter.querySelector(
           '.add-margin-top small.text-muted'
         );
-        const created = postlink.textContent.match(/^\s*Created/);
-        const commented = postlink.textContent.match(/^\s*Commented/);
+        const created = postLink.textContent.match(/^\s*Created/);
+        const commented = postLink.textContent.match(/^\s*Commented/);
         const prefix = commented
           ? 'Comment in the game'
           : created
           ? 'New thread'
           : 'Reply in';
-        const n = $(`<h4 class="anbt_threadtitle">${prefix}: </h4>`);
-        const thread = postlink.querySelector('a');
-        n.appendChild(thread);
-        threadStarter.insertAdjacentHTML('afterbegin', n.outerHTML);
-        postlink.parentNode.parentNode.removeChild(postlink.parentNode);
+        const prefixeTitle = $(`<h4 class="anbt_threadtitle">${prefix}: </h4>`);
+        const thread = postLink.querySelector('a');
+        prefixeTitle.appendChild(thread);
+        threadStarter.insertAdjacentHTML('afterbegin', prefixeTitle.outerHTML);
+        postLink.parentNode.parentNode.removeChild(postLink.parentNode);
       });
     }
   };
@@ -1231,9 +1230,10 @@
   };
 
   const loadScriptSettings = () => {
-    const result = getLocalStorageItem('gpe_anbtSettings', null);
-    if (!result) return;
-    for (const i in result) window.options[i] = result[i];
+    const localOptions = getLocalStorageItem('gpe_anbtSettings', null);
+    if (!localOptions) return;
+    for (const option in localOptions)
+      window.options[option] = localOptions[option];
   };
 
   const updateScriptSettings = ({ currentTarget: theForm }) => {
@@ -1297,16 +1297,16 @@
           'Save the drawing in case of error and restore it in sandbox'
         ],
         [
-          'timeoutSound',
+          'timeOutSound',
           'boolean',
           'Warning sound when only a minute is left (normal games)'
         ],
         [
-          'timeoutSoundBlitz',
+          'timeOutSoundBlitz',
           'boolean',
           'Warning sound when only 5 seconds left (blitz)'
         ],
-        ['timeoutSoundVolume', 'number', 'Volume of the warning sound, in %'],
+        ['timeOutSoundVolume', 'number', 'Volume of the warning sound, in %'],
         [
           'rememberPosition',
           'boolean',
@@ -1344,7 +1344,7 @@
         ],
         ['ajaxRetry', 'boolean', 'Retry failed AJAX requests'],
         [
-          'autoplay',
+          'autoPlay',
           'boolean',
           'Automatically start replay when watching playback'
         ],
@@ -1397,6 +1397,7 @@
 
   const betterStore = () => {
     const storeSections = $('.grid-store');
+    if (!storeSections) return;
     storeSections.shift();
     storeSections.forEach(section => {
       const buySections = section.querySelectorAll(
@@ -2062,47 +2063,47 @@
   const markdown = {
     bold: {
       title: 'bold text',
-      replaceFunc: bold
+      replace: bold
     },
     italic: {
       title: 'italic text',
-      replaceFunc: italic
+      replace: italic
     },
     heading: {
       title: 'enlarges/reduces the text',
-      replaceFunc: heading
+      replace: heading
     },
     strikethrough: {
       title: 'strikethrough text',
-      replaceFunc: strikethrough
+      replace: strikethrough
     },
     highlighter: {
       title: 'highlighted text',
-      replaceFunc: highlighter
+      replace: highlighter
     },
     'list-ul': {
       title: 'unordered list',
-      replaceFunc: listUl
+      replace: listUl
     },
     'list-ol': {
       title: 'ordered list',
-      replaceFunc: listOl
+      replace: listOl
     },
     'quote-right': {
       title: 'quote',
-      replaceFunc: quoteRight
+      replace: quoteRight
     },
     code: {
       title: 'block of code',
-      replaceFunc: code
+      replace: code
     },
     link: {
       title: 'insert link',
-      replaceFunc: link
+      replace: link
     },
     image: {
       title: 'insert image',
-      replaceFunc: image
+      replace: image
     }
   };
 
@@ -2111,7 +2112,7 @@
     const { value, selectionStart, selectionEnd } = textarea;
     const { length } = value;
     const selection = value.substring(selectionStart, selectionEnd);
-    markdown[`${event.currentTarget.id}`].replaceFunc(
+    markdown[`${event.currentTarget.id}`].replace(
       value,
       length,
       selectionStart,
@@ -2142,17 +2143,12 @@
     if (!window.notificationsOpened) {
       $('#user-notify-list').innerHTML =
         '<img src="/img/loading.gif" alt="Loading...."/>';
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', '/notification/view/');
-      xhr.onload = () => {
-        if (xhr.status === 200) {
-          $('#user-notify-list').innerHTML = xhr.responseText;
-          $('#user-notify-count').textContent = '0';
-          window.notificationsOpened = true;
-        } else {
-          $('#user-notify-list').innerHTML = xhr.responseText;
-          window.notificationsOpened = true;
-        }
+      const request = new XMLHttpRequest();
+      request.open('GET', '/notification/view/');
+      request.onload = () => {
+        if (request.status === 200) $('#user-notify-count').textContent = '0';
+        $('#user-notify-list').innerHTML = request.responseText;
+        window.notificationsOpened = true;
       };
     }
   };
@@ -2188,20 +2184,17 @@
     if (typeof DrawceptionPlay === 'undefined') return;
     if (document.getElementById('newcanvasyo')) return;
     try {
-      const tmpuserlink = $('.player-dropdown a[href^="/player/"]');
-      const username = tmpuserlink.querySelector('strong').textContent;
-      const userid = tmpuserlink.href.match(/\/player\/(\d+)\//)[1];
+      const temporaryUserLink = $('.player-dropdown a[href^="/player/"]');
+      const username = temporaryUserLink.querySelector('strong').textContent;
+      const userId = temporaryUserLink.href.match(/\/player\/(\d+)\//)[1];
       localStorage.setItem('gpe_lastSeenName', username);
-      localStorage.setItem('gpe_lastSeenId', userid);
+      localStorage.setItem('gpe_lastSeenId', userId);
     } catch (e) {}
     const currentPage = location.href.match(/drawception\.com\/([^/]+)/);
     if (currentPage) {
       const page = currentPage[1];
-      const functionName = `better${page.replace(
-        page[0],
-        page[0].toUpperCase()
-      )}`;
-      if (betterPages[functionName]) betterPages[functionName]();
+      const pageName = `better${page.replace(page[0], page[0].toUpperCase())}`;
+      if (betterPages[pageName]) betterPages[pageName]();
     }
     addStyle(
       '.panel-user {width: auto} .panel-details img.loading {display: none}' +
@@ -2329,29 +2322,31 @@
     );
     const menuPlayer = $('.btn-menu-player');
     if (menuPlayer) {
-      const userlink = $('.player-dropdown a[href^="/player/"]').href;
-      const useravatar = $('.btn-menu-player').innerHTML;
+      const userLink = $('.player-dropdown a[href^="/player/"]').href;
+      const userAvatar = $('.btn-menu-player').innerHTML;
       const element = $(
-        `<a href="${userlink}" title="View Profile" class="gpe-wide-block navbar-btn navbar-user-item" style="margin-top:8px">${useravatar}</a>`
+        `<a href="${userLink}" title="View Profile" class="gpe-wide-block navbar-btn navbar-user-item" style="margin-top:8px">${userAvatar}</a>`
       );
       menuPlayer.parentNode.appendChild(element);
     }
-    const num =
+    const number =
       $('#user-notify-count') && $('#user-notify-count').textContent.trim();
     addStyle(
-      `#user-notify-list .list-group .list-group-item .fas {color: #888}#user-notify-list .list-group .list-group-item:nth-child(-n+${num}) .fas {color: #2F5}a.wrong-order {color: #F99} div.comment-holder:target {background-color: #DFD}.comment-new a.text-muted:last-child:after {content: 'New'; color: #2F5; font-weight: bold; background-color: #183; border-radius: 9px; display: inline-block; padding: 0px 6px; margin-left: 10px;}`
+      `#user-notify-list .list-group .list-group-item .fas {color: #888}#user-notify-list .list-group .list-group-item:nth-child(-n+${number}) .fas {color: #2F5}a.wrong-order {color: #F99} div.comment-holder:target {background-color: #DFD}.comment-new a.text-muted:last-child:after {content: 'New'; color: #2F5; font-weight: bold; background-color: #183; border-radius: 9px; display: inline-block; padding: 0px 6px; margin-left: 10px;}`
     );
     window.getNotifications = getNotifications;
     let versionDisplay = `ANBT v${versions.scriptVersion}`;
     try {
-      const appver = $('script[src^="/build/app"]').src.match(/(\w+)\.js$/)[1];
-      const runtimever = $('script[src^="/build/runtime"]').src.match(
+      const appVersion = $('script[src^="/build/app"]').src.match(
         /(\w+)\.js$/
       )[1];
-      versionDisplay += ` | app ${appver}`;
-      if (appver !== versions.siteVersion) versionDisplay += '*';
-      versionDisplay += ` | runtime ${runtimever}`;
-      if (runtimever !== versions.runtimeVersion) versionDisplay += '*!!!';
+      const runtimeVersion = $('script[src^="/build/runtime"]').src.match(
+        /(\w+)\.js$/
+      )[1];
+      versionDisplay += ` | app ${appVersion}`;
+      if (appVersion !== versions.siteVersion) versionDisplay += '*';
+      versionDisplay += ` | runtime ${runtimeVersion}`;
+      if (runtimeVersion !== versions.runtimeVersion) versionDisplay += '*!!!';
     } catch (e) {}
     const wrapperSection = $('.wrapper');
     if (wrapperSection)

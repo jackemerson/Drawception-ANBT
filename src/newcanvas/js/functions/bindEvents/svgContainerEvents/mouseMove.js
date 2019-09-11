@@ -13,7 +13,7 @@ const svgMouseMove = event => {
   // Highlight color we're pointing at
   if (options.colorUnderCursorHint && !anbt.isStroking) {
     const color = eyedropper(x, y)
-    if (globals.stSeenColorToHighlight !== color) {
+    if (globals.lastSeenColorToHighlight !== color) {
       const element = ID('colors').querySelector('b.hint')
       if (element) element.classList.remove('hint')
       const colorIndex = anbt.palette.indexOf(color)

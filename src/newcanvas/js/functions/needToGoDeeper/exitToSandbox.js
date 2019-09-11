@@ -5,15 +5,15 @@ import updateTimer from '../updateTimer'
 import ajax from './ajax'
 
 const exitToSandbox = () => {
-  const { incontest, gameInfo, drawing_aborted, vertitle } = window
-  if (incontest && !drawing_aborted)
+  const { inContest, gameInfo, drawingAborted, versionTitle } = window
+  if (inContest && !drawingAborted)
     ajax('POST', '/contests/exit.json', {
       load: () => alert('You have missed your contest.')
     })
-  if (gameInfo.drawfirst && !drawing_aborted) {
+  if (gameInfo.drawFirst && !drawingAborted) {
     ajax('POST', '/play/abort-start.json', {
       obj: {
-        game_token: gameInfo.gameid
+        game_token: gameInfo.gameId
       },
       load: () =>
         alert('You have missed your Draw First game.\nIt has been aborted.'),
@@ -29,7 +29,7 @@ const exitToSandbox = () => {
   updateTimer()
   document.title = 'Sandbox - Drawception'
   ID('gamemode').innerHTML = 'Sandbox'
-  ID('headerinfo').innerHTML = `Sandbox with ${vertitle}`
+  ID('headerinfo').innerHTML = `Sandbox with ${versionTitle}`
   try {
     history.replaceState({}, null, '/sandbox/')
   } catch (e) {}

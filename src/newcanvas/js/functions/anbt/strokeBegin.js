@@ -1,12 +1,12 @@
 import anbt from '../../anbt'
 import createSvgElement from '../createSvgElement'
-import drawDispLine from './drawDispLine'
-import drawDispLinePresto from './drawDispLinePresto'
+import drawDisplayLine from './drawDisplayLine'
+import drawDisplayLinePresto from './drawDisplayLinePresto'
 
 const strokeBegin = (x, y, left) => {
   if (anbt.locked) return
-  if (!left) left = anbt.lastleft
-  else anbt.lastleft = left
+  if (!left) left = anbt.lastLeft
+  else anbt.lastLeft = left
   let color = left ? anbt.colors[0] : anbt.colors[1]
   const cls = color === 'eraser' ? color : null
   color = color === 'eraser' ? anbt.background : color
@@ -18,15 +18,15 @@ const strokeBegin = (x, y, left) => {
     'stroke-linecap': 'round',
     fill: 'none'
   })
-  anbt.lastcolor = color
+  anbt.lastColor = color
   anbt.path.pattern = anbt.pattern
-  //anbt.svgDisp.insertBefore(anbt.path, anbt.svgDisp.firstChild);
+  //anbt.svgDisplay.insertBefore(anbt.path, anbt.svgDisplay.firstChild);
   anbt.path.pathSegList.appendItem(anbt.path.createSVGPathSegMovetoAbs(x, y))
   anbt.path.pathSegList.appendItem(
     anbt.path.createSVGPathSegLinetoAbs(x, y + 0.001)
   )
-  if (navigator.userAgent.match(/\bPresto\b/)) drawDispLinePresto(true)
-  else drawDispLine(x, y, x, y + 0.001)
+  if (navigator.userAgent.match(/\bPresto\b/)) drawDisplayLinePresto(true)
+  else drawDisplayLine(x, y, x, y + 0.001)
   anbt.points = []
   anbt.points.push({ x, y })
   anbt.blot = true

@@ -19,9 +19,7 @@ const viewMyPanelFavorites = () => {
       panels[id].caption
     }">${
       panels[id].image
-        ? `<img src="${panels[id].image}" width="125" height="104" alt="${
-            panels[id].caption
-          }" />`
+        ? `<img src="${panels[id].image}" width="125" height="104" alt="${panels[id].caption}" />`
         : panels[id].caption
     }</a><span class="text-muted" style="white-space:nowrap">by <a href="${
       panels[id].userLink

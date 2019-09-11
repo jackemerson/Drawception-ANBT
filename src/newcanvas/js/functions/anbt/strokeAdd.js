@@ -1,6 +1,6 @@
 import anbt from '../../anbt'
-import drawDispLine from './drawDispLine'
-import drawDispLinePresto from './drawDispLinePresto'
+import drawDisplayLine from './drawDisplayLine'
+import drawDisplayLinePresto from './drawDisplayLinePresto'
 
 const strokeAdd = (x, y) => {
   if (anbt.locked) return
@@ -12,8 +12,8 @@ const strokeAdd = (x, y) => {
     anbt.blot = false
   }
   anbt.path.pathSegList.appendItem(anbt.path.createSVGPathSegLinetoAbs(x, y))
-  if (navigator.userAgent.match(/\bPresto\b/)) drawDispLinePresto(false)
-  else drawDispLine(point.x, point.y, x, y)
+  if (navigator.userAgent.match(/\bPresto\b/)) drawDisplayLinePresto(false)
+  else drawDisplayLine(point.x, point.y, x, y)
   anbt.points.push({ x, y })
 }
 

@@ -1,4 +1,4 @@
-import ID from '../idSelector';
+import ID from '../idSelector'
 
 const getPointerType = () =>
   ID('wacom') && ID('wacom').penAPI && ID('wacom').penAPI.isWacom

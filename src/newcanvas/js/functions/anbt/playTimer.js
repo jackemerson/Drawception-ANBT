@@ -5,13 +5,13 @@ import pause from './pause'
 
 const playTimer = () => {
   if (!anbt.isPlaying) return
-  const posmax = anbt.svg.childNodes.length - 1
+  const positionMax = anbt.svg.childNodes.length - 1
   let { delay } = anbt
-  let maxidx = 0
-  if (anbt.position < posmax || anbt.isAnimating) {
+  let indexMax = 0
+  if (anbt.position < positionMax || anbt.isAnimating) {
     if (anbt.isAnimating) {
-      maxidx = anbt.animatePath.pathSegList.numberOfItems - 1
-      if (anbt.animateIndex < maxidx) {
+      indexMax = anbt.animatePath.pathSegList.numberOfItems - 1
+      if (anbt.animateIndex < indexMax) {
         // There doesn't seem to be a simplier way to copy the pathSeg
         const segment = anbt.animatePath.pathSegList.getItem(anbt.animateIndex)
         const newSegment =
@@ -37,7 +37,7 @@ const playTimer = () => {
         anbt.animateIndex++
       } else {
         anbt.isAnimating = false
-        anbt.svgDisp.removeChild(anbt.path)
+        anbt.svgDisplay.removeChild(anbt.path)
         drawSvgElement(anbt.animatePath)
         anbt.position++
         anbt.animateIndex = 0
@@ -54,7 +54,7 @@ const playTimer = () => {
         anbt.path.pathSegList.initialize(
           anbt.path.createSVGPathSegMovetoAbs(segment.x, segment.y)
         )
-        anbt.svgDisp.insertBefore(anbt.path, anbt.svgDisp.firstChild)
+        anbt.svgDisplay.insertBefore(anbt.path, anbt.svgDisplay.firstChild)
       } else {
         drawSvgElement(element)
         anbt.position++
@@ -62,9 +62,10 @@ const playTimer = () => {
     }
   }
   moveSeekbar(
-    (anbt.position + (maxidx ? anbt.animateIndex / maxidx : 0)) / posmax
+    (anbt.position + (indexMax ? anbt.animateIndex / indexMax : 0)) /
+      positionMax
   )
-  if (anbt.position < posmax) setTimeout(anbt.playTimer, delay)
+  if (anbt.position < positionMax) setTimeout(anbt.playTimer, delay)
   else pause()
 }
 

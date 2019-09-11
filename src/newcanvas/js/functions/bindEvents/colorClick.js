@@ -1,9 +1,9 @@
-import globals from '../../globals';
-import setBackground from '../anbt/setBackground';
-import setColor from '../anbt/setColor';
-import getPointerType from './getPointerType';
-import updateChooseBackground from './updateChooseBackground';
-import updateColorIndicators from './updateColorIndicators';
+import globals from '../../globals'
+import setBackground from '../anbt/setBackground'
+import setColor from '../anbt/setColor'
+import getPointerType from './getPointerType'
+import updateChooseBackground from './updateChooseBackground'
+import updateColorIndicators from './updateColorIndicators'
 
 const colorClick = event => {
   if (event.touches || event.button === 0 || event.button === 2) {

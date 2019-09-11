@@ -11,7 +11,7 @@ const strokeEnd = () => {
   buildSmoothPath(points, anbt.path)
   anbt.path.orig = points
   addToSvg(anbt.path)
-  anbt.ctxDisp && anbt.ctxDisp.clearRect(0, 0, 600, 500)
+  anbt.contextDisplay && anbt.contextDisplay.clearRect(0, 0, 600, 500)
   anbt.isStroking = false
 }
 

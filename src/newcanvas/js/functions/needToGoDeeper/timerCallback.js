@@ -9,7 +9,7 @@ const timerCallback = seconds => {
   const { gameInfo } = window
   if (seconds < 1) {
     document.title = "[TIME'S UP!] Playing Drawception"
-    if (gameInfo.image || window.timesup) {
+    if (gameInfo.image || window.timesUp) {
       // If pressed submit before timer expired, let it process or retry in case of error
       if (!window.submitting) {
         if (gameInfo.image) getParametersFromPlay()
@@ -20,7 +20,7 @@ const timerCallback = seconds => {
       lock()
       globals.timerStart += 15000 // 15 seconds to submit
       updateTimer()
-      window.timesup = true
+      window.timesUp = true
     }
   } else
     document.title = `[${`0${Math.floor(seconds / 60)}`.slice(

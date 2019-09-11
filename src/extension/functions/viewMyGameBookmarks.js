@@ -65,9 +65,7 @@ const viewMyGameBookmarks = () => {
       xhr.send()
     } else if (id.length === 10)
       result.push(
-        `<p class="well${extraClass}" id="${id}"><a href="${games[id].url}">${
-          games[id].title
-        }</a>${removeButtonHTML}</p>`
+        `<p class="well${extraClass}" id="${id}"><a href="${games[id].url}">${games[id].title}</a>${removeButtonHTML}</p>`
       ) // game ID
   }
   $('#anbt_userpage').innerHTML = result.length

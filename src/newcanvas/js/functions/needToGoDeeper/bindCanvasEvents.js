@@ -13,8 +13,8 @@ import timePlus from './events/timePlus'
 import updateUsedChars from './events/updateUsedChars'
 
 const bindCanvasEvents = () => {
-  const { options, inforum } = window
-  if (inforum) {
+  const { options, inForum } = window
+  if (inForum) {
     ID('quit').addEventListener('click', quit)
     const backForum = document.createElement('button')
     backForum.href = '/'

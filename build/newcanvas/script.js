@@ -1,33 +1,47 @@
 (function() {
   'use strict';
 
-  const drawSvgElement = (element, ctx) => {
-    if (!ctx) ctx = anbt.ctx;
-    ctx.globalCompositeOperation =
+  const drawSvgElement = (element, context) => {
+    if (!context) context = anbt.context;
+    context.globalCompositeOperation =
       element.getAttribute('class') === 'eraser'
         ? 'destination-out'
         : 'source-over';
     if (element.nodeName === 'path') {
-      ctx.strokeStyle = element.getAttribute('stroke');
-      ctx.lineWidth = element.getAttribute('stroke-width');
-      ctx.beginPath();
+      context.strokeStyle = element.getAttribute('stroke');
+      context.lineWidth = element.getAttribute('stroke-width');
+      context.beginPath();
       for (let i = 0; i < element.pathSegList.numberOfItems; i++) {
-        const seg = element.pathSegList.getItem(i);
-        if (seg.pathSegTypeAsLetter === 'M') ctx.moveTo(seg.x, seg.y);
-        else if (seg.pathSegTypeAsLetter === 'L') ctx.lineTo(seg.x, seg.y);
-        else if (seg.pathSegTypeAsLetter === 'Q')
-          ctx.quadraticCurveTo(seg.x1, seg.y1, seg.x, seg.y);
-        else if (seg.pathSegTypeAsLetter === 'C')
-          ctx.bezierCurveTo(seg.x1, seg.y1, seg.x2, seg.y2, seg.x, seg.y);
+        const segment = element.pathSegList.getItem(i);
+        if (segment.pathSegTypeAsLetter === 'M')
+          context.moveTo(segment.x, segment.y);
+        else if (segment.pathSegTypeAsLetter === 'L')
+          context.lineTo(segment.x, segment.y);
+        else if (segment.pathSegTypeAsLetter === 'Q')
+          context.quadraticCurveTo(
+            segment.x1,
+            segment.y1,
+            segment.x,
+            segment.y
+          );
+        else if (segment.pathSegTypeAsLetter === 'C')
+          context.bezierCurveTo(
+            segment.x1,
+            segment.y1,
+            segment.x2,
+            segment.y2,
+            segment.x,
+            segment.y
+          );
       }
-      ctx.stroke();
+      context.stroke();
     } else if (element.nodeName === 'rect') {
-      ctx.fillStyle = element.getAttribute('fill');
+      context.fillStyle = element.getAttribute('fill');
       const x = element.getAttribute('x');
       const y = element.getAttribute('y');
       const width = element.getAttribute('width');
       const height = element.getAttribute('height');
-      ctx.fillRect(x, y, width, height);
+      context.fillRect(x, y, width, height);
     }
   };
 
@@ -37,9 +51,9 @@
 
   const addToSvg = element => {
     if (anbt.rewindCache.length >= anbt.fastUndoLevels) anbt.rewindCache.pop();
-    anbt.rewindCache.unshift(anbt.ctx.getImageData(0, 0, 600, 500));
+    anbt.rewindCache.unshift(anbt.context.getImageData(0, 0, 600, 500));
     drawSvgElement(element);
-    if (!anbt.timeedit || anbt.position === anbt.svg.childNodes.length - 1) {
+    if (!anbt.timeEdit || anbt.position === anbt.svg.childNodes.length - 1) {
       for (let i = anbt.svg.childNodes.length - 1; i > anbt.position; i--)
         anbt.svg.removeChild(anbt.svg.childNodes[i]);
       anbt.svg.appendChild(element);
@@ -67,17 +81,17 @@
     anbt.canvas.width = 600;
     anbt.canvas.height = 500;
     anbt.canvas.style.background = anbt.background;
-    anbt.ctx = anbt.canvas.getContext('2d');
-    anbt.ctx.lineJoin = anbt.ctx.lineCap = 'round';
+    anbt.context = anbt.canvas.getContext('2d');
+    anbt.context.lineJoin = anbt.context.lineCap = 'round';
     anbt.container.appendChild(anbt.canvas);
     if (!navigator.userAgent.match(/\bPresto\b/)) {
-      anbt.canvasDisp.width = 600;
-      anbt.canvasDisp.height = 500;
-      anbt.ctxDisp = anbt.canvasDisp.getContext('2d');
-      anbt.ctxDisp.lineJoin = anbt.ctxDisp.lineCap = 'round';
-      anbt.container.appendChild(anbt.canvasDisp);
-    } else anbt.DrawDispLine = anbt.DrawDispLinePresto;
-    anbt.container.appendChild(anbt.svgDisp);
+      anbt.canvasDisplay.width = 600;
+      anbt.canvasDisplay.height = 500;
+      anbt.contextDisplay = anbt.canvasDisplay.getContext('2d');
+      anbt.contextDisplay.lineJoin = anbt.contextDisplay.lineCap = 'round';
+      anbt.container.appendChild(anbt.canvasDisplay);
+    } else anbt.drawDisplayLine = anbt.drawDisplayLinePresto;
+    anbt.container.appendChild(anbt.svgDisplay);
     const rect = createSvgElement('rect', {
       class: 'eraser',
       x: 0,
@@ -100,7 +114,7 @@
         fill: anbt.background
       })
     );
-    anbt.lastrect = anbt.position;
+    anbt.lastRect = anbt.position;
   };
 
   const cutHistoryBeforeClearAndAfterPosition = () => {
@@ -116,18 +130,19 @@
     }
   };
 
-  const drawDispLine = (x1, y1, x2, y2) => {
-    const { ctxDisp } = anbt;
-    ctxDisp.strokeStyle = anbt.lastcolor;
-    ctxDisp.lineWidth = anbt.size;
-    ctxDisp.beginPath();
-    ctxDisp.moveTo(x1, y1);
-    ctxDisp.lineTo(x2, y2);
-    ctxDisp.stroke();
+  const drawDisplayLine = (x1, y1, x2, y2) => {
+    const { contextDisplay } = anbt;
+    contextDisplay.strokeStyle = anbt.lastColor;
+    contextDisplay.lineWidth = anbt.size;
+    contextDisplay.beginPath();
+    contextDisplay.moveTo(x1, y1);
+    contextDisplay.lineTo(x2, y2);
+    contextDisplay.stroke();
   };
 
-  const drawDispLinePresto = first => {
-    if (first) anbt.svgDisp.insertBefore(anbt.path, anbt.svgDisp.firstChild);
+  const drawDisplayLinePresto = first => {
+    if (first)
+      anbt.svgDisplay.insertBefore(anbt.path, anbt.svgDisplay.firstChild);
   };
 
   const colorToRgba = color =>
@@ -161,15 +176,15 @@
   const colorToHex = color => rgbToHex(colorToRgba(color));
 
   const rgbToLab = rgb => {
-    const [r, g, b] = rgb.map(value =>
+    const [red, green, blue] = rgb.map(value =>
       value > 10
         ? Math.pow((value / 255 + 0.055) / 1.055, 2.4)
         : value / 255 / 12.92
     );
     const [x, y, z] = [
-      (r * 0.4124 + g * 0.3576 + b * 0.1805) / 0.95047,
-      r * 0.2126 + g * 0.7152 + b * 0.0722,
-      (r * 0.0193 + g * 0.1192 + b * 0.9505) / 1.08883
+      (red * 0.4124 + green * 0.3576 + blue * 0.1805) / 0.95047,
+      red * 0.2126 + green * 0.7152 + blue * 0.0722,
+      (red * 0.0193 + green * 0.1192 + blue * 0.9505) / 1.08883
     ].map(value =>
       value > 0.008856 ? Math.pow(value, 1 / 3) : 7.787 * value + 16 / 116
     );
@@ -202,7 +217,7 @@
   };
 
   const eyedropper = (x, y) => {
-    const pixelColor = anbt.ctx.getImageData(x, y, 1, 1).data;
+    const pixelColor = anbt.context.getImageData(x, y, 1, 1).data;
     return pixelColor[3] > 0
       ? getClosestColor(pixelColor, anbt.palette)
       : anbt.background;
@@ -428,22 +443,22 @@
 
   const updateView = () =>
     [...anbt.svg.childNodes]
-      .splice(anbt.lastrect < anbt.position ? anbt.lastrect : 0)
+      .splice(anbt.lastRect < anbt.position ? anbt.lastRect : 0)
       .forEach(child => drawSvgElement(child));
 
   const fromPng = buffer => {
-    const dv = new DataView(buffer);
-    const magic = dv.getUint32(0);
+    const dataView = new DataView(buffer);
+    const magic = dataView.getUint32(0);
     if (magic !== 0x89504e47)
       throw new Error(`Invalid PNG format: ${packUint32be(magic)}`);
     for (let i = 8; i < buffer.byteLength; i += 4) {
-      const chunklen = dv.getUint32(i);
+      const chunkLength = dataView.getUint32(i);
       i += 4;
-      const chunkname = packUint32be(dv.getUint32(i));
+      const chunkName = packUint32be(dataView.getUint32(i));
       i += 4;
-      if (chunkname === 'svGb') {
-        anbt.svg = unpackPlayback(new Uint8Array(buffer, i, chunklen));
-        anbt.lastrect = 0;
+      if (chunkName === 'svGb') {
+        anbt.svg = unpackPlayback(new Uint8Array(buffer, i, chunkLength));
+        anbt.lastRect = 0;
         anbt.rewindCache.length = 0;
         anbt.position = anbt.svg.childNodes.length - 1;
         updateView();
@@ -451,8 +466,8 @@
         setBackground(anbt.svg.background);
         return;
       } else {
-        if (chunkname === 'IEND') break;
-        i += chunklen;
+        if (chunkName === 'IEND') break;
+        i += chunkLength;
       }
     }
     throw new Error('No vector data found!');
@@ -499,13 +514,13 @@
         stroke: '#000',
         fill: 'none'
       });
-      anbt.svgDisp.appendChild(anbt.brushCursor);
+      anbt.svgDisplay.appendChild(anbt.brushCursor);
       anbt.brushCursor2 = createSvgElement('circle', {
         'stroke-width': '1',
         stroke: '#fff',
         fill: 'none'
       });
-      anbt.svgDisp.appendChild(anbt.brushCursor2);
+      anbt.svgDisplay.appendChild(anbt.brushCursor2);
       anbt.eyedropperCursor = createSvgElement('image', {
         width: 16,
         height: 16,
@@ -516,7 +531,7 @@
         'href',
         'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAARklEQVR4XoXRwQoAIAgEUf//pzeGDgq5G3PrCQqVbIAqsDz9WM2qhTX4GZgPV+JpSFxAC0PwbeVZZIpMgXvAMwoj4U9B3wGySxvzk6ZjvwAAAABJRU5ErkJggg=='
       );
-      anbt.svgDisp.appendChild(anbt.eyedropperCursor);
+      anbt.svgDisplay.appendChild(anbt.eyedropperCursor);
     }
     if (typeof x !== 'undefined') {
       anbt.brushCursor.setAttribute('cx', x);
@@ -587,7 +602,7 @@
     buildSmoothPath(points, anbt.path);
     anbt.path.orig = points;
     addToSvg(anbt.path);
-    anbt.ctxDisp && anbt.ctxDisp.clearRect(0, 0, 600, 500);
+    anbt.contextDisplay && anbt.contextDisplay.clearRect(0, 0, 600, 500);
     anbt.isStroking = false;
   };
 
@@ -727,7 +742,7 @@
     if (anbt.isPlaying) {
       if (anbt.isAnimating) {
         anbt.isAnimating = false;
-        anbt.svgDisp.removeChild(anbt.path);
+        anbt.svgDisplay.removeChild(anbt.path);
         drawSvgElement(anbt.animatePath);
         anbt.position++;
         if (!noSeekbar)
@@ -739,13 +754,13 @@
 
   const playTimer = () => {
     if (!anbt.isPlaying) return;
-    const posmax = anbt.svg.childNodes.length - 1;
+    const positionMax = anbt.svg.childNodes.length - 1;
     let { delay } = anbt;
-    let maxidx = 0;
-    if (anbt.position < posmax || anbt.isAnimating) {
+    let indexMax = 0;
+    if (anbt.position < positionMax || anbt.isAnimating) {
       if (anbt.isAnimating) {
-        maxidx = anbt.animatePath.pathSegList.numberOfItems - 1;
-        if (anbt.animateIndex < maxidx) {
+        indexMax = anbt.animatePath.pathSegList.numberOfItems - 1;
+        if (anbt.animateIndex < indexMax) {
           const segment = anbt.animatePath.pathSegList.getItem(
             anbt.animateIndex
           );
@@ -772,7 +787,7 @@
           anbt.animateIndex++;
         } else {
           anbt.isAnimating = false;
-          anbt.svgDisp.removeChild(anbt.path);
+          anbt.svgDisplay.removeChild(anbt.path);
           drawSvgElement(anbt.animatePath);
           anbt.position++;
           anbt.animateIndex = 0;
@@ -789,7 +804,7 @@
           anbt.path.pathSegList.initialize(
             anbt.path.createSVGPathSegMovetoAbs(segment.x, segment.y)
           );
-          anbt.svgDisp.insertBefore(anbt.path, anbt.svgDisp.firstChild);
+          anbt.svgDisplay.insertBefore(anbt.path, anbt.svgDisplay.firstChild);
         } else {
           drawSvgElement(element);
           anbt.position++;
@@ -797,9 +812,10 @@
       }
     }
     moveSeekbar(
-      (anbt.position + (maxidx ? anbt.animateIndex / maxidx : 0)) / posmax
+      (anbt.position + (indexMax ? anbt.animateIndex / indexMax : 0)) /
+        positionMax
     );
-    if (anbt.position < posmax) setTimeout(anbt.playTimer, delay);
+    if (anbt.position < positionMax) setTimeout(anbt.playTimer, delay);
     else pause();
   };
 
@@ -824,11 +840,11 @@
     if (newPosition < anbt.position) {
       const rewindSteps = anbt.position - newPosition;
       if (rewindSteps <= anbt.rewindCache.length) {
-        anbt.ctx.putImageData(anbt.rewindCache[rewindSteps - 1], 0, 0);
+        anbt.context.putImageData(anbt.rewindCache[rewindSteps - 1], 0, 0);
         anbt.rewindCache.splice(0, rewindSteps);
       } else {
         start = 0;
-        if (anbt.lastrect <= newPosition) start = anbt.lastrect;
+        if (anbt.lastRect <= newPosition) start = anbt.lastRect;
         else start = findLastRect(newPosition);
         drawSvgElement(anbt.svg.childNodes[start]);
       }
@@ -846,7 +862,7 @@
       }
       for (let i = start + 1; i <= newPosition; i++) {
         if (newPosition - i < anbt.fastUndoLevels)
-          anbt.rewindCache.unshift(anbt.ctx.getImageData(0, 0, 600, 500));
+          anbt.rewindCache.unshift(anbt.context.getImageData(0, 0, 600, 500));
         drawSvgElement(anbt.svg.childNodes[i]);
       }
     }
@@ -855,10 +871,10 @@
 
   const redo = () => {
     if (anbt.locked) return;
-    var posmax = anbt.svg.childNodes.length - 1;
-    if (anbt.position < posmax) {
+    var positionMax = anbt.svg.childNodes.length - 1;
+    if (anbt.position < positionMax) {
       seek(anbt.position + 1);
-      moveSeekbar(anbt.position / posmax);
+      moveSeekbar(anbt.position / positionMax);
     }
   };
 
@@ -903,11 +919,11 @@
 
   const showEyedropperCursor = isEyedropper => {
     if (!anbt.brushCursor) return;
-    const vis = isEyedropper ? 'hidden' : 'visible';
-    const vis2 = isEyedropper ? 'visible' : 'hidden';
-    anbt.brushCursor.setAttribute('visibility', vis);
-    anbt.brushCursor2.setAttribute('visibility', vis);
-    anbt.eyedropperCursor.setAttribute('visibility', vis2);
+    const visibility = isEyedropper ? 'hidden' : 'visible';
+    const visibility2 = isEyedropper ? 'visible' : 'hidden';
+    anbt.brushCursor.setAttribute('visibility', visibility);
+    anbt.brushCursor2.setAttribute('visibility', visibility);
+    anbt.eyedropperCursor.setAttribute('visibility', visibility2);
   };
 
   const strokeAdd = (x, y) => {
@@ -920,15 +936,15 @@
       anbt.blot = false;
     }
     anbt.path.pathSegList.appendItem(anbt.path.createSVGPathSegLinetoAbs(x, y));
-    if (navigator.userAgent.match(/\bPresto\b/)) drawDispLinePresto(false);
-    else drawDispLine(point.x, point.y, x, y);
+    if (navigator.userAgent.match(/\bPresto\b/)) drawDisplayLinePresto(false);
+    else drawDisplayLine(point.x, point.y, x, y);
     anbt.points.push({ x, y });
   };
 
   const strokeBegin = (x, y, left) => {
     if (anbt.locked) return;
-    if (!left) left = anbt.lastleft;
-    else anbt.lastleft = left;
+    if (!left) left = anbt.lastLeft;
+    else anbt.lastLeft = left;
     let color = left ? anbt.colors[0] : anbt.colors[1];
     const cls = color === 'eraser' ? color : null;
     color = color === 'eraser' ? anbt.background : color;
@@ -940,14 +956,14 @@
       'stroke-linecap': 'round',
       fill: 'none'
     });
-    anbt.lastcolor = color;
+    anbt.lastColor = color;
     anbt.path.pattern = anbt.pattern;
     anbt.path.pathSegList.appendItem(anbt.path.createSVGPathSegMovetoAbs(x, y));
     anbt.path.pathSegList.appendItem(
       anbt.path.createSVGPathSegLinetoAbs(x, y + 0.001)
     );
-    if (navigator.userAgent.match(/\bPresto\b/)) drawDispLinePresto(true);
-    else drawDispLine(x, y, x, y + 0.001);
+    if (navigator.userAgent.match(/\bPresto\b/)) drawDisplayLinePresto(true);
+    else drawDisplayLine(x, y, x, y + 0.001);
     anbt.points = [];
     anbt.points.push({ x, y });
     anbt.blot = true;
@@ -956,10 +972,9 @@
 
   const undo = () => {
     if (anbt.locked) return;
-    if (anbt.position > 0) {
-      seek(anbt.position - 1);
-      moveSeekbar(anbt.position / (anbt.svg.childNodes.length - 1));
-    }
+    if (anbt.position === 0) return;
+    seek(anbt.position - 1);
+    moveSeekbar(anbt.position / (anbt.svg.childNodes.length - 1));
   };
 
   const unlock = () => (anbt.locked = false);
@@ -1391,18 +1406,17 @@
       height: '500'
     }),
     canvas: document.createElement('canvas'),
-    canvasDisp: document.createElement('canvas'),
-    svgDisp: createSvgElement('svg', {
+    canvasDisplay: document.createElement('canvas'),
+    svgDisplay: createSvgElement('svg', {
       version: '1.1',
       width: '600',
       height: '500',
       'pointer-events': 'none'
     }),
-    svgHist: null,
     path: null,
     points: null,
     pngBase64: null,
-    lastrect: 0,
+    lastRect: 0,
     position: 0,
     isStroking: false,
     isPlaying: false,
@@ -1431,8 +1445,8 @@
     setSize,
     drawSvgElement,
     updateView,
-    drawDispLinePresto,
-    drawDispLine,
+    drawDisplayLinePresto,
+    drawDisplayLine,
     strokeBegin,
     strokeEnd,
     strokeAdd,
@@ -1488,13 +1502,8 @@
 
   const updateChooseBackground = chooseBackground => {
     globals.chooseBackground = chooseBackground;
-    if (chooseBackground) {
-      ID('colors').classList.add('setbackground');
-      ID('setbackground').classList.add('sel');
-    } else {
-      ID('colors').classList.remove('setbackground');
-      ID('setbackground').classList.remove('sel');
-    }
+    ID('colors').classList.toggle('setbackground');
+    ID('setbackground').classList.toggle('sel');
   };
 
   const clickSetBackground = event => {
@@ -1553,13 +1562,9 @@
   const playCommonDown = event => {
     event.stopPropagation();
     event.preventDefault();
-    if (anbt.isPlaying) {
-      ID('play').classList.remove('pause');
-      pause();
-    } else {
-      ID('play').classList.add('pause');
-      play();
-    }
+    ID('play').classList.toggle('pause');
+    if (anbt.isPlaying) pause();
+    else play();
   };
 
   const removeEyedropper = event => {
@@ -1620,14 +1625,15 @@
       let index = event.keyCode === 48 ? 9 : event.keyCode - 49;
       if (
         event.shiftKey ||
-        (options.colorDoublePress && anbt.prevColorKey === index)
+        (options.colorDoublePress && anbt.previousColorKey === index)
       )
         index += 8;
-      anbt.prevColorKey = index;
+      anbt.previousColorKey = index;
       if (options.colorDoublePress) {
-        if (anbt.prevColorKeyTimer) clearTimeout(anbt.prevColorKeyTimer);
-        anbt.prevColorKeyTimer = setTimeout(
-          () => (anbt.prevColorKey = -1),
+        if (anbt.previousColorKeyTimer)
+          clearTimeout(anbt.previousColorKeyTimer);
+        anbt.previousColorKeyTimer = setTimeout(
+          () => (anbt.previousColorKey = -1),
           500
         );
       }
@@ -1739,7 +1745,7 @@
           'imgurdelete'
         ).href = `http://imgur.com/delete/${request.data.deletehash}`;
         ID('imgurerror').childNodes[0].nodeValue = '';
-        if (window.inforum)
+        if (window.inForum)
           window.frameElement.ownerDocument.getElementById(
             'input-comment'
           ).value += `![](http://i.imgur.com/${request.data.id}.png)`;
@@ -1854,16 +1860,16 @@
       if (chooser.childNodes.length < keys.length) {
         const canvas = document.createElement('canvas');
         canvas.height = 10;
-        const ctx = canvas.getContext('2d');
+        const context = canvas.getContext('2d');
         for (let i = chooser.childNodes.length; i < keys.length; i++) {
           canvas.width = 8 * palettes[keys[i]].length + 2;
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          ctx.globalAlpha = 0.5;
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.globalAlpha = 1;
+          context.clearRect(0, 0, canvas.width, canvas.height);
+          context.globalAlpha = 0.5;
+          context.fillRect(0, 0, canvas.width, canvas.height);
+          context.globalAlpha = 1;
           palettes[keys[i]].forEach((color, index) => {
-            ctx.fillStyle = color;
-            ctx.fillRect(index * 8 + 1, 1, 8, 8);
+            context.fillStyle = color;
+            context.fillRect(index * 8 + 1, 1, 8, 8);
           });
           const div = document.createElement('div');
           div.appendChild(document.createTextNode(keys[i]));
@@ -1943,7 +1949,7 @@
     moveCursor(x, y);
     if (options.colorUnderCursorHint && !anbt.isStroking) {
       const color = eyedropper(x, y);
-      if (globals.stSeenColorToHighlight !== color) {
+      if (globals.lastSeenColorToHighlight !== color) {
         const element = ID('colors').querySelector('b.hint');
         if (element) element.classList.remove('hint');
         const colorIndex = anbt.palette.indexOf(color);
@@ -2140,9 +2146,9 @@
   };
 
   const decodeHTML = html => {
-    const txt = document.createElement('textarea');
-    txt.innerHTML = html;
-    return txt.value;
+    const textArea = document.createElement('textarea');
+    textArea.innerHTML = html;
+    return textArea.value;
   };
 
   const bookmark = () => {
@@ -2150,7 +2156,7 @@
     ID('bookmark').disabled = true;
     const games = getLocalStorageItem('gpe_gameBookmarks', {});
     const caption = window.gameInfo.caption;
-    games[window.gameInfo.gameid] = {
+    games[window.gameInfo.gameId] = {
       time: Date.now(),
       caption: caption ? decodeHTML(caption) : ''
     };
@@ -2175,15 +2181,15 @@
   };
 
   const exitToSandbox = () => {
-    const { incontest, gameInfo, drawing_aborted, vertitle } = window;
-    if (incontest && !drawing_aborted)
+    const { inContest, gameInfo, drawingAborted, versionTitle } = window;
+    if (inContest && !drawingAborted)
       ajax('POST', '/contests/exit.json', {
         load: () => alert('You have missed your contest.')
       });
-    if (gameInfo.drawfirst && !drawing_aborted) {
+    if (gameInfo.drawFirst && !drawingAborted) {
       ajax('POST', '/play/abort-start.json', {
         obj: {
-          game_token: gameInfo.gameid
+          game_token: gameInfo.gameId
         },
         load: () =>
           alert('You have missed your Draw First game.\nIt has been aborted.'),
@@ -2199,7 +2205,7 @@
     updateTimer();
     document.title = 'Sandbox - Drawception';
     ID('gamemode').innerHTML = 'Sandbox';
-    ID('headerinfo').innerHTML = `Sandbox with ${vertitle}`;
+    ID('headerinfo').innerHTML = `Sandbox with ${versionTitle}`;
     try {
       history.replaceState({}, null, '/sandbox/');
     } catch (e) {}
@@ -2207,16 +2213,16 @@
   };
 
   const exit = () => {
-    const { gameInfo, incontest } = window;
-    if (incontest) {
+    const { gameInfo, inContest } = window;
+    if (inContest) {
       if (!confirm('Quit the contest? Entry coins will be lost!')) return;
       ID('exit').disabled = true;
       ajax('POST', '/contests/exit.json', {
         load: () => {
           ID('exit').disabled = false;
-          window.drawing_aborted = true;
+          window.drawingAborted = true;
           exitToSandbox();
-          document.location.pathname = '/contests/';
+          location.pathname = '/contests/';
         },
         error: () => {
           ID('exit').disabled = false;
@@ -2225,18 +2231,18 @@
       });
       return;
     }
-    if (gameInfo.drawfirst) {
+    if (gameInfo.drawFirst) {
       if (!confirm('Abort creating a draw first game?')) return;
       ID('exit').disabled = true;
       ajax('POST', '/play/abort-start.json', {
         obj: {
-          game_token: gameInfo.gameid
+          game_token: gameInfo.gameId
         },
         load: () => {
           ID('exit').disabled = false;
-          window.drawing_aborted = true;
+          window.drawingAborted = true;
           exitToSandbox();
-          document.location.pathname = '/create/';
+          location.pathname = '/create/';
         },
         error: () => {
           ID('exit').disabled = false;
@@ -2249,7 +2255,7 @@
     ID('exit').disabled = true;
     ajax('POST', '/play/exit.json', {
       obj: {
-        game_token: gameInfo.gameid
+        game_token: gameInfo.gameId
       },
       load: () => {
         ID('exit').disabled = false;
@@ -2273,39 +2279,39 @@
     const getElement = query => doc.querySelector(query);
     return {
       error: (element => (element ? element.src : false))(getElement('.error')),
-      gameid: drawapp.getAttribute('game_token'),
+      gameId: drawapp.getAttribute('game_token'),
       blitz: drawapp.getAttribute(':blitz_mode') === 'true',
       nsfw: drawapp.getAttribute(':nsfw') === 'true',
       friend: drawapp.getAttribute(':game_public') !== 'true',
-      drawfirst: drawapp.getAttribute(':draw_first') === 'true',
-      timeleft: drawapp.getAttribute(':seconds') * 1,
+      drawFirst: drawapp.getAttribute(':draw_first') === 'true',
+      timeLeft: parseInt(drawapp.getAttribute(':seconds'), 10),
       caption: drawapp.getAttribute('phrase'),
       image: drawapp.getAttribute('img_url'),
       palette: drawapp.getAttribute('theme_id'),
-      bgbutton: drawapp.getAttribute(':bg_layer') === 'true',
-      playerurl: '/profile/',
+      backgroundButton: drawapp.getAttribute(':bg_layer') === 'true',
+      playerUrl: '/profile/',
       avatar: null,
       coins: '-',
-      pubgames: '-',
-      friendgames: '-',
+      publicGames: '-',
+      friendGames: '-',
       notifications: '-',
-      drawinglink: (element => (element ? element.src : false))(
+      drawingLink: (element => (element ? element.src : false))(
         getElement('.gamepanel img')
       ),
-      drawingbylink: (element =>
+      drawingByLink: (element =>
         element ? [element.textContent.trim(), element.href] : false)(
         getElement('#main p a')
       ),
-      drawncaption: (element => (element ? element.src : false))(
+      drawnCaption: (element => (element ? element.src : false))(
         getElement('h1.game-title')
       ),
-      notloggedin: getElement('form.form-login') !== null,
-      limitreached: false,
+      notLoggedIn: getElement('form.form-login') !== null,
+      limitReached: false,
       html
     };
   };
 
-  const palettemap = {
+  const paletteMap = {
     default: ['Normal', '#fffdc9'],
     theme_thanksgiving: ['Thanksgiving', '#f5e9ce'],
     halloween: ['Halloween', '#444444'],
@@ -2348,34 +2354,34 @@
         "Warning: Drawception roulette didn't give a theme. ANBT will choose a random palette."
       );
       delete palettes.Roulette;
-      const keys = Object.keys(palettemap);
+      const keys = Object.keys(paletteMap);
       const paletteName = keys[(keys.length * Math.random()) << 0];
-      palettes.Roulette = palettes[palettemap[paletteName][0]];
-      return ['Roulette', palettemap[paletteName][1]];
+      palettes.Roulette = palettes[paletteMap[paletteName][0]];
+      return ['Roulette', paletteMap[paletteName][1]];
     } else {
-      if (palette) return palettemap[palette.toLowerCase()];
+      if (palette) return paletteMap[palette.toLowerCase()];
     }
   };
 
   const handleCommonParameters = () => {
-    const { gameInfo, inforum } = window;
-    if (gameInfo.notloggedin)
+    const { gameInfo, inForum } = window;
+    if (gameInfo.notLoggedIn)
       return (ID('start').parentNode.innerHTML =
         '<a href="/login" class="headerbutton active">Login</a> <a href="/register" class="headerbutton active">Register</a>');
     if (gameInfo.avatar) ID('infoavatar').src = gameInfo.avatar;
-    ID('infoprofile').href = gameInfo.playerurl;
+    ID('infoprofile').href = gameInfo.playerUrl;
     ID('infocoins').innerHTML = gameInfo.coins;
-    ID('infogames').innerHTML = gameInfo.pubgames;
-    ID('infofriendgames').innerHTML = gameInfo.friendgames || 0;
+    ID('infogames').innerHTML = gameInfo.publicGames;
+    ID('infofriendgames').innerHTML = gameInfo.friendGames || 0;
     ID('infonotifications').innerHTML = gameInfo.notifications;
-    if (inforum) document.querySelector('.headerright').hidden = true;
+    if (inForum) document.querySelector('.headerright').hidden = true;
   };
 
   const timerCallback = seconds => {
     const { gameInfo } = window;
     if (seconds < 1) {
       document.title = "[TIME'S UP!] Playing Drawception";
-      if (gameInfo.image || window.timesup) {
+      if (gameInfo.image || window.timesUp) {
         if (!window.submitting) {
           if (gameInfo.image) getParametersFromPlay();
           else exitToSandbox();
@@ -2385,7 +2391,7 @@
         lock();
         globals.timerStart += 15000;
         updateTimer();
-        window.timesup = true;
+        window.timesUp = true;
       }
     } else
       document.title = `[${`0${Math.floor(seconds / 60)}`.slice(
@@ -2403,43 +2409,43 @@
   };
 
   const handlePlayParameters = () => {
-    const { options, gameInfo, incontest, vertitle } = window;
-    ID('skip').disabled = gameInfo.drawfirst || incontest;
-    ID('report').disabled = gameInfo.drawfirst || incontest;
+    const { options, gameInfo, inContest, versionTitle } = window;
+    ID('skip').disabled = gameInfo.drawFirst || inContest;
+    ID('report').disabled = gameInfo.drawFirst || inContest;
     ID('exit').disabled = false;
     ID('start').disabled = false;
-    ID('bookmark').disabled = gameInfo.drawfirst || incontest;
+    ID('bookmark').disabled = gameInfo.drawFirst || inContest;
     ID('options').disabled = true;
-    ID('timeplus').disabled = incontest;
+    ID('timeplus').disabled = inContest;
     ID('submit').disabled = false;
-    ID('headerinfo').innerHTML = `Playing with ${vertitle}`;
+    ID('headerinfo').innerHTML = `Playing with ${versionTitle}`;
     ID('drawthis').classList.add('onlyplay');
     ID('emptytitle').classList.remove('onlyplay');
     window.submitting = false;
-    window.drawing_aborted = false;
+    window.drawingAborted = false;
     if (gameInfo.error) {
       alert(`Play Error:\n${gameInfo.error}`);
       return exitToSandbox();
     }
-    if (gameInfo.limitreached) {
+    if (gameInfo.limitReached) {
       alert('Play limit reached!');
       return exitToSandbox();
     }
-    ID('gamemode').innerHTML = incontest
+    ID('gamemode').innerHTML = inContest
       ? 'Contest'
       : `${(gameInfo.friend ? 'Friend ' : 'Public ') +
           (gameInfo.nsfw ? 'Not Safe For Work (18+) ' : 'safe for work ') +
           (gameInfo.blitz ? 'BLITZ ' : '')}Game`;
     ID('drawthis').innerHTML =
-      gameInfo.caption || (gameInfo.drawfirst && '(Start your game!)') || '';
+      gameInfo.caption || (gameInfo.drawFirst && '(Start your game!)') || '';
     ID('tocaption').src = '';
-    const newcanvas = ID('newcanvasyo');
-    newcanvas.className = 'play';
-    if (gameInfo.friend) newcanvas.classList.add('friend');
+    const newCanvas = ID('newcanvasyo');
+    newCanvas.className = 'play';
+    if (gameInfo.friend) newCanvas.classList.add('friend');
     ID('palettechooser').className = gameInfo.friend ? '' : 'onlysandbox';
-    if (gameInfo.nsfw) newcanvas.classList.add('nsfw');
-    if (gameInfo.blitz) newcanvas.classList.add('blitz');
-    newcanvas.classList.add(gameInfo.image ? 'captioning' : 'drawing');
+    if (gameInfo.nsfw) newCanvas.classList.add('nsfw');
+    if (gameInfo.blitz) newCanvas.classList.add('blitz');
+    newCanvas.classList.add(gameInfo.image ? 'captioning' : 'drawing');
     if (anbt.isStroking) strokeEnd();
     unlock();
     for (let i = anbt.svg.childNodes.length - 1; i > 0; i--)
@@ -2466,7 +2472,7 @@
         anbt.color = [palettes[paletteData[0]][0], 'eraser'];
         updateColorIndicators();
       }
-      ID('setbackground').hidden = !gameInfo.bgbutton;
+      ID('setbackground').hidden = !gameInfo.backgroundButton;
     } else {
       ID('tocaption').src =
         gameInfo.image.length <= 30
@@ -2478,25 +2484,25 @@
       ID('usedchars').textContent = '45';
     }
     if (
-      (options.timeoutSound && !gameInfo.blitz) ||
-      (options.timeoutSoundBlitz && gameInfo.blitz)
+      (options.timeOutSound && !gameInfo.blitz) ||
+      (options.timeOutSoundBlitz && gameInfo.blitz)
     ) {
       window.playedWarningSound = false;
       window.alarm = new Audio(window.alarmSoundOgg);
-      window.alarm.volume = options.timeoutSoundVolume / 100;
+      window.alarm.volume = options.timeOutSoundVolume / 100;
     }
-    globals.timerStart = Date.now() + 1000 * gameInfo.timeleft;
+    globals.timerStart = Date.now() + 1000 * gameInfo.timeLeft;
     window.timerCallback = timerCallback;
     handleCommonParameters();
-    window.timesup = false;
+    window.timesUp = false;
     updateTimer();
   };
 
   const getParametersFromPlay = () => {
-    const { incontest, friendgameid } = window;
-    const url = incontest
+    const { inContest, friendGameId } = window;
+    const url = inContest
       ? '/contests/play/'
-      : `/play/${friendgameid ? `${friendgameid}/` : ''}`;
+      : `/play/${friendGameId ? `${friendGameId}/` : ''}`;
     try {
       if (location.pathname !== url) history.replaceState({}, null, url);
     } catch (e) {}
@@ -2522,7 +2528,7 @@
     if (!confirm('Report this panel?')) return;
     ajax('POST', '/play/flag.json', {
       obj: {
-        game_token: window.gameInfo.gameid
+        game_token: window.gameInfo.gameId
       },
       load: () => {
         ID('report').disabled = false;
@@ -2539,7 +2545,7 @@
     ID('skip').disabled = true;
     ajax('POST', '/play/skip.json', {
       obj: {
-        game_token: window.gameInfo.gameid
+        game_token: window.gameInfo.gameId
       },
       load: () => getParametersFromPlay(),
       error: () => {
@@ -2559,7 +2565,7 @@
     const { options, gameInfo } = window;
     if (!options.bookmarkOwnCaptions) return;
     const games = window.getLocalStorageItem('gpe_gameBookmarks', {});
-    games[gameInfo.gameid] = {
+    games[gameInfo.gameId] = {
       time: Date.now(),
       caption: `"${title}"`,
       own: true
@@ -2568,7 +2574,7 @@
   };
 
   const submitCaption = () => {
-    const { incontest, gameInfo } = window;
+    const { inContest, gameInfo } = window;
     const title = ID('caption').value;
     if (!title) {
       ID('caption').focus();
@@ -2576,12 +2582,12 @@
     }
     window.submitting = true;
     ID('submitcaption').disabled = true;
-    const url = incontest
+    const url = inContest
       ? '/contests/submit-caption.json'
       : '/play/describe.json';
     ajax('POST', url, {
       obj: {
-        game_token: gameInfo.gameid,
+        game_token: gameInfo.gameId,
         title
       },
       load: response => {
@@ -2597,7 +2603,7 @@
           if (typeof response.error === 'object')
             alert(
               `Error! Please report this data:\ngame: ${
-                gameInfo.gameid
+                gameInfo.gameId
               }\n\nresponse: \n${JSON.stringify(response.error)}`
             );
           else alert(response.error);
@@ -2618,7 +2624,7 @@
   };
 
   const submitDrawing = () => {
-    const { incontest, gameInfo, options } = window;
+    const { inContest, gameInfo, options } = window;
     const moreThanMinuteLeft = globals.timerStart - Date.now() > 60000;
     if (
       options.submitConfirm &&
@@ -2631,10 +2637,10 @@
     if (options.backup)
       localStorage.setItem('anbt_drawingbackup_newcanvas', anbt.pngBase64);
     window.submitting = true;
-    const url = incontest ? '/contests/submit-drawing.json' : '/play/draw.json';
+    const url = inContest ? '/contests/submit-drawing.json' : '/play/draw.json';
     ajax('POST', url, {
       obj: {
-        game_token: gameInfo.gameid,
+        game_token: gameInfo.gameId,
         panel: anbt.pngBase64
       },
       load: response => {
@@ -2650,7 +2656,7 @@
           if (typeof response.error === 'object')
             alert(
               `Error! Please report this data:\ngame: ${
-                gameInfo.gameid
+                gameInfo.gameId
               }\n\nresponse:\n${JSON.stringify(response.error)}`
             );
           else alert(response.error);
@@ -2676,10 +2682,10 @@
     ID('timeplus').disabled = true;
     ajax('POST', '/play/exit.json', {
       obj: {
-        game_token: gameInfo.gameid
+        game_token: gameInfo.gameId
       },
       load: () => {
-        ajax('GET', `/play/${gameInfo.gameid}/?${Date.now()}`, {
+        ajax('GET', `/play/${gameInfo.gameId}/?${Date.now()}`, {
           load: response => {
             ID('timeplus').disabled = false;
             gameInfo = response
@@ -2687,7 +2693,7 @@
               : {
                   error: 'Server returned a blank response :('
                 };
-            globals.timerStart = Date.now() + 1000 * gameInfo.timeleft;
+            globals.timerStart = Date.now() + 1000 * gameInfo.timeLeft;
           },
           error: () => {
             ID('timeplus').disabled = false;
@@ -2707,8 +2713,8 @@
   };
 
   const bindCanvasEvents = () => {
-    const { options, inforum } = window;
-    if (inforum) {
+    const { options, inForum } = window;
+    if (inForum) {
       ID('quit').addEventListener('click', quit);
       const backForum = document.createElement('button');
       backForum.href = '/';
@@ -2734,31 +2740,31 @@
   };
 
   const handleSandboxParameters = () => {
-    const { gameInfo, vertitle, options } = window;
-    if (gameInfo.drawingbylink) {
-      const [playername, playerlink] = gameInfo.drawingbylink;
-      const replaylink = `<a href="http://grompe.org.ru/drawit/#drawception/${location.hash.substr(
+    const { gameInfo, versionTitle, options } = window;
+    if (gameInfo.drawingByLink) {
+      const [playerName, playerLink] = gameInfo.drawingByLink;
+      const replayLink = `<a href="http://grompe.org.ru/drawit/#drawception/${location.hash.substr(
         1
       )}" title="Public replay link for sharing">Drawing</a>`;
       ID(
         'headerinfo'
-      ).innerHTML = `${replaylink} by <a href="${playerlink}">${playername}</a>`;
-      document.title = `${playername}'s drawing - Drawception`;
-      if (gameInfo.drawncaption) {
-        ID('drawthis').innerHTML = `"${gameInfo.drawncaption}"`;
+      ).innerHTML = `${replayLink} by <a href="${playerLink}">${playerName}</a>`;
+      document.title = `${playerName}'s drawing - Drawception`;
+      if (gameInfo.drawnCaption) {
+        ID('drawthis').innerHTML = `"${gameInfo.drawnCaption}"`;
         ID('drawthis').classList.remove('onlyplay');
         ID('emptytitle').classList.add('onlyplay');
       }
-      if (options.autoplay) play();
+      if (options.autoPlay) play();
     } else {
-      ID('headerinfo').innerHTML = `Sandbox with ${vertitle}`;
+      ID('headerinfo').innerHTML = `Sandbox with ${versionTitle}`;
       ID('drawthis').classList.add('onlyplay');
     }
     handleCommonParameters();
   };
 
   const needToGoDeeper = () => {
-    const { options, insandbox, panelid, paletteInfo } = window;
+    const { options, inSandbox, panelId, paletteInfo } = window;
     window.onerror = (error, file, line) => {
       if (error.toString().includes('periodsToSeconds')) return;
       if (error.toString().match(/script error/i)) return;
@@ -2784,12 +2790,12 @@
       if (options.fixTabletPluginGoingAWOL) fixTabletPluginGoingAwol();
     }
     bindCanvasEvents();
-    if (insandbox) {
-      if (panelid)
-        ajax('GET', `/panel/drawing/${panelid}/-/`, {
+    if (inSandbox) {
+      if (panelId)
+        ajax('GET', `/panel/drawing/${panelId}/-/`, {
           load: response => {
             window.gameInfo = extractInfoFromHTML(response);
-            fromUrl(`${window.gameInfo.drawinglink}?anbt`);
+            fromUrl(`${window.gameInfo.drawingLink}?anbt`);
             handleSandboxParameters();
           },
           error: () => {
