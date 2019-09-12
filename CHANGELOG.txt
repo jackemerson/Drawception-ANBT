@@ -1,3 +1,14 @@
+2.3.2019.09
+- Add link to Heracleum's Palette Editor in sandbox
+- Dark Mode: beginners' progress bar
+- Update dependencies
+- Add support for the new palette: Dimmed
+- Little cleaning
+- Add custom palette system from URL
+- Add button for testing palette in store
+- Change builded code's format
+- Fix canvas error on phone
+
 2.2.2019.08
 - Update dependencies
 - Add support for the new palette: School Pen
