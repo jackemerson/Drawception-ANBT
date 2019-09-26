@@ -1,3 +1,7 @@
+2.4.2019.09
+- Add support for the new palette: Treasure
+- Update dependencies 
+
 2.3.2019.09
 - Add link to Heracleum's Palette Editor in sandbox
 - Dark Mode: beginners' progress bar
