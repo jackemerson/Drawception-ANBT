@@ -9,8 +9,8 @@
   "author": "GromPE",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.6.0",
-    "rollup": "^1.21.2",
+    "@babel/core": "^7.6.2",
+    "rollup": "^1.21.4",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-cleanup": "^3.1.1",
     "rollup-plugin-clear": "^2.0.7",
@@ -21,8 +21,9 @@
     "rollup-plugin-prettier": "^0.6.0",
     "rollup-plugin-replace-html-vars": "^1.0.3",
     "rollup-plugin-scss": "^1.0.2",
-    "rollup-plugin-terser": "^5.1.1",
-    "rollup-pluginutils": "^2.8.1"
+    "rollup-plugin-terser": "^5.1.2",
+    "rollup-pluginutils": "^2.8.2",
+    "node-sass": "^4.12.0"
   },
   "dependencies": {
     "pako": "^1.0.10",
