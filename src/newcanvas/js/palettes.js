@@ -67,7 +67,9 @@ const palettes = {
                       '#ff7d91', '#ffaaa5', '#ffd2af', '#ffebaa'],
   "School Pen":      ['#07207a', '#000000', '#d8110c', '#097536', '#fbfcfd'],
   "Dimmed":          ['#c2aa78', '#fcfeb4', '#92c67d', '#5cab8b', '#182e45',
-                      '#221b30', '#722c31', '#441a23', '#1c0b11']
+                      '#221b30', '#722c31', '#441a23', '#1c0b11'],
+  "Treasure":        ['#e8c4b5', '#c6a48e', '#ebc260', '#dea338',
+                      '#c8832a', '#b3454d', '#7c3035', '#412a23']
 }
 
 export default palettes

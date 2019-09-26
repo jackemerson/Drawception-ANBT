@@ -1405,6 +1405,16 @@
       '#722c31',
       '#441a23',
       '#1c0b11'
+    ],
+    Treasure: [
+      '#e8c4b5',
+      '#c6a48e',
+      '#ebc260',
+      '#dea338',
+      '#c8832a',
+      '#b3454d',
+      '#7c3035',
+      '#412a23'
     ]
   };
 
@@ -2357,7 +2367,8 @@
     theme_neapolitan: ['Neapolitan', '#fff7e1'],
     theme_lemonade: ['Lemonade', '#ffebaa'],
     theme_school_pen: ['School Pen', '#fbfcfd'],
-    theme_dimmed: ['Dimmed', '#1c0b11']
+    theme_dimmed: ['Dimmed', '#1c0b11'],
+    theme_treasure: ['Treasure', '#412a23']
   };
 
   const getPalData = palette => {
