@@ -69,7 +69,9 @@ const palettes = {
   "Dimmed":          ['#c2aa78', '#fcfeb4', '#92c67d', '#5cab8b', '#182e45',
                       '#221b30', '#722c31', '#441a23', '#1c0b11'],
   "Treasure":        ['#e8c4b5', '#c6a48e', '#ebc260', '#dea338',
-                      '#c8832a', '#b3454d', '#7c3035', '#412a23']
+                      '#c8832a', '#b3454d', '#7c3035', '#412a23'],
+  "Witches Brew":    ['#e9eeae', '#bbd9bf', '#6c8e8f', '#516374',
+                      '#373a55', '#271d3a', '#100b16']
 }
 
 export default palettes

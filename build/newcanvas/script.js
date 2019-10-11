@@ -1415,6 +1415,15 @@
       '#b3454d',
       '#7c3035',
       '#412a23'
+    ],
+    'Witches Brew': [
+      '#e9eeae',
+      '#bbd9bf',
+      '#6c8e8f',
+      '#516374',
+      '#373a55',
+      '#271d3a',
+      '#100b16'
     ]
   };
 
@@ -2368,7 +2377,8 @@
     theme_lemonade: ['Lemonade', '#ffebaa'],
     theme_school_pen: ['School Pen', '#fbfcfd'],
     theme_dimmed: ['Dimmed', '#1c0b11'],
-    theme_treasure: ['Treasure', '#412a23']
+    theme_treasure: ['Treasure', '#412a23'],
+    theme_witches_brew: ['Witches Brew', '#100b16']
   };
 
   const getPalData = palette => {

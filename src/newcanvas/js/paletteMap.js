@@ -34,7 +34,8 @@ const paletteMap = {
   theme_lemonade: ['Lemonade', '#ffebaa'],
   theme_school_pen: ['School Pen', '#fbfcfd'],
   theme_dimmed: ['Dimmed', '#1c0b11'],
-  theme_treasure: ['Treasure', '#412a23']
+  theme_treasure: ['Treasure', '#412a23'],
+  theme_witches_brew: ['Witches Brew', '#100b16']
 }
 
 export default paletteMap
