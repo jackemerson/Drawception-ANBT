@@ -80,7 +80,7 @@ const handlePlayParameters = () => {
     } else {
       setPaletteByName(paletteData[0])
       setBackground(paletteData[1])
-      anbt.color = [palettes[paletteData[0]][0], 'eraser']
+      anbt.colors = [palettes[paletteData[0]][0], 'eraser']
       updateColorIndicators()
     }
     ID('setbackground').hidden = !gameInfo.backgroundButton

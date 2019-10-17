@@ -908,7 +908,9 @@
     return true;
   };
 
-  const setColor = (number, color) => (anbt.colors[number] = color);
+  const setColor = (number, color) => {
+    anbt.colors[number] = color;
+  };
 
   const setSeekbarMove = func => (anbt.seekbarMove = func);
 
@@ -2502,7 +2504,7 @@
       } else {
         setPaletteByName(paletteData[0]);
         setBackground(paletteData[1]);
-        anbt.color = [palettes[paletteData[0]][0], 'eraser'];
+        anbt.colors = [palettes[paletteData[0]][0], 'eraser'];
         updateColorIndicators();
       }
       ID('setbackground').hidden = !gameInfo.backgroundButton;
