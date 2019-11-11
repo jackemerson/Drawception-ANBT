@@ -2272,14 +2272,10 @@
       const inSandbox = location.href.match(
         /drawception\.com\/sandbox\/#?(.*)/
       );
-      const inPlay = location.href.match(
-        /drawception\.com\/(:?contests\/)?play\/(.*)/
-      );
       const hasCanvas = document.getElementById('canvas-holder');
-      const hasCanvasOrGameForm = document.querySelector('.playtimer');
       const captionContest =
         location.href.match(/contests\/play\//) && !hasCanvas;
-      if (!captionContest && (inSandbox || (inPlay && hasCanvasOrGameForm))) {
+      if (!captionContest && inSandbox) {
         setTimeout(() => setupNewCanvas(inSandbox, location.href), 1);
         return;
       }
@@ -2288,13 +2284,6 @@
           if (event.which === 2) return;
           event.preventDefault();
           setupNewCanvas(true, event.currentTarget.href);
-        })
-      );
-      $('a[href="/play/"]', true).forEach(playButton =>
-        playButton.addEventListener('click', event => {
-          if (event.which === 2) return;
-          event.preventDefault();
-          setupNewCanvas(false, event.currentTarget.href);
         })
       );
     }

@@ -101,14 +101,14 @@ const pageEnhancements = () => {
   if (options.markdownTools) addMarkdownTools()
   if (options.newCanvas) {
     const inSandbox = location.href.match(/drawception\.com\/sandbox\/#?(.*)/)
-    const inPlay = location.href.match(
+    /*const inPlay = location.href.match(
       /drawception\.com\/(:?contests\/)?play\/(.*)/
-    )
+    )*/
     const hasCanvas = document.getElementById('canvas-holder')
     // If created a friend game, the link won't present playable canvas
-    const hasCanvasOrGameForm = document.querySelector('.playtimer')
+    // const hasCanvasOrGameForm = document.querySelector('.playtimer')
     const captionContest = location.href.match(/contests\/play\//) && !hasCanvas
-    if (!captionContest && (inSandbox || (inPlay && hasCanvasOrGameForm))) {
+    if (!captionContest && (inSandbox /*|| (inPlay && hasCanvasOrGameForm)*/)) {
       setTimeout(() => setupNewCanvas(inSandbox, location.href), 1)
       return
     }
@@ -119,13 +119,13 @@ const pageEnhancements = () => {
         setupNewCanvas(true, event.currentTarget.href)
       })
     )
-    $('a[href="/play/"]', true).forEach(playButton =>
+    /*$('a[href="/play/"]', true).forEach(playButton =>
       playButton.addEventListener('click', event => {
         if (event.which === 2) return
         event.preventDefault()
         setupNewCanvas(false, event.currentTarget.href)
       })
-    )
+    )*/
   }
   // Enhance menu for higher resolutions
   if ($('.navbar-toggle')) {
