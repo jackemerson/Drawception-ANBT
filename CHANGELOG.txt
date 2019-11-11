@@ -1,3 +1,8 @@
+2.6.2019.11
+- Update dependencies
+- Disable new canvas in play mode
+- Fix color indicators after skipping a game
+
 2.5.2019.10
 - Add support for the new palette: Witches Brew
 
