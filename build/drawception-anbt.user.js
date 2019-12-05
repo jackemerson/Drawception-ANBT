@@ -2272,10 +2272,14 @@
       const inSandbox = location.href.match(
         /drawception\.com\/sandbox\/#?(.*)/
       );
+      const inPlay = location.href.match(
+        /drawception\.com\/(:?contests\/)?play\/(.*)/
+      );
       const hasCanvas = document.getElementById('canvas-holder');
+      const hasCanvasOrGameForm = document.querySelector('.playtimer');
       const captionContest =
         location.href.match(/contests\/play\//) && !hasCanvas;
-      if (!captionContest && inSandbox) {
+      if ((!captionContest && inSandbox) || (inPlay && hasCanvasOrGameForm)) {
         setTimeout(() => setupNewCanvas(inSandbox, location.href), 1);
         return;
       }
@@ -2284,6 +2288,13 @@
           if (event.which === 2) return;
           event.preventDefault();
           setupNewCanvas(true, event.currentTarget.href);
+        })
+      );
+      $('a[href="/play/"]', true).forEach(playButton =>
+        playButton.addEventListener('click', event => {
+          if (event.which === 2) return;
+          event.preventDefault();
+          setupNewCanvas(false, event.currentTarget.href);
         })
       );
     }
@@ -2309,9 +2320,11 @@
         '<a href="#" class="list-group-item toggle-light"><span class="fas fa-eye"></span> Toggle light</a>'
       );
     }
-    $('.toggle-light').forEach(button =>
-      button.addEventListener('click', toggleLight)
-    );
+    const lightButton = $('.toggle-light');
+    if (lightButton)
+      lightButton.forEach(button =>
+        button.addEventListener('click', toggleLight)
+      );
     const menuPlayer = $('.btn-menu-player');
     if (menuPlayer) {
       const userLink = $('.player-dropdown a[href^="/player/"]').href;
@@ -2350,9 +2363,11 @@
       '<li><a href="http://drawception.wikia.com/">Wiki</a></li>',
       '<li><a href="http://chat.grompe.org.ru/#drawception">Chat</a> (<a href="https://discord.gg/CNd5KTJ">Discord</a>)</li>'
     ];
-    $('.footer-main .list-unstyled').forEach((list, index) =>
-      list.appendChild($(linkList[index]))
-    );
+    const footerLists = $('.footer-main .list-unstyled');
+    if (footerLists)
+      footerLists.forEach((list, index) =>
+        list.appendChild($(linkList[index]))
+      );
   };
 
   const wrapper = () => {

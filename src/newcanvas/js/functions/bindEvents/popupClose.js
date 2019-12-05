@@ -1,8 +1,6 @@
-import ID from '../idSelector'
-
 const popupClose = event => {
   event.preventDefault()
-  ID('popup').classList.remove('show')
+  event.currentTarget.parentElement.classList.remove('show')
 }
 
 export default popupClose

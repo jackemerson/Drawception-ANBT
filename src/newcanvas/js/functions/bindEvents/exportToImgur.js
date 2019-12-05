@@ -12,8 +12,8 @@ const exportToImgur = event => {
   makePng(600, 500, true)
   uploadToImgur(request => {
     ID('imgur').childNodes[0].nodeValue = 'Upload to imgur'
-    ID('popup').classList.add('show')
-    ID('popuptitle').childNodes[0].nodeValue = 'Imgur upload result'
+    ID('imgurpopup').classList.add('show')
+    ID('imgurpopuptitle').childNodes[0].nodeValue = 'Imgur upload result'
     if (request && request.success) {
       anbt.unsaved = false
       //history.replaceState(null, null, "#" + r.data.id);

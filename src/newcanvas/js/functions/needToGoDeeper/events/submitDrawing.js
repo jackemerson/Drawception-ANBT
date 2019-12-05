@@ -3,9 +3,10 @@ import globals from '../../../globals'
 import makePng from '../../anbt/makePng'
 import ID from '../../idSelector'
 import ajax from '../ajax'
+import formatDrawingData from '../../anbt/formatDrawingData'
 
 const submitDrawing = () => {
-  const { inContest, gameInfo, options } = window
+  const { inContest, gameInfo, options, pako } = window
   const moreThanMinuteLeft = globals.timerStart - Date.now() > 60000
   if (
     options.submitConfirm &&
@@ -19,10 +20,29 @@ const submitDrawing = () => {
     localStorage.setItem('anbt_drawingbackup_newcanvas', anbt.pngBase64)
   window.submitting = true
   const url = inContest ? '/contests/submit-drawing.json' : '/play/draw.json'
+  const pathList = [...anbt.svg.childNodes].filter(
+    childNode => childNode.nodeName === 'path'
+  )
+  const base = {
+    v: 1,
+    w: 600,
+    h: 500,
+    t: 0,
+    th: gameInfo.palette,
+    bg: anbt.background,
+    p: 1,
+    s: 0.7,
+    actions: formatDrawingData(pathList)
+  }
+  const drawdata = btoa(
+    pako
+      .gzip(JSON.stringify(base))
+      .reduce((data, byte) => data + String.fromCharCode(byte), '')
+  )
   ajax('POST', url, {
     obj: {
       game_token: gameInfo.gameId,
-      panel: anbt.pngBase64
+      drawdata
     },
     load: response => {
       try {

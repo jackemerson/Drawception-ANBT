@@ -35,6 +35,8 @@ import unlock from './functions/anbt/unlock'
 import unpackPlayback from './functions/anbt/unpackPlayback'
 import updateView from './functions/anbt/updateView'
 import uploadToImgur from './functions/anbt/uploadToImgur'
+import uploadToDrawception from './functions/anbt/uploadToDrawception'
+import formatDrawingData from './functions/anbt/formatDrawingData'
 import createSvgElement from './functions/createSvgElement'
 import palettes from './palettes'
 
@@ -113,7 +115,9 @@ const anbt = {
   requestSave,
   uploadToImgur,
   lock,
-  unlock
+  unlock,
+  formatDrawingData,
+  uploadToDrawception
 }
 
 export default anbt

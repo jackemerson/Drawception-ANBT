@@ -26,6 +26,7 @@ import beforeUnload from './bindEvents/windowEvents/beforeUnload'
 import windowContextMenu from './bindEvents/windowEvents/contextMenu'
 import error from './bindEvents/windowEvents/error'
 import ID from './idSelector'
+import exportToDrawception from './bindEvents/exportToDrawception'
 
 const bindEvents = () => {
   ID('svgContainer').addEventListener('mousedown', mouseDown)
@@ -36,6 +37,7 @@ const bindEvents = () => {
   ID('import').addEventListener('click', doImport)
   ID('export').addEventListener('click', doExport)
   ID('imgur').addEventListener('click', exportToImgur)
+  ID('drawception').addEventListener('click', exportToDrawception)
   document.querySelectorAll('.brush').forEach((brush, index) => {
     brush.classList.add(`size-${globals.brushSizes[index]}`)
     brush.addEventListener('mousedown', changeBrushSize)
@@ -61,7 +63,8 @@ const bindEvents = () => {
   ID('play').addEventListener('touchstart', playCommonDown)
   ID('palettename').addEventListener('mousedown', openPaletteList)
   ID('palettename').addEventListener('touchend', openPaletteList)
-  ID('popupclose').addEventListener('click', popupClose)
+  ID('imgurpopupclose').addEventListener('click', popupClose)
+  ID('drawceptionpopupclose').addEventListener('click', popupClose)
   document.addEventListener('keyup', keyUp)
   document.addEventListener('keydown', keyDown)
   window.addEventListener('contextmenu', windowContextMenu)

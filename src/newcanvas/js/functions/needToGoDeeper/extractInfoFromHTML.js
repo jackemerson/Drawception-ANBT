@@ -1,7 +1,7 @@
 const extractInfoFromHTML = html => {
   const doc = document.implementation.createHTMLDocument('')
   doc.body.innerHTML = html
-  const drawapp = doc.querySelector('draw-app') ||
+  const drawapp = doc.querySelector('draw-app-svg') ||
     doc.querySelector('describe') || {
       getAttribute: () => false
     }

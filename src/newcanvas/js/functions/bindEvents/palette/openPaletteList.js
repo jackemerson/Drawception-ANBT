@@ -2,6 +2,7 @@ import palettes from '../../../palettes'
 import ID from '../../idSelector'
 import choosePalette from './choosePalette'
 import closePaletteList from './closePaletteList'
+import paletteMap from '../../../paletteMap'
 
 const openPaletteList = event => {
   if (event.touches || event.button === 0) {
@@ -14,23 +15,26 @@ const openPaletteList = event => {
         window.addEventListener('touchend', closePaletteList)
       }, 1)
     }
-    const keys = Object.keys(palettes)
-    if (chooser.childNodes.length < keys.length) {
+    const paletteNameList = Object.keys(palettes)
+    if (chooser.childNodes.length < paletteNameList.length) {
       const canvas = document.createElement('canvas')
       canvas.height = 10
       const context = canvas.getContext('2d')
-      for (let i = chooser.childNodes.length; i < keys.length; i++) {
-        canvas.width = 8 * palettes[keys[i]].length + 2
+      for (let i = chooser.childNodes.length; i < paletteNameList.length; i++) {
+        canvas.width = 8 * palettes[paletteNameList[i]].length + 2
         context.clearRect(0, 0, canvas.width, canvas.height)
         context.globalAlpha = 0.5
         context.fillRect(0, 0, canvas.width, canvas.height)
         context.globalAlpha = 1
-        palettes[keys[i]].forEach((color, index) => {
+        palettes[paletteNameList[i]].forEach((color, index) => {
           context.fillStyle = color
           context.fillRect(index * 8 + 1, 1, 8, 8)
         })
         const div = document.createElement('div')
-        div.appendChild(document.createTextNode(keys[i]))
+        div.appendChild(document.createTextNode(paletteNameList[i]))
+        for (let [paletteID, value] of Object.entries(paletteMap)) {
+          if (value[0] === paletteNameList[i]) div.setAttribute('palette', paletteID)
+        }
         div.style.backgroundImage = `url("${canvas.toDataURL()}")`
         div.style.backgroundRepeat = 'no-repeat'
         div.style.backgroundPosition = 'center 35px'

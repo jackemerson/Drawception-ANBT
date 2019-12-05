@@ -91,13 +91,18 @@
         <button id="trash" title="Clear the canvas"></button>
       </div>
     </div>
-    <div id="popup">
-      <div id="popupclose"></div>
-      <div id="popuptitle">Imgur upload result</div>
+    <div id="imgurpopup">
+      <div id="imgurpopupclose"></div>
+      <div id="imgurpopuptitle">Imgur upload result</div>
       <a id="imgururl" class="prominent">Imgur URL</a>
       <hr>
       <a id="imgurdelete" target="_blank">Imgur delete</a>
       <div id="imgurerror">...</div>
+    </div>
+    <div id="drawceptionpopup">
+      <div id="drawceptionpopupclose"></div>
+      <div id="drawceptionpopuptitle">Drawception upload result</div>
+      <a id="drawceptionurl" class="prominent">Drawception URL</a>
     </div>
     <div id="lockwarn">Time's up!<br><br>Submit now or miss the game!</div>
     <div id="svgContainer" class="loadingbg onlydraw"></div>
@@ -125,6 +130,7 @@
         <button id="import" class="onlysandbox">Import drawing</button>
         <button id="export" class="onlysandbox">Export drawing</button>
         <button id="imgur" class="onlysandbox">Upload to imgur</button>
+        <button id="drawception" class="onlysandbox">Upload to Drawception</button>
       </div>
       <button id="submit" class="submit onlyplay onlydraw">Submit!</button>
       <button id="submitcaption" class="submit onlyplay onlycaption">Submit</button>
@@ -151,7 +157,8 @@
           <li>Saved drawings will contain your drawing process in PNG format.</li>
           <li>After loading a drawing you can continue to draw or watch its playback.</li>
           <li>Note that editing the PNG with playback with other programs will likely destroy the playback data.</li>
-          <li>If you want to create custom palettes, you can use Heracleum's Palette Editor <a href="http://heracleum.org/dc/palette/">here</a>!</a></li>
+          <li>If you want to create custom palettes, you can use Heracleum's Palette Editor <a
+              href="http://heracleum.org/dc/palette/">here</a>!</a></li>
         </ul>
       </div>
     </div>

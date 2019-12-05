@@ -1022,6 +1022,65 @@
     request.send(formData);
   };
 
+  const formatDrawingData = drawingData => {
+    const formattedData = [];
+    drawingData.forEach(line => {
+      const lastFormattedData = formattedData[formattedData.length - 1];
+      const lineColor = colorToHex(line.getAttribute('stroke'));
+      const lineWidth = parseInt(line.getAttribute('stroke-width'), 10);
+      const linePath = line.getAttribute('d');
+      if (
+        lastFormattedData &&
+        lastFormattedData.c === lineColor &&
+        lastFormattedData.s === lineWidth
+      ) {
+        formattedData[formattedData.length - 1].p += linePath;
+      } else {
+        const data = {
+          c: lineColor,
+          s: lineWidth,
+          p: linePath
+        };
+        formattedData.push(data);
+      }
+    });
+    return formattedData;
+  };
+
+  function uploadToDrawception(callback) {
+    const { pako } = window;
+    const pathList = [...anbt.svg.childNodes].filter(
+      childNode => childNode.nodeName === 'path'
+    );
+    const base = {
+      v: 1,
+      w: 600,
+      h: 500,
+      t: 0,
+      th: anbt.paletteID,
+      bg: anbt.background,
+      p: 1,
+      s: 0.7,
+      actions: formatDrawingData(pathList)
+    };
+    const drawdata = btoa(
+      pako
+        .gzip(JSON.stringify(base))
+        .reduce((data, byte) => data + String.fromCharCode(byte), '')
+    );
+    const request = new XMLHttpRequest();
+    request.open('POST', 'https://drawception.com/sandbox/upload.json');
+    request.onload = () => {
+      let response = request.responseText;
+      try {
+        response = JSON.parse(response);
+      } catch (e) {}
+      callback(response);
+    };
+    request.onerror = error => callback(`error: ${error}`);
+    request.send(JSON.stringify({ drawdata }));
+  }
+
   const palettes = {
     Normal: [
       '#000000',
@@ -1499,7 +1558,9 @@
     requestSave,
     uploadToImgur,
     lock,
-    unlock
+    unlock,
+    formatDrawingData,
+    uploadToDrawception
   };
 
   const globals = {
@@ -1767,8 +1828,8 @@
     makePng(600, 500, true);
     uploadToImgur(request => {
       ID('imgur').childNodes[0].nodeValue = 'Upload to imgur';
-      ID('popup').classList.add('show');
-      ID('popuptitle').childNodes[0].nodeValue = 'Imgur upload result';
+      ID('imgurpopup').classList.add('show');
+      ID('imgurpopuptitle').childNodes[0].nodeValue = 'Imgur upload result';
       if (request && request.success) {
         anbt.unsaved = false;
         ID('imgururl').href = `http://imgur.com/${request.data.id}`;
@@ -1865,6 +1926,7 @@
     if (event.touches || event.button === 0) {
       event.preventDefault();
       const name = event.currentTarget.childNodes[0].nodeValue;
+      anbt.paletteID = event.currentTarget.getAttribute('palette');
       setPaletteByName(name);
     }
   };
@@ -1875,6 +1937,46 @@
       window.removeEventListener('mousedown', closePaletteList);
       window.removeEventListener('touchend', closePaletteList);
     }
+  };
+
+  const paletteMap = {
+    default: ['Normal', '#fffdc9'],
+    theme_thanksgiving: ['Thanksgiving', '#f5e9ce'],
+    halloween: ['Halloween', '#444444'],
+    theme_cga: ['CGA', '#ffff55'],
+    shades_of_grey: ['Grayscale', '#e9e9e9'],
+    theme_bw: ['Black and white', '#ffffff'],
+    theme_gameboy: ['Gameboy', '#9bbc0f'],
+    theme_neon: ['Neon', '#00abff'],
+    theme_sepia: ['Sepia', '#ffe2c4'],
+    theme_valentines: ["Valentine's", '#ffccdf'],
+    theme_blues: ['the blues', '#295c6f'],
+    theme_spring: ['Spring', '#ffffff'],
+    theme_beach: ['Beach', '#f7dca2'],
+    theme_beach_2: ['Tide Pool', '#2271a2'],
+    theme_coty_2016: ['Colors of 2016', '#648589'],
+    theme_bee: ['Bee', '#ffffff'],
+    theme_coty_2017: ['Colors of 2017', '#5f7278'],
+    theme_fire_ice: ['Fire and Ice', '#040526'],
+    theme_coty_2018: ['Canyon Sunset', '#2e1b50'],
+    theme_juice: ['Juice', '#fced95'],
+    theme_tropical: ['Tropical', '#2f0946'],
+    theme_grimby_grays: ['Grimby Grays', '#f0efeb'],
+    theme_fury_road: ['Fury Road', '#893f1d'],
+    theme_candy: ['Candy', '#793abd'],
+    theme_holiday_2: ['Holiday', '#f6f6f6'],
+    theme_blues_2: ['Blues', '#0f1328'],
+    theme_sin_city: ['Sin City', '#000000'],
+    theme_lucky_clover: ['Lucky Clover', '#0c442c'],
+    theme_drawception: ["D's Exclusive", '#0ee446'],
+    theme_retina_burn: ['Retina Burn', '#ff0b11'],
+    theme_easter: ['Easter', '#ddf7a8'],
+    theme_neapolitan: ['Neapolitan', '#fff7e1'],
+    theme_lemonade: ['Lemonade', '#ffebaa'],
+    theme_school_pen: ['School Pen', '#fbfcfd'],
+    theme_dimmed: ['Dimmed', '#1c0b11'],
+    theme_treasure: ['Treasure', '#412a23'],
+    theme_witches_brew: ['Witches Brew', '#100b16']
   };
 
   const openPaletteList = event => {
@@ -1888,23 +1990,31 @@
           window.addEventListener('touchend', closePaletteList);
         }, 1);
       }
-      const keys = Object.keys(palettes);
-      if (chooser.childNodes.length < keys.length) {
+      const paletteNameList = Object.keys(palettes);
+      if (chooser.childNodes.length < paletteNameList.length) {
         const canvas = document.createElement('canvas');
         canvas.height = 10;
         const context = canvas.getContext('2d');
-        for (let i = chooser.childNodes.length; i < keys.length; i++) {
-          canvas.width = 8 * palettes[keys[i]].length + 2;
+        for (
+          let i = chooser.childNodes.length;
+          i < paletteNameList.length;
+          i++
+        ) {
+          canvas.width = 8 * palettes[paletteNameList[i]].length + 2;
           context.clearRect(0, 0, canvas.width, canvas.height);
           context.globalAlpha = 0.5;
           context.fillRect(0, 0, canvas.width, canvas.height);
           context.globalAlpha = 1;
-          palettes[keys[i]].forEach((color, index) => {
+          palettes[paletteNameList[i]].forEach((color, index) => {
             context.fillStyle = color;
             context.fillRect(index * 8 + 1, 1, 8, 8);
           });
           const div = document.createElement('div');
-          div.appendChild(document.createTextNode(keys[i]));
+          div.appendChild(document.createTextNode(paletteNameList[i]));
+          for (let [paletteID, value] of Object.entries(paletteMap)) {
+            if (value[0] === paletteNameList[i])
+              div.setAttribute('palette', paletteID);
+          }
           div.style.backgroundImage = `url("${canvas.toDataURL()}")`;
           div.style.backgroundRepeat = 'no-repeat';
           div.style.backgroundPosition = 'center 35px';
@@ -1918,7 +2028,7 @@
 
   const popupClose = event => {
     event.preventDefault();
-    ID('popup').classList.remove('show');
+    event.currentTarget.parentElement.classList.remove('show');
   };
 
   const svgContextMenu = event => event.preventDefault();
@@ -2069,6 +2179,31 @@
 
   const error = event => alert(event);
 
+  const exportToDrawception = event => {
+    event.preventDefault();
+    if (warnStrokesAfterPosition()) return;
+    ID('drawception').childNodes[0].nodeValue = 'Uploading...';
+    ID('drawception').disabled = true;
+    uploadToDrawception(request => {
+      ID('drawception').childNodes[0].nodeValue = 'Upload to Drawception';
+      ID('drawceptionpopup').classList.add('show');
+      ID('drawceptionpopuptitle').childNodes[0].nodeValue =
+        'Drawception upload result';
+      console.log(request);
+      console.log(request.url);
+      if (request && request.url) {
+        anbt.unsaved = false;
+        ID('drawceptionurl').href = request.url;
+        ID('drawceptionurl').childNodes[0].nodeValue = 'Uploaded image';
+        if (window.inForum)
+          window.frameElement.ownerDocument.getElementById(
+            'input-comment'
+          ).value += `![](${request.url})`;
+      }
+      ID('drawception').disabled = false;
+    });
+  };
+
   const bindEvents = () => {
     ID('svgContainer').addEventListener('mousedown', mouseDown);
     ID('svgContainer').addEventListener('mousemove', svgMouseMove);
@@ -2078,6 +2213,7 @@
     ID('import').addEventListener('click', doImport);
     ID('export').addEventListener('click', doExport);
     ID('imgur').addEventListener('click', exportToImgur);
+    ID('drawception').addEventListener('click', exportToDrawception);
     document.querySelectorAll('.brush').forEach((brush, index) => {
       brush.classList.add(`size-${globals.brushSizes[index]}`);
       brush.addEventListener('mousedown', changeBrushSize);
@@ -2103,7 +2239,8 @@
     ID('play').addEventListener('touchstart', playCommonDown);
     ID('palettename').addEventListener('mousedown', openPaletteList);
     ID('palettename').addEventListener('touchend', openPaletteList);
-    ID('popupclose').addEventListener('click', popupClose);
+    ID('imgurpopupclose').addEventListener('click', popupClose);
+    ID('drawceptionpopupclose').addEventListener('click', popupClose);
     document.addEventListener('keyup', keyUp);
     document.addEventListener('keydown', keyDown);
     window.addEventListener('contextmenu', windowContextMenu);
@@ -2304,7 +2441,7 @@
   const extractInfoFromHTML = html => {
     const doc = document.implementation.createHTMLDocument('');
     doc.body.innerHTML = html;
-    const drawapp = doc.querySelector('draw-app') ||
+    const drawapp = doc.querySelector('draw-app-svg') ||
       doc.querySelector('describe') || {
         getAttribute: () => false
       };
@@ -2341,46 +2478,6 @@
       limitReached: false,
       html
     };
-  };
-
-  const paletteMap = {
-    default: ['Normal', '#fffdc9'],
-    theme_thanksgiving: ['Thanksgiving', '#f5e9ce'],
-    halloween: ['Halloween', '#444444'],
-    theme_cga: ['CGA', '#ffff55'],
-    shades_of_grey: ['Grayscale', '#e9e9e9'],
-    theme_bw: ['Black and white', '#ffffff'],
-    theme_gameboy: ['Gameboy', '#9bbc0f'],
-    theme_neon: ['Neon', '#00abff'],
-    theme_sepia: ['Sepia', '#ffe2c4'],
-    theme_valentines: ["Valentine's", '#ffccdf'],
-    theme_blues: ['the blues', '#295c6f'],
-    theme_spring: ['Spring', '#ffffff'],
-    theme_beach: ['Beach', '#f7dca2'],
-    theme_beach_2: ['Tide Pool', '#2271a2'],
-    theme_coty_2016: ['Colors of 2016', '#648589'],
-    theme_bee: ['Bee', '#ffffff'],
-    theme_coty_2017: ['Colors of 2017', '#5f7278'],
-    theme_fire_ice: ['Fire and Ice', '#040526'],
-    theme_coty_2018: ['Canyon Sunset', '#2e1b50'],
-    theme_juice: ['Juice', '#fced95'],
-    theme_tropical: ['Tropical', '#2f0946'],
-    theme_grimby_grays: ['Grimby Grays', '#f0efeb'],
-    theme_fury_road: ['Fury Road', '#893f1d'],
-    theme_candy: ['Candy', '#793abd'],
-    theme_holiday_2: ['Holiday', '#f6f6f6'],
-    theme_blues_2: ['Blues', '#0f1328'],
-    theme_sin_city: ['Sin City', '#000000'],
-    theme_lucky_clover: ['Lucky Clover', '#0c442c'],
-    theme_drawception: ["D's Exclusive", '#0ee446'],
-    theme_retina_burn: ['Retina Burn', '#ff0b11'],
-    theme_easter: ['Easter', '#ddf7a8'],
-    theme_neapolitan: ['Neapolitan', '#fff7e1'],
-    theme_lemonade: ['Lemonade', '#ffebaa'],
-    theme_school_pen: ['School Pen', '#fbfcfd'],
-    theme_dimmed: ['Dimmed', '#1c0b11'],
-    theme_treasure: ['Treasure', '#412a23'],
-    theme_witches_brew: ['Witches Brew', '#100b16']
   };
 
   const getPalData = palette => {
@@ -2659,7 +2756,7 @@
   };
 
   const submitDrawing = () => {
-    const { inContest, gameInfo, options } = window;
+    const { inContest, gameInfo, options, pako } = window;
     const moreThanMinuteLeft = globals.timerStart - Date.now() > 60000;
     if (
       options.submitConfirm &&
@@ -2673,10 +2770,29 @@
       localStorage.setItem('anbt_drawingbackup_newcanvas', anbt.pngBase64);
     window.submitting = true;
     const url = inContest ? '/contests/submit-drawing.json' : '/play/draw.json';
+    const pathList = [...anbt.svg.childNodes].filter(
+      childNode => childNode.nodeName === 'path'
+    );
+    const base = {
+      v: 1,
+      w: 600,
+      h: 500,
+      t: 0,
+      th: gameInfo.palette,
+      bg: anbt.background,
+      p: 1,
+      s: 0.7,
+      actions: formatDrawingData(pathList)
+    };
+    const drawdata = btoa(
+      pako
+        .gzip(JSON.stringify(base))
+        .reduce((data, byte) => data + String.fromCharCode(byte), '')
+    );
     ajax('POST', url, {
       obj: {
         game_token: gameInfo.gameId,
-        panel: anbt.pngBase64
+        drawdata
       },
       load: response => {
         try {

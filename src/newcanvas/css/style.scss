@@ -788,7 +788,8 @@ button:disabled {
   font-size: 35pt;
   text-shadow: 1px 1px 1px #fff, -1px -1px 1px #fff, -1px 1px 1px #fff, 1px -1px 1px #fff;
 }
-#popup {
+#imgurpopup,
+#drawceptionpopup {
   display: none;
   position: absolute;
   width: 400px;
@@ -806,12 +807,14 @@ button:disabled {
     display: block;
   }
 }
-#popuptitle {
+#imgurpopuptitle,
+#drawceptionpopuptitle {
   color: #999;
   font-size: 25pt;
   margin: 10px;
 }
-#popupclose {
+#imgurpopupclose,
+#drawceptionpopupclose {
   display: block;
   position: absolute;
   width: 50px;
