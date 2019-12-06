@@ -71,7 +71,9 @@ const palettes = {
   "Treasure":        ['#e8c4b5', '#c6a48e', '#ebc260', '#dea338',
                       '#c8832a', '#b3454d', '#7c3035', '#412a23'],
   "Witches Brew":    ['#e9eeae', '#bbd9bf', '#6c8e8f', '#516374',
-                      '#373a55', '#271d3a', '#100b16']
+                      '#373a55', '#271d3a', '#100b16'],
+  "Wilting Rose":    ['#311e31', '#284b41', '#369486', '#70cbbd', '#f5ebd2',
+                      '#643241', '#b4556e', '#c8aac8', '#e6c3c3']
 }
 
 export default palettes

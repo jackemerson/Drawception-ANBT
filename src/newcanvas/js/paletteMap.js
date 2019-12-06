@@ -35,7 +35,8 @@ const paletteMap = {
   theme_school_pen: ['School Pen', '#fbfcfd'],
   theme_dimmed: ['Dimmed', '#1c0b11'],
   theme_treasure: ['Treasure', '#412a23'],
-  theme_witches_brew: ['Witches Brew', '#100b16']
+  theme_witches_brew: ['Witches Brew', '#100b16'],
+  theme_wilting_rose: ['Wilting Rose', '#e6c3c3']
 }
 
 export default paletteMap
