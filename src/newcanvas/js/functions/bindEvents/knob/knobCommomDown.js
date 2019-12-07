@@ -1,9 +1,9 @@
-import globals from '../../../globals'
-import ID from '../../idSelector'
-import knobCommonMove from './knobCommonMove'
-import knobCommonUp from './knobCommoUp'
+import { globals } from '../../../globals'
+import { ID } from '../../idSelector'
+import { knobCommonMove } from './knobCommonMove'
+import { knobCommonUp } from './knobCommoUp'
 
-const knobCommonDown = event => {
+export function knobCommonDown(event) {
   if (event.button === 0 || (event.touches && event.touches.length === 1)) {
     globals.rectangle = ID('seekbar').getBoundingClientRect()
     knobCommonMove(event)
@@ -13,5 +13,3 @@ const knobCommonDown = event => {
     window.addEventListener('touchmove', knobCommonMove)
   }
 }
-
-export default knobCommonDown

@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  const drawSvgElement = (element, context) => {
+  function drawSvgElement(element, context) {
     if (!context) context = anbt.context;
     context.globalCompositeOperation =
       element.getAttribute('class') === 'eraser'
@@ -13,18 +13,18 @@
       context.beginPath();
       for (let i = 0; i < element.pathSegList.numberOfItems; i++) {
         const segment = element.pathSegList.getItem(i);
-        if (segment.pathSegTypeAsLetter === 'M')
+        if (segment.pathSegTypeAsLetter === 'M') {
           context.moveTo(segment.x, segment.y);
-        else if (segment.pathSegTypeAsLetter === 'L')
+        } else if (segment.pathSegTypeAsLetter === 'L') {
           context.lineTo(segment.x, segment.y);
-        else if (segment.pathSegTypeAsLetter === 'Q')
+        } else if (segment.pathSegTypeAsLetter === 'Q') {
           context.quadraticCurveTo(
             segment.x1,
             segment.y1,
             segment.x,
             segment.y
           );
-        else if (segment.pathSegTypeAsLetter === 'C')
+        } else if (segment.pathSegTypeAsLetter === 'C') {
           context.bezierCurveTo(
             segment.x1,
             segment.y1,
@@ -33,6 +33,7 @@
             segment.x,
             segment.y
           );
+        }
       }
       context.stroke();
     } else if (element.nodeName === 'rect') {
@@ -43,40 +44,43 @@
       const height = element.getAttribute('height');
       context.fillRect(x, y, width, height);
     }
-  };
+  }
 
-  const moveSeekbar = position => {
+  function moveSeekbar(position) {
     if (anbt.seekbarMove) anbt.seekbarMove(position);
-  };
+  }
 
-  const addToSvg = element => {
+  function addToSvg(element) {
     if (anbt.rewindCache.length >= anbt.fastUndoLevels) anbt.rewindCache.pop();
     anbt.rewindCache.unshift(anbt.context.getImageData(0, 0, 600, 500));
     drawSvgElement(element);
     if (!anbt.timeEdit || anbt.position === anbt.svg.childNodes.length - 1) {
-      for (let i = anbt.svg.childNodes.length - 1; i > anbt.position; i--)
+      for (let i = anbt.svg.childNodes.length - 1; i > anbt.position; i--) {
         anbt.svg.removeChild(anbt.svg.childNodes[i]);
+      }
       anbt.svg.appendChild(element);
       anbt.position = anbt.svg.childNodes.length - 1;
       moveSeekbar(1);
-    } else
+    } else {
       anbt.svg.insertBefore(element, anbt.svg.childNodes[anbt.position + 1]);
-  };
+    }
+  }
 
-  const createSvgElement = (name, attributs) => {
+  function createSvgElement(name, attributs) {
     const element = document.createElementNS(
       'http://www.w3.org/2000/svg',
       name
     );
-    if (attributs)
+    if (attributs) {
       Object.keys(attributs).forEach(attribut => {
         if (attributs[attribut])
           element.setAttribute(attribut, attributs[attribut]);
       });
+    }
     return element;
-  };
+  }
 
-  const bindContainer = element => {
+  function bindContainer(element) {
     anbt.container = element;
     anbt.canvas.width = 600;
     anbt.canvas.height = 500;
@@ -90,7 +94,9 @@
       anbt.contextDisplay = anbt.canvasDisplay.getContext('2d');
       anbt.contextDisplay.lineJoin = anbt.contextDisplay.lineCap = 'round';
       anbt.container.appendChild(anbt.canvasDisplay);
-    } else anbt.drawDisplayLine = anbt.drawDisplayLinePresto;
+    } else {
+      anbt.drawDisplayLine = anbt.drawDisplayLinePresto;
+    }
     anbt.container.appendChild(anbt.svgDisplay);
     const rect = createSvgElement('rect', {
       class: 'eraser',
@@ -101,9 +107,9 @@
       fill: anbt.background
     });
     anbt.svg.appendChild(rect);
-  };
+  }
 
-  const clearWithColor = color => {
+  function clearWithColor(color) {
     addToSvg(
       createSvgElement('rect', {
         class: color,
@@ -115,22 +121,23 @@
       })
     );
     anbt.lastRect = anbt.position;
-  };
+  }
 
-  const cutHistoryBeforeClearAndAfterPosition = () => {
+  function cutHistoryBeforeClearAndAfterPosition() {
     let removing = false;
     for (let i = anbt.svg.childNodes.length - 1; i > 0; i--) {
       const element = anbt.svg.childNodes[i];
-      if (removing || i > anbt.position) anbt.svg.removeChild(element);
-      else if (element.nodeName === 'rect' && i <= anbt.position) {
+      if (removing || i > anbt.position) {
+        anbt.svg.removeChild(element);
+      } else if (element.nodeName === 'rect' && i <= anbt.position) {
         removing = true;
         if (element.getAttribute('class') === 'eraser')
           anbt.svg.removeChild(element);
       }
     }
-  };
+  }
 
-  const drawDisplayLine = (x1, y1, x2, y2) => {
+  function drawDisplayLine(x1, y1, x2, y2) {
     const { contextDisplay } = anbt;
     contextDisplay.strokeStyle = anbt.lastColor;
     contextDisplay.lineWidth = anbt.size;
@@ -138,15 +145,15 @@
     contextDisplay.moveTo(x1, y1);
     contextDisplay.lineTo(x2, y2);
     contextDisplay.stroke();
-  };
+  }
 
-  const drawDisplayLinePresto = first => {
+  function drawDisplayLinePresto(first) {
     if (first)
       anbt.svgDisplay.insertBefore(anbt.path, anbt.svgDisplay.firstChild);
-  };
+  }
 
-  const colorToRgba = color =>
-    color[0] === '#'
+  function colorToRgba(color) {
+    return color[0] === '#'
       ? color.length === 4
         ? [...(color.substr(1, 3) + 'F')].map(rgb => parseInt(rgb + rgb, 16))
         : (color + 'FF')
@@ -164,18 +171,24 @@
       : color.substr(0, 3) === 'rgb'
       ? (color + 255).match(/[\d\.]+/g).map(rgba => parseInt(rgba, 10))
       : [0, 0, 0, 255];
+  }
 
-  const rgbToHex = rgb =>
-    '#' +
-    rgb
-      .map((value, index) =>
-        index < 3 ? ('0' + value.toString(16)).slice(-2) : ''
-      )
-      .join('');
+  function rgbToHex(rgb) {
+    return (
+      '#' +
+      rgb
+        .map((value, index) =>
+          index < 3 ? ('0' + value.toString(16)).slice(-2) : ''
+        )
+        .join('')
+    );
+  }
 
-  const colorToHex = color => rgbToHex(colorToRgba(color));
+  function colorToHex(color) {
+    return rgbToHex(colorToRgba(color));
+  }
 
-  const rgbToLab = rgb => {
+  function rgbToLab(rgb) {
     const [red, green, blue] = rgb.map(value =>
       value > 10
         ? Math.pow((value / 255 + 0.055) / 1.055, 2.4)
@@ -189,20 +202,22 @@
       value > 0.008856 ? Math.pow(value, 1 / 3) : 7.787 * value + 16 / 116
     );
     return [116 * y - 16, 500 * (x - y), 200 * (y - z)];
-  };
+  }
 
-  const getColorDistance = (rgb1, rgb2) => {
+  function getColorDistance(rgb1, rgb2) {
     const lab1 = rgbToLab(rgb1);
     const lab2 = rgbToLab(rgb2);
     const l = lab2[0] - lab1[0];
     const a = lab2[1] - lab1[1];
     const b = lab2[2] - lab1[2];
     return Math.sqrt(l ** 2 * 2 + a ** 2 + b ** 2);
-  };
+  }
 
-  const ID = id => document.getElementById(id);
+  function ID(id) {
+    return document.getElementById(id);
+  }
 
-  const getClosestColor = (rgb, palette) => {
+  function getClosestColor(rgb, palette) {
     if (
       ID('newcanvasyo').classList.contains('sandbox') ||
       (window.gameInfo && window.gameInfo.friend)
@@ -214,33 +229,59 @@
     const minimum = Math.min(...distances);
     const closestColor = palette[distances.indexOf(minimum)];
     return colorToHex(closestColor);
-  };
+  }
 
-  const eyedropper = (x, y) => {
+  function eyedropper(x, y) {
     const pixelColor = anbt.context.getImageData(x, y, 1, 1).data;
     return pixelColor[3] > 0
       ? getClosestColor(pixelColor, anbt.palette)
       : anbt.background;
-  };
+  }
 
-  const findLastRect = endPosition => {
+  function findLastRect(endPosition) {
     if (!endPosition) endPosition = anbt.svg.childNodes.length - 1;
     for (let i = endPosition; i > 0; i--) {
       const element = anbt.svg.childNodes[i];
       if (element.nodeName === 'rect') return i;
     }
     return 0;
-  };
+  }
 
-  const packUint32be = number =>
-    String.fromCharCode(
+  function formatDrawingData(drawingData) {
+    const formattedData = [];
+    drawingData.forEach(line => {
+      const lastFormattedData = formattedData[formattedData.length - 1];
+      const lineColor = colorToHex(line.getAttribute('stroke'));
+      const lineWidth = parseInt(line.getAttribute('stroke-width'), 10);
+      const linePath = line.getAttribute('d');
+      if (
+        lastFormattedData &&
+        lastFormattedData.c === lineColor &&
+        lastFormattedData.s === lineWidth
+      ) {
+        formattedData[formattedData.length - 1].p += linePath;
+      } else {
+        const data = {
+          c: lineColor,
+          s: lineWidth,
+          p: linePath
+        };
+        formattedData.push(data);
+      }
+    });
+    return formattedData;
+  }
+
+  function packUint32be(number) {
+    return String.fromCharCode(
       (number >> 24) & 0xff,
       (number >> 16) & 0xff,
       (number >> 8) & 0xff,
       number & 0xff
     );
+  }
 
-  const setBackground = color => {
+  function setBackground(color) {
     const transparent = color === 'eraser';
     anbt.transparent = transparent;
     anbt.canvas.style.background = transparent ? 'none' : color;
@@ -254,26 +295,27 @@
           color
         )
       );
-  };
+  }
 
-  const buildSmoothPath = (points, path) => {
+  function buildSmoothPath(points, path) {
     const { length } = points;
     if (length < 2) return;
     path.pathSegList.initialize(
       path.createSVGPathSegMovetoAbs(points[0].x, points[0].y)
     );
     if (!window.options.smoothening) {
-      for (let i = 1; i < points.length; i++)
+      for (let i = 1; i < points.length; i++) {
         path.pathSegList.appendItem(
           path.createSVGPathSegLinetoAbs(points[i].x, points[i].y)
         );
+      }
       return;
     }
     path.pathSegList.appendItem(
       path.createSVGPathSegLinetoAbs(points[1].x, points[1].y)
     );
     if (length < 3) return;
-    let prevtangent;
+    let previousTangent;
     for (let i = 1; i < length - 1; i++) {
       const previousPoint = points[i - 1];
       const currentPoint = points[i];
@@ -296,8 +338,8 @@
         } else {
           if (good && dist1 / dist2 >= 0.4 && dist1 / dist2 <= 2.5) {
             const t1 = {
-              x: previousPoint.x + Math.cos(prevtangent) * dist1 * 0.4,
-              y: previousPoint.y + Math.sin(prevtangent) * dist1 * 0.4
+              x: previousPoint.x + Math.cos(previousTangent) * dist1 * 0.4,
+              y: previousPoint.y + Math.sin(previousTangent) * dist1 * 0.4
             };
             const t2 = {
               x: currentPoint.x - Math.cos(tangent) * dist2 * 0.4,
@@ -321,21 +363,24 @@
           }
         }
       }
-      prevtangent = tangent;
+      previousTangent = tangent;
     }
     const c = points[length - 1];
     path.pathSegList.appendItem(path.createSVGPathSegLinetoAbs(c.x, c.y));
-  };
+  }
 
-  const stringToBytes = binaryString =>
-    new Uint8Array([...binaryString].map(character => character.charCodeAt(0)));
+  function stringToBytes(binaryString) {
+    return new Uint8Array(
+      [...binaryString].map(character => character.charCodeAt(0))
+    );
+  }
 
-  const int16be = (byte1, byte2) => {
+  function int16be(byte1, byte2) {
     const v = (byte1 << 8) | byte2;
     return v > 32767 ? v - 65536 : v;
-  };
+  }
 
-  const unpackPlayback = bytes => {
+  function unpackPlayback(bytes) {
     const { pako } = window;
     const version = bytes[0];
     let start;
@@ -345,8 +390,11 @@
     } else if (version === 3) {
       bytes = stringToBytes(pako.inflate(bytes.subarray(1), { to: 'string' }));
       start = 0;
-    } else if (version === 2) start = 1;
-    else throw new Error(`Unsupported version: ${version}`);
+    } else if (version === 2) {
+      start = 1;
+    } else {
+      throw new Error(`Unsupported version: ${version}`);
+    }
     const svg = createSvgElement('svg', {
       xmlns: 'http://www.w3.org/2000/svg',
       version: '1.1',
@@ -397,7 +445,9 @@
             path.pathSegList.appendItem(
               path.createSVGPathSegLinetoAbs(last.x, last.y + 0.001)
             );
-          } else buildSmoothPath(points, path);
+          } else {
+            buildSmoothPath(points, path);
+          }
           path.orig = points;
           path.pattern = last.pattern;
           svg.appendChild(path);
@@ -415,8 +465,9 @@
             }, ${bytes[i + 3] / 255}`;
             if (last.color === 'rgba(255,255,255,0)') last.color = 'eraser';
             i += 4;
-            if (x === -1) last.size = y / 100;
-            else
+            if (x === -1) {
+              last.size = y / 100;
+            } else {
               svg.appendChild(
                 createSvgElement('rect', {
                   class: last.color === 'eraser' ? last.color : null,
@@ -427,6 +478,7 @@
                   fill: last.color === 'eraser' ? background : last.color
                 })
               );
+            }
           } else if (x === -3) {
             last.pattern = y;
             i += 4;
@@ -439,14 +491,15 @@
       }
     }
     return svg;
-  };
+  }
 
-  const updateView = () =>
-    [...anbt.svg.childNodes]
+  function updateView() {
+    return [...anbt.svg.childNodes]
       .splice(anbt.lastRect < anbt.position ? anbt.lastRect : 0)
       .forEach(child => drawSvgElement(child));
+  }
 
-  const fromPng = buffer => {
+  function fromPng(buffer) {
     const dataView = new DataView(buffer);
     const magic = dataView.getUint32(0);
     if (magic !== 0x89504e47)
@@ -471,9 +524,9 @@
       }
     }
     throw new Error('No vector data found!');
-  };
+  }
 
-  const fromLocalFile = () => {
+  function fromLocalFile() {
     if (!anbt.fileInput) {
       anbt.fileInput = document.createElement('input');
       anbt.fileInput.style.position = 'absolute';
@@ -493,20 +546,25 @@
       );
     }
     anbt.fileInput.click();
-  };
+  }
 
-  const fromUrl = url => {
+  function fromUrl(url) {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
-    if ('responseType' in xhr) xhr.responseType = 'arraybuffer';
-    else return alert('Your browser is too old for this');
+    if ('responseType' in xhr) {
+      xhr.responseType = 'arraybuffer';
+    } else {
+      return alert('Your browser is too old for this');
+    }
     xhr.onload = () => fromPng(xhr.response);
     xhr.send();
-  };
+  }
 
-  const getSeekMax = () => anbt.svg.childNodes.length - 1;
+  function getSeekMax() {
+    return anbt.svg.childNodes.length - 1;
+  }
 
-  const moveCursor = (x, y) => {
+  function moveCursor(x, y) {
     if (anbt.locked) return;
     if (!anbt.brushCursor) {
       anbt.brushCursor = createSvgElement('circle', {
@@ -543,14 +601,14 @@
     }
     anbt.brushCursor.setAttribute('r', anbt.size / 2 + 0.5);
     anbt.brushCursor2.setAttribute('r', anbt.size / 2 - 0.5);
-  };
+  }
 
-  const getSqSegDist = (point, point1, point2) => {
+  function getSqSegDist(point, point1, point2) {
     let { x, y } = point1;
     let dx = point2.x - x;
     let dy = point2.y - y;
     if (dx !== 0 || dy !== 0) {
-      var t = ((point.x - x) * dx + (point.y - y) * dy) / (dx * dx + dy * dy);
+      const t = ((point.x - x) * dx + (point.y - y) * dy) / (dx * dx + dy * dy);
       if (t > 1) {
         x = point2.x;
         y = point2.y;
@@ -562,9 +620,9 @@
     dx = point.x - x;
     dy = point.y - y;
     return dx * dx + dy * dy;
-  };
+  }
 
-  const simplifyDouglasPeucker = ({ points, smoothening: sqTolerance }) => {
+  function simplifyDouglasPeucker({ points, smoothening: sqTolerance }) {
     const length = points.length;
     const MarkerArray = typeof Uint8Array !== 'undefined' ? Uint8Array : Array;
     const markers = new MarkerArray(length);
@@ -590,11 +648,13 @@
       last = stack.pop();
       first = stack.pop();
     }
-    for (let i = 0; i < length; i++) if (markers[i]) newPoints.push(points[i]);
+    for (let i = 0; i < length; i++) {
+      if (markers[i]) newPoints.push(points[i]);
+    }
     return newPoints;
-  };
+  }
 
-  const strokeEnd = () => {
+  function strokeEnd() {
     if (anbt.locked) return;
     anbt.unsaved = true;
     const points =
@@ -604,48 +664,55 @@
     addToSvg(anbt.path);
     anbt.contextDisplay && anbt.contextDisplay.clearRect(0, 0, 600, 500);
     anbt.isStroking = false;
-  };
+  }
 
-  const lock = () => {
+  function lock() {
     if (anbt.isStroking) strokeEnd();
     anbt.locked = true;
     moveCursor(-100, -100);
-  };
+  }
 
-  const makeCRCTable = () => {
+  function makeCRCTable() {
     const crcTable = [];
     for (let n = 0; n < 256; n++) {
       let c = n;
-      for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+      for (let k = 0; k < 8; k++) {
+        c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+      }
       crcTable.push(c);
     }
     return crcTable;
-  };
+  }
 
-  const crc32 = (string, string2) => {
+  function crc32(string, string2) {
     const crcTable = makeCRCTable();
     let crc = -1;
-    for (let i = 0; i < string.length; i++)
+    for (let i = 0; i < string.length; i++) {
       crc = (crc >>> 8) ^ crcTable[(crc ^ string.charCodeAt(i)) & 0xff];
+    }
     if (string2) {
-      for (let i = 0; i < string2.length; i++)
+      for (let i = 0; i < string2.length; i++) {
         crc = (crc >>> 8) ^ crcTable[(crc ^ string2.charCodeAt(i)) & 0xff];
+      }
     }
     return (crc ^ -1) >>> 0;
-  };
+  }
 
-  const bytesToString = bytes =>
-    [...bytes].map(byte => String.fromCharCode(byte)).join('');
+  function bytesToString(bytes) {
+    return [...bytes].map(byte => String.fromCharCode(byte)).join('');
+  }
 
-  const colorToDword = color =>
-    colorToRgba(color)
+  function colorToDword(color) {
+    return colorToRgba(color)
       .map(value => String.fromCharCode(value))
       .join('');
+  }
 
-  const packUint16be = number =>
-    String.fromCharCode((number >> 8) & 0xff, number & 0xff);
+  function packUint16be(number) {
+    return String.fromCharCode((number >> 8) & 0xff, number & 0xff);
+  }
 
-  const packPlayback = svg => {
+  function packPlayback(svg) {
     const { pako } = window;
     const array = [colorToDword(anbt.background)];
     const last = {
@@ -695,12 +762,14 @@
         array.push(packUint16be(-2));
         array.push(packUint16be(0));
         array.push(color);
-      } else throw new Error('Unknown node name: ' + element.nodeName);
+      } else {
+        throw new Error('Unknown node name: ' + element.nodeName);
+      }
     });
     return '\x04' + bytesToString(pako.deflate(stringToBytes(array.join(''))));
-  };
+  }
 
-  const makePng = (width, height, fromBuffer) => {
+  function makePng(width, height, fromBuffer) {
     cutHistoryBeforeClearAndAfterPosition();
     moveSeekbar(1);
     const canvas = document.createElement('canvas');
@@ -711,8 +780,9 @@
       context.fillStyle = anbt.background;
       context.fillRect(0, 0, width, height);
     }
-    if (fromBuffer) context.drawImage(anbt.canvas, 0, 0, width, height);
-    else {
+    if (fromBuffer) {
+      context.drawImage(anbt.canvas, 0, 0, width, height);
+    } else {
       context.lineJoin = context.lineCap = 'round';
       context.scale(width / 600, height / 500);
       for (let i = 0; i < anbt.svg.childNodes.length; i++) {
@@ -736,23 +806,22 @@
     ].join('');
     anbt.pngBase64 =
       anbt.pngBase64.substr(0, anbt.pngBase64.length - 20) + btoa(custom);
-  };
+  }
 
-  const pause = noSeekbar => {
-    if (anbt.isPlaying) {
-      if (anbt.isAnimating) {
-        anbt.isAnimating = false;
-        anbt.svgDisplay.removeChild(anbt.path);
-        drawSvgElement(anbt.animatePath);
-        anbt.position++;
-        if (!noSeekbar)
-          moveSeekbar(anbt.position / (anbt.svg.childNodes.length - 1));
-      }
-      anbt.isPlaying = false;
+  function pause(noSeekbar) {
+    if (!anbt.isPlaying) return;
+    if (anbt.isAnimating) {
+      anbt.isAnimating = false;
+      anbt.svgDisplay.removeChild(anbt.path);
+      drawSvgElement(anbt.animatePath);
+      anbt.position++;
+      if (!noSeekbar)
+        moveSeekbar(anbt.position / (anbt.svg.childNodes.length - 1));
     }
-  };
+    anbt.isPlaying = false;
+  }
 
-  const playTimer = () => {
+  function playTimer() {
     if (!anbt.isPlaying) return;
     const positionMax = anbt.svg.childNodes.length - 1;
     let { delay } = anbt;
@@ -815,11 +884,14 @@
       (anbt.position + (indexMax ? anbt.animateIndex / indexMax : 0)) /
         positionMax
     );
-    if (anbt.position < positionMax) setTimeout(anbt.playTimer, delay);
-    else pause();
-  };
+    if (anbt.position < positionMax) {
+      setTimeout(anbt.playTimer, delay);
+    } else {
+      pause();
+    }
+  }
 
-  const play = () => {
+  function play() {
     if (anbt.locked) return;
     anbt.rewindCache.length = 0;
     if (anbt.position === anbt.svg.childNodes.length - 1) {
@@ -830,9 +902,9 @@
     }
     anbt.isPlaying = true;
     playTimer();
-  };
+  }
 
-  const seek = newPosition => {
+  function seek(newPosition) {
     if (anbt.locked) return;
     let start = -1;
     pause(true);
@@ -843,16 +915,20 @@
         anbt.context.putImageData(anbt.rewindCache[rewindSteps - 1], 0, 0);
         anbt.rewindCache.splice(0, rewindSteps);
       } else {
-        start = 0;
-        if (anbt.lastRect <= newPosition) start = anbt.lastRect;
-        else start = findLastRect(newPosition);
+        start =
+          anbt.lastRect <= newPosition
+            ? anbt.lastRect
+            : findLastRect(newPosition);
         drawSvgElement(anbt.svg.childNodes[start]);
       }
-    } else if (newPosition > anbt.position) start = anbt.position;
+    } else if (newPosition > anbt.position) {
+      start = anbt.position;
+    }
     if (start !== -1) {
       const forwardSteps = newPosition - start;
-      if (forwardSteps >= anbt.fastUndoLevels) anbt.rewindCache.length = 0;
-      else {
+      if (forwardSteps >= anbt.fastUndoLevels) {
+        anbt.rewindCache.length = 0;
+      } else {
         const { length } = anbt.rewindCache;
         const numRemove = Math.min(
           length,
@@ -867,18 +943,18 @@
       }
     }
     anbt.position = newPosition;
-  };
+  }
 
-  const redo = () => {
+  function redo() {
     if (anbt.locked) return;
-    var positionMax = anbt.svg.childNodes.length - 1;
+    const positionMax = anbt.svg.childNodes.length - 1;
     if (anbt.position < positionMax) {
       seek(anbt.position + 1);
       moveSeekbar(anbt.position / positionMax);
     }
-  };
+  }
 
-  const requestSave = (dataUrl, extension) => {
+  function requestSave(dataUrl, extension) {
     if (!dataUrl) {
       dataUrl = anbt.pngBase64;
       extension = '.png';
@@ -904,31 +980,35 @@
         extension
       ].join('');
       anbt.saveLink.click();
-    } else window.open(dataUrl);
+    } else {
+      window.open(dataUrl);
+    }
     return true;
-  };
+  }
 
-  const setColor = (number, color) => {
+  function setColor(number, color) {
     anbt.colors[number] = color;
-  };
+  }
 
-  const setSeekbarMove = func => (anbt.seekbarMove = func);
+  function setSeekbarMove(func) {
+    anbt.seekbarMove = func;
+  }
 
-  const setSize = size => {
+  function setSize(size) {
     anbt.size = size;
     moveCursor();
-  };
+  }
 
-  const showEyedropperCursor = isEyedropper => {
+  function showEyedropperCursor(isEyedropper) {
     if (!anbt.brushCursor) return;
     const visibility = isEyedropper ? 'hidden' : 'visible';
     const visibility2 = isEyedropper ? 'visible' : 'hidden';
     anbt.brushCursor.setAttribute('visibility', visibility);
     anbt.brushCursor2.setAttribute('visibility', visibility);
     anbt.eyedropperCursor.setAttribute('visibility', visibility2);
-  };
+  }
 
-  const strokeAdd = (x, y) => {
+  function strokeAdd(x, y) {
     if (anbt.locked) return;
     if (!anbt.isStroking) throw new Error('StrokeAdd without StrokeBegin!');
     const point = anbt.points[anbt.points.length - 1];
@@ -938,15 +1018,21 @@
       anbt.blot = false;
     }
     anbt.path.pathSegList.appendItem(anbt.path.createSVGPathSegLinetoAbs(x, y));
-    if (navigator.userAgent.match(/\bPresto\b/)) drawDisplayLinePresto(false);
-    else drawDisplayLine(point.x, point.y, x, y);
+    if (navigator.userAgent.match(/\bPresto\b/)) {
+      drawDisplayLinePresto(false);
+    } else {
+      drawDisplayLine(point.x, point.y, x, y);
+    }
     anbt.points.push({ x, y });
-  };
+  }
 
-  const strokeBegin = (x, y, left) => {
+  function strokeBegin(x, y, left) {
     if (anbt.locked) return;
-    if (!left) left = anbt.lastLeft;
-    else anbt.lastLeft = left;
+    if (!left) {
+      left = anbt.lastLeft;
+    } else {
+      anbt.lastLeft = left;
+    }
     let color = left ? anbt.colors[0] : anbt.colors[1];
     const cls = color === 'eraser' ? color : null;
     color = color === 'eraser' ? anbt.background : color;
@@ -964,88 +1050,27 @@
     anbt.path.pathSegList.appendItem(
       anbt.path.createSVGPathSegLinetoAbs(x, y + 0.001)
     );
-    if (navigator.userAgent.match(/\bPresto\b/)) drawDisplayLinePresto(true);
-    else drawDisplayLine(x, y, x, y + 0.001);
+    if (navigator.userAgent.match(/\bPresto\b/)) {
+      drawDisplayLinePresto(true);
+    } else {
+      drawDisplayLine(x, y, x, y + 0.001);
+    }
     anbt.points = [];
     anbt.points.push({ x, y });
     anbt.blot = true;
     anbt.isStroking = true;
-  };
+  }
 
-  const undo = () => {
+  function undo() {
     if (anbt.locked) return;
     if (anbt.position === 0) return;
     seek(anbt.position - 1);
     moveSeekbar(anbt.position / (anbt.svg.childNodes.length - 1));
-  };
+  }
 
-  const unlock = () => (anbt.locked = false);
-
-  const base64ToBytes = base64 => stringToBytes(atob(base64));
-
-  const uploadToImgur = callback => {
-    const request = new XMLHttpRequest();
-    request.open('POST', 'https://api.imgur.com/3/image');
-    request.onload = () => {
-      let response = request.responseText;
-      try {
-        response = JSON.parse(response);
-      } catch (e) {}
-      if (response.success) {
-        const request2 = new XMLHttpRequest();
-        request2.open(
-          'POST',
-          'https://api.imgur.com/3/image/' + response.data.deletehash
-        );
-        request2.setRequestHeader('Authorization', 'Client-ID 4809db83c8897af');
-        const formData = new FormData();
-        formData.append(
-          'description',
-          'Playback: http://grompe.org.ru/drawit/#' + response.data.id
-        );
-        request2.send(formData);
-      }
-      callback(response);
-    };
-    request.onerror = error => callback(`error: ${error}`);
-    request.setRequestHeader('Authorization', 'Client-ID 4809db83c8897af');
-    const formData = new FormData();
-    formData.append(
-      'image',
-      new Blob([base64ToBytes(anbt.pngBase64.substr(22)).buffer], {
-        type: 'image/png'
-      })
-    );
-    formData.append('type', 'file');
-    formData.append('title', 'Made with Drawing in Time');
-    formData.append('description', 'http://grompe.org.ru/drawit/');
-    request.send(formData);
-  };
-
-  const formatDrawingData = drawingData => {
-    const formattedData = [];
-    drawingData.forEach(line => {
-      const lastFormattedData = formattedData[formattedData.length - 1];
-      const lineColor = colorToHex(line.getAttribute('stroke'));
-      const lineWidth = parseInt(line.getAttribute('stroke-width'), 10);
-      const linePath = line.getAttribute('d');
-      if (
-        lastFormattedData &&
-        lastFormattedData.c === lineColor &&
-        lastFormattedData.s === lineWidth
-      ) {
-        formattedData[formattedData.length - 1].p += linePath;
-      } else {
-        const data = {
-          c: lineColor,
-          s: lineWidth,
-          p: linePath
-        };
-        formattedData.push(data);
-      }
-    });
-    return formattedData;
-  };
+  function unlock() {
+    anbt.locked = false;
+  }
 
   function uploadToDrawception(callback) {
     const { pako } = window;
@@ -1079,6 +1104,52 @@
     };
     request.onerror = error => callback(`error: ${error}`);
     request.send(JSON.stringify({ drawdata }));
+  }
+
+  function base64ToBytes(base64) {
+    return stringToBytes(atob(base64));
+  }
+
+  function uploadToImgur(callback) {
+    const request = new XMLHttpRequest();
+    request.open('POST', 'https://api.imgur.com/3/image');
+    request.onload = () => {
+      let response = request.responseText;
+      try {
+        response = JSON.parse(response);
+      } catch (error) {
+        console.error(error);
+      }
+      console.log(response);
+      if (response.success) {
+        const request2 = new XMLHttpRequest();
+        request2.open(
+          'POST',
+          'https://api.imgur.com/3/image/' + response.data.deletehash
+        );
+        request2.setRequestHeader('Authorization', 'Client-ID 4809db83c8897af');
+        const formData = new FormData();
+        formData.append(
+          'description',
+          'Playback: http://grompe.org.ru/drawit/#' + response.data.id
+        );
+        request2.send(formData);
+      }
+      callback(response);
+    };
+    request.onerror = error => callback(`error: ${error}`);
+    request.setRequestHeader('Authorization', 'Client-ID 4809db83c8897af');
+    const formData = new FormData();
+    formData.append(
+      'image',
+      new Blob([base64ToBytes(anbt.pngBase64.substr(22)).buffer], {
+        type: 'image/png'
+      })
+    );
+    formData.append('type', 'file');
+    formData.append('title', 'Made with Drawing in Time');
+    formData.append('description', 'http://grompe.org.ru/drawit/');
+    request.send(formData);
   }
 
   const palettes = {
@@ -1485,6 +1556,17 @@
       '#373a55',
       '#271d3a',
       '#100b16'
+    ],
+    'Wilting Rose': [
+      '#311e31',
+      '#284b41',
+      '#369486',
+      '#70cbbd',
+      '#f5ebd2',
+      '#643241',
+      '#b4556e',
+      '#c8aac8',
+      '#e6c3c3'
     ]
   };
 
@@ -1572,7 +1654,7 @@
     timerStart: 0
   };
 
-  const changeBrushSize = event => {
+  function changeBrushSize(event) {
     event.preventDefault();
     const size = [...event.currentTarget.classList]
       .filter(htmlClass => htmlClass.startsWith('size-'))[0]
@@ -1585,44 +1667,45 @@
     strokeEnd();
     const lastPoint = anbt.points[anbt.points.length - 1];
     strokeBegin(lastPoint.x, lastPoint.y);
-  };
+  }
 
-  const clickRedo = event => {
+  function clickRedo(event) {
     event.preventDefault();
     ID('play').classList.remove('pause');
     redo();
-  };
+  }
 
-  const updateChooseBackground = chooseBackground => {
+  function updateChooseBackground(chooseBackground) {
     globals.chooseBackground = chooseBackground;
     ID('colors').classList.toggle('setbackground');
     ID('setbackground').classList.toggle('sel');
-  };
+  }
 
-  const clickSetBackground = event => {
+  function clickSetBackground(event) {
     event.preventDefault();
     updateChooseBackground(!globals.chooseBackground);
-  };
+  }
 
-  const clickTrash = event => {
+  function clickTrash(event) {
     event.preventDefault();
     clearWithColor('eraser');
     if (ID('newcanvasyo').classList.contains('sandbox'))
       globals.timerStart = Date.now();
-  };
+  }
 
-  const clickUndo = event => {
+  function clickUndo(event) {
     event.preventDefault();
     ID('play').classList.remove('pause');
     undo();
-  };
+  }
 
-  const getPointerType = () =>
-    ID('wacom') && ID('wacom').penAPI && ID('wacom').penAPI.isWacom
+  function getPointerType() {
+    return ID('wacom') && ID('wacom').penAPI && ID('wacom').penAPI.isWacom
       ? ID('wacom').penAPI.pointerType
       : 0;
+  }
 
-  const updateColorIndicators = () => {
+  function updateColorIndicators() {
     const { colors } = anbt;
     ['primary', 'secondary'].forEach((id, index) => {
       if (colors[index] === 'eraser') {
@@ -1633,9 +1716,9 @@
         ID(id).classList.remove('eraser');
       }
     });
-  };
+  }
 
-  const colorClick = event => {
+  function colorClick(event) {
     if (event.touches || event.button === 0 || event.button === 2) {
       event.preventDefault();
       const colorButton = event.currentTarget;
@@ -1645,29 +1728,35 @@
         updateChooseBackground(false);
       } else {
         if (colorButton.id === 'eraser') color = 'eraser';
-        if (event.button === 2 || getPointerType() === 3) setColor(1, color);
-        else setColor(0, color);
+        if (event.button === 2 || getPointerType() === 3) {
+          setColor(1, color);
+        } else {
+          setColor(0, color);
+        }
         updateColorIndicators();
       }
     }
-  };
+  }
 
-  const playCommonDown = event => {
+  function playCommonDown(event) {
     event.stopPropagation();
     event.preventDefault();
     ID('play').classList.toggle('pause');
-    if (anbt.isPlaying) pause();
-    else play();
-  };
+    if (anbt.isPlaying) {
+      pause();
+    } else {
+      play();
+    }
+  }
 
-  const removeEyedropper = event => {
+  function removeEyedropper(event) {
     if (event.altKey) return;
     event.currentTarget.classList.remove('hidecursor');
     showEyedropperCursor(false);
     event.currentTarget.removeEventListener('mousemove', removeEyedropper);
-  };
+  }
 
-  const keyDown = event => {
+  function keyDown(event) {
     const { options } = window;
     if (document.activeElement instanceof HTMLInputElement) return true;
     if (event.keyCode === 18) {
@@ -1789,38 +1878,63 @@
       (event.ctrlKey || event.metaKey) &&
       !event.altKey &&
       !event.shiftKey
-    )
+    ) {
       playCommonDown(event);
-  };
+    }
+  }
 
-  const keyUp = event => {
+  function keyUp(event) {
     if (event.keyCode !== 18) return;
     ID('svgContainer').classList.remove('hidecursor');
     showEyedropperCursor(false);
-  };
+  }
 
-  const warnStrokesAfterPosition = () => {
-    if (anbt.position < getSeekMax())
-      return !confirm(
-        'Strokes after current position wi)ll be discarded. Continue?'
-      );
-  };
+  function warnStrokesAfterPosition() {
+    return (
+      anbt.position < getSeekMax() &&
+      !confirm('Strokes after current position will be discarded. Continue?')
+    );
+  }
 
-  const doExport = event => {
+  function doExport(event) {
     event.preventDefault();
     if (warnStrokesAfterPosition()) return;
     makePng(600, 500, true);
     requestSave();
-  };
+  }
 
-  const doImport = event => {
+  function doImport(event) {
     event.preventDefault();
     ID('svgContainer').classList.add('loading');
     fromLocalFile();
     ID('svgContainer').classList.remove('loading');
-  };
+  }
 
-  const exportToImgur = event => {
+  function exportToDrawception(event) {
+    event.preventDefault();
+    if (warnStrokesAfterPosition()) return;
+    ID('drawception').childNodes[0].nodeValue = 'Uploading...';
+    ID('drawception').disabled = true;
+    uploadToDrawception(request => {
+      ID('drawception').childNodes[0].nodeValue = 'Upload to Drawception';
+      ID('drawceptionpopup').classList.add('show');
+      ID('drawceptionpopuptitle').childNodes[0].nodeValue =
+        'Drawception upload result';
+      if (request && request.url) {
+        anbt.unsaved = false;
+        ID('drawceptionurl').href = request.url;
+        ID('drawceptionurl').childNodes[0].nodeValue = 'Uploaded image';
+        if (window.inForum) {
+          window.frameElement.ownerDocument.getElementById(
+            'input-comment'
+          ).value += `![](${request.url})`;
+        }
+      }
+      ID('drawception').disabled = false;
+    });
+  }
+
+  function exportToImgur(event) {
     event.preventDefault();
     if (warnStrokesAfterPosition()) return;
     ID('imgur').childNodes[0].nodeValue = 'Uploading...';
@@ -1838,10 +1952,11 @@
           'imgurdelete'
         ).href = `http://imgur.com/delete/${request.data.deletehash}`;
         ID('imgurerror').childNodes[0].nodeValue = '';
-        if (window.inForum)
+        if (window.inForum) {
           window.frameElement.ownerDocument.getElementById(
             'input-comment'
           ).value += `![](http://i.imgur.com/${request.data.id}.png)`;
+        }
       } else {
         const error = request.data
           ? `Imgur error: ${request.data.error}`
@@ -1850,9 +1965,9 @@
       }
       ID('imgur').disabled = false;
     });
-  };
+  }
 
-  const knobCommonMove = event => {
+  function knobCommonMove(event) {
     event.preventDefault();
     const length = getSeekMax();
     let x = event.touches
@@ -1865,9 +1980,9 @@
     ID('knob').style.marginLeft = x + 'px';
     seek(position);
     ID('play').classList.remove('pause');
-  };
+  }
 
-  const knobCommonUp = event => {
+  function knobCommonUp(event) {
     if (!event.button || (!event.touches && !event.touches.length)) {
       event.preventDefault();
       window.removeEventListener('mouseup', knobCommonUp);
@@ -1875,9 +1990,9 @@
       window.removeEventListener('mousemove', knobCommonMove);
       window.removeEventListener('touchmove', knobCommonMove);
     }
-  };
+  }
 
-  const knobCommonDown = event => {
+  function knobCommonDown(event) {
     if (event.button === 0 || (event.touches && event.touches.length === 1)) {
       globals.rectangle = ID('seekbar').getBoundingClientRect();
       knobCommonMove(event);
@@ -1886,9 +2001,9 @@
       window.addEventListener('mousemove', knobCommonMove);
       window.addEventListener('touchmove', knobCommonMove);
     }
-  };
+  }
 
-  const knobMove = fraction => {
+  function knobMove(fraction) {
     const x = Math.floor(fraction * 502 - 10);
     if (fraction > 0) {
       ID('knob').classList.add('smooth');
@@ -1899,45 +2014,11 @@
     if (fraction >= 1) {
       ID('play').classList.remove('pause');
     }
-  };
+  }
 
-  const noDefault = event => event.preventDefault();
-
-  const setPaletteByName = (name, customColors) => {
-    ID('palettename').childNodes[0].nodeValue = name;
-    const colors = palettes[name] || customColors;
-    anbt.palette = colors;
-    const palette = ID('palette');
-    const elements = palette.querySelectorAll('b');
-    elements.forEach(element => palette.removeChild(element));
-    const eraser = elements[elements.length - 1];
-    colors.forEach(color => {
-      const bElement = document.createElement('b');
-      bElement.style.backgroundColor = color;
-      bElement.addEventListener('mousedown', colorClick);
-      bElement.addEventListener('touchend', colorClick);
-      bElement.addEventListener('contextmenu', noDefault);
-      palette.appendChild(bElement);
-      palette.appendChild(eraser);
-    });
-  };
-
-  const choosePalette = event => {
-    if (event.touches || event.button === 0) {
-      event.preventDefault();
-      const name = event.currentTarget.childNodes[0].nodeValue;
-      anbt.paletteID = event.currentTarget.getAttribute('palette');
-      setPaletteByName(name);
-    }
-  };
-
-  const closePaletteList = event => {
-    if (event.touches || event.button === 0) {
-      ID('palettechooser').classList.remove('open');
-      window.removeEventListener('mousedown', closePaletteList);
-      window.removeEventListener('touchend', closePaletteList);
-    }
-  };
+  function noDefault(event) {
+    event.preventDefault();
+  }
 
   const paletteMap = {
     default: ['Normal', '#fffdc9'],
@@ -1976,10 +2057,47 @@
     theme_school_pen: ['School Pen', '#fbfcfd'],
     theme_dimmed: ['Dimmed', '#1c0b11'],
     theme_treasure: ['Treasure', '#412a23'],
-    theme_witches_brew: ['Witches Brew', '#100b16']
+    theme_witches_brew: ['Witches Brew', '#100b16'],
+    theme_wilting_rose: ['Wilting Rose', '#e6c3c3']
   };
 
-  const openPaletteList = event => {
+  function setPaletteByName(name, customColors) {
+    ID('palettename').childNodes[0].nodeValue = name;
+    const colors = palettes[name] || customColors;
+    anbt.palette = colors;
+    const palette = ID('palette');
+    const elements = palette.querySelectorAll('b');
+    elements.forEach(element => palette.removeChild(element));
+    const eraser = elements[elements.length - 1];
+    colors.forEach(color => {
+      const bElement = document.createElement('b');
+      bElement.style.backgroundColor = color;
+      bElement.addEventListener('mousedown', colorClick);
+      bElement.addEventListener('touchend', colorClick);
+      bElement.addEventListener('contextmenu', noDefault);
+      palette.appendChild(bElement);
+      palette.appendChild(eraser);
+    });
+  }
+
+  function choosePalette(event) {
+    if (event.touches || event.button === 0) {
+      event.preventDefault();
+      const name = event.currentTarget.childNodes[0].nodeValue;
+      anbt.paletteID = event.currentTarget.getAttribute('palette');
+      setPaletteByName(name);
+    }
+  }
+
+  function closePaletteList(event) {
+    if (event.touches || event.button === 0) {
+      ID('palettechooser').classList.remove('open');
+      window.removeEventListener('mousedown', closePaletteList);
+      window.removeEventListener('touchend', closePaletteList);
+    }
+  }
+
+  function openPaletteList(event) {
     if (event.touches || event.button === 0) {
       event.preventDefault();
       const chooser = ID('palettechooser');
@@ -2024,31 +2142,33 @@
         }
       }
     }
-  };
+  }
 
-  const popupClose = event => {
+  function popupClose(event) {
     event.preventDefault();
     event.currentTarget.parentElement.classList.remove('show');
-  };
+  }
 
-  const svgContextMenu = event => event.preventDefault();
+  function svgContextMenu(event) {
+    event.preventDefault();
+  }
 
-  const checkPlayingAndStop = () => {
+  function checkPlayingAndStop() {
     if (!anbt.isPlaying) return false;
     pause();
     ID('play').classList.remove('pause');
     return true;
-  };
+  }
 
-  const windowMouseMove = event => {
+  function windowMouseMove(event) {
     event.preventDefault();
     if (!anbt.isStroking) return;
     const x = event.pageX - globals.rectangle.left - pageXOffset;
     const y = event.pageY - globals.rectangle.top - pageYOffset;
     strokeAdd(x, y);
-  };
+  }
 
-  const mouseUp = event => {
+  function mouseUp(event) {
     const { options } = window;
     if (event.button === 0 || event.button === 2) {
       event.preventDefault();
@@ -2057,9 +2177,9 @@
       window.removeEventListener('mouseup', mouseUp);
       window.removeEventListener('mousemove', windowMouseMove);
     }
-  };
+  }
 
-  const mouseDown = event => {
+  function mouseDown(event) {
     const { options } = window;
     if (event.button === 0 || event.button === 2) {
       if (anbt.isStroking) return mouseUp(event);
@@ -2079,11 +2199,13 @@
         window.addEventListener('mousemove', windowMouseMove);
       }
     }
-  };
+  }
 
-  const mouseLeave = () => moveCursor(-100, -100);
+  function mouseLeave() {
+    moveCursor(-100, -100);
+  }
 
-  const svgMouseMove = event => {
+  function svgMouseMove(event) {
     const { options } = window;
     globals.rectangle = event.currentTarget.getBoundingClientRect();
     const x = event.pageX - globals.rectangle.left - pageXOffset;
@@ -2102,17 +2224,17 @@
       }
       globals.lastSeenColorToHighlight = color;
     }
-  };
+  }
 
-  const simulateSingleTouchStart = () => {
+  function simulateSingleTouchStart() {
     if (!globals.touchSingle) return;
     const x = globals.lastTouch.pageX - globals.rectangle.left;
     const y = globals.lastTouch.pageY - globals.rectangle.top;
     strokeBegin(x, y, true);
     globals.touchSingle = false;
-  };
+  }
 
-  const touchMove = event => {
+  function touchMove(event) {
     if (event.touches.length !== 1) return;
     simulateSingleTouchStart();
     event.preventDefault();
@@ -2120,18 +2242,18 @@
     const x = event.touches[0].pageX - globals.rectangle.left;
     const y = event.touches[0].pageY - globals.rectangle.top;
     strokeAdd(x, y);
-  };
+  }
 
-  const touchEnd = event => {
+  function touchEnd(event) {
     if (event.touches.length !== 0) return;
     simulateSingleTouchStart();
     event.preventDefault();
     window.removeEventListener('touchend', touchEnd);
     window.removeEventListener('touchmove', touchMove);
     strokeEnd();
-  };
+  }
 
-  const touchUndoRedo = event => {
+  function touchUndoRedo(event) {
     if (event.changedTouches.length === 1 && event.touches.length === 1) {
       const { pageX, pageY } = event.changedTouches[0];
       if (
@@ -2144,9 +2266,9 @@
       }
     }
     window.removeEventListener('touchend', touchUndoRedo);
-  };
+  }
 
-  const touchStart = event => {
+  function touchStart(event) {
     if (event.touches.length === 1) {
       if (checkPlayingAndStop()) return;
       globals.rectangle = event.currentTarget.getBoundingClientRect();
@@ -2164,47 +2286,24 @@
       window.removeEventListener('touchmove', touchMove);
       if (anbt.isStroking) strokeEnd();
     }
-  };
+  }
 
-  const beforeUnload = event => {
+  function beforeUnload(event) {
     if (!anbt.unsaved) return;
     const message = "You haven't saved the drawing. Abandon?";
     event.returnValue = message;
     return message;
-  };
+  }
 
-  const windowContextMenu = event => {
+  function windowContextMenu(event) {
     if (anbt.isStroking) event.preventDefault();
-  };
+  }
 
-  const error = event => alert(event);
+  function error(event) {
+    alert(event);
+  }
 
-  const exportToDrawception = event => {
-    event.preventDefault();
-    if (warnStrokesAfterPosition()) return;
-    ID('drawception').childNodes[0].nodeValue = 'Uploading...';
-    ID('drawception').disabled = true;
-    uploadToDrawception(request => {
-      ID('drawception').childNodes[0].nodeValue = 'Upload to Drawception';
-      ID('drawceptionpopup').classList.add('show');
-      ID('drawceptionpopuptitle').childNodes[0].nodeValue =
-        'Drawception upload result';
-      console.log(request);
-      console.log(request.url);
-      if (request && request.url) {
-        anbt.unsaved = false;
-        ID('drawceptionurl').href = request.url;
-        ID('drawceptionurl').childNodes[0].nodeValue = 'Uploaded image';
-        if (window.inForum)
-          window.frameElement.ownerDocument.getElementById(
-            'input-comment'
-          ).value += `![](${request.url})`;
-      }
-      ID('drawception').disabled = false;
-    });
-  };
-
-  const bindEvents = () => {
+  function bindEvents() {
     ID('svgContainer').addEventListener('mousedown', mouseDown);
     ID('svgContainer').addEventListener('mousemove', svgMouseMove);
     ID('svgContainer').addEventListener('touchstart', touchStart);
@@ -2246,9 +2345,9 @@
     window.addEventListener('contextmenu', windowContextMenu);
     window.addEventListener('error', error);
     window.addEventListener('beforeunload', beforeUnload);
-  };
+  }
 
-  const fixTabletPluginGoingAwol = () => {
+  function fixTabletPluginGoingAwol() {
     const stupidPlugin = ID('wacom');
     const container = ID('wacomContainer');
     window.onblur = () => {
@@ -2259,9 +2358,9 @@
       if (container.childNodes.length === 0)
         container.appendChild(stupidPlugin);
     };
-  };
+  }
 
-  const ajax = (type, url, params) => {
+  function ajax(type, url, params) {
     const { options } = window;
     const request = new XMLHttpRequest();
     request.open(type, url);
@@ -2298,29 +2397,35 @@
       params.load(request.responseText);
     };
     request.onerror = () => {
-      if (params.error) params.error(request);
-      else params.load(request);
+      if (params.error) {
+        params.error(request);
+      } else {
+        params.load(request);
+      }
     };
-    if (params.obj) request.send(JSON.stringify(params.obj));
-    else request.send();
+    if (params.obj) {
+      request.send(JSON.stringify(params.obj));
+    } else {
+      request.send();
+    }
     document.body.style.cursor = '';
     return;
-  };
+  }
 
-  const backToForum = event => {
+  function backToForum(event) {
     event.preventDefault();
     window.frameElement.ownerDocument.querySelector(
       '.v--modal-overlay'
     ).outerHTML = '';
-  };
+  }
 
-  const decodeHTML = html => {
+  function decodeHTML(html) {
     const textArea = document.createElement('textarea');
     textArea.innerHTML = html;
     return textArea.value;
-  };
+  }
 
-  const bookmark = () => {
+  function bookmark() {
     const { getLocalStorageItem } = window;
     ID('bookmark').disabled = true;
     const games = getLocalStorageItem('gpe_gameBookmarks', {});
@@ -2330,15 +2435,15 @@
       caption: caption ? decodeHTML(caption) : ''
     };
     localStorage.setItem('gpe_gameBookmarks', JSON.stringify(games));
-  };
+  }
 
-  const caption = event => {
+  function caption(event) {
     if (event.keyCode !== 13) return;
     event.preventDefault();
     ID('submitcaption').click();
-  };
+  }
 
-  const updateTimer = () => {
+  function updateTimer() {
     let seconds = (globals.timerStart - Date.now()) / 1000;
     try {
       if (window.timerCallback) window.timerCallback(seconds);
@@ -2347,14 +2452,15 @@
     const minutes = `0${Math.floor(seconds / 60)}`.slice(-2);
     seconds = `0${Math.floor(seconds % 60)}`.slice(-2);
     ID('timer').childNodes[0].nodeValue = `${minutes}:${seconds}`;
-  };
+  }
 
-  const exitToSandbox = () => {
+  function exitToSandbox() {
     const { inContest, gameInfo, drawingAborted, versionTitle } = window;
-    if (inContest && !drawingAborted)
+    if (inContest && !drawingAborted) {
       ajax('POST', '/contests/exit.json', {
         load: () => alert('You have missed your contest.')
       });
+    }
     if (gameInfo.drawFirst && !drawingAborted) {
       ajax('POST', '/play/abort-start.json', {
         obj: {
@@ -2379,9 +2485,9 @@
       history.replaceState({}, null, '/sandbox/');
     } catch (e) {}
     unlock();
-  };
+  }
 
-  const exit = () => {
+  function exit() {
     const { gameInfo, inContest } = window;
     if (inContest) {
       if (!confirm('Quit the contest? Entry coins will be lost!')) return;
@@ -2431,14 +2537,14 @@
         exitToSandbox();
       }
     });
-  };
+  }
 
-  const quit = event => {
+  function quit(event) {
     event.preventDefault();
     window.top.location.href = 'https://drawception.com/';
-  };
+  }
 
-  const extractInfoFromHTML = html => {
+  function extractInfoFromHTML(html) {
     const doc = document.implementation.createHTMLDocument('');
     doc.body.innerHTML = html;
     const drawapp = doc.querySelector('draw-app-svg') ||
@@ -2478,9 +2584,9 @@
       limitReached: false,
       html
     };
-  };
+  }
 
-  const getPalData = palette => {
+  function getPalData(palette) {
     if (palette === 'theme_roulette') {
       alert(
         "Warning: Drawception roulette didn't give a theme. ANBT will choose a random palette."
@@ -2493,13 +2599,14 @@
     } else {
       if (palette) return paletteMap[palette.toLowerCase()];
     }
-  };
+  }
 
-  const handleCommonParameters = () => {
+  function handleCommonParameters() {
     const { gameInfo, inForum } = window;
-    if (gameInfo.notLoggedIn)
+    if (gameInfo.notLoggedIn) {
       return (ID('start').parentNode.innerHTML =
         '<a href="/login" class="headerbutton active">Login</a> <a href="/register" class="headerbutton active">Register</a>');
+    }
     if (gameInfo.avatar) ID('infoavatar').src = gameInfo.avatar;
     ID('infoprofile').href = gameInfo.playerUrl;
     ID('infocoins').innerHTML = gameInfo.coins;
@@ -2507,16 +2614,19 @@
     ID('infofriendgames').innerHTML = gameInfo.friendGames || 0;
     ID('infonotifications').innerHTML = gameInfo.notifications;
     if (inForum) document.querySelector('.headerright').hidden = true;
-  };
+  }
 
-  const timerCallback = seconds => {
+  function timerCallback(seconds) {
     const { gameInfo } = window;
     if (seconds < 1) {
       document.title = "[TIME'S UP!] Playing Drawception";
       if (gameInfo.image || window.timesUp) {
         if (!window.submitting) {
-          if (gameInfo.image) getParametersFromPlay();
-          else exitToSandbox();
+          if (gameInfo.image) {
+            getParametersFromPlay();
+          } else {
+            exitToSandbox();
+          }
         }
       } else {
         ID('newcanvasyo').classList.add('locked');
@@ -2525,10 +2635,11 @@
         updateTimer();
         window.timesUp = true;
       }
-    } else
+    } else {
       document.title = `[${`0${Math.floor(seconds / 60)}`.slice(
         -2
       )}:${`0${Math.floor(seconds % 60)}`.slice(-2)}] Playing Drawception`;
+    }
     if (
       window.alarm &&
       !window.playedWarningSound &&
@@ -2538,9 +2649,9 @@
       window.alarm.play();
       window.playedWarningSound = true;
     }
-  };
+  }
 
-  const handlePlayParameters = () => {
+  function handlePlayParameters() {
     const { options, gameInfo, inContest, versionTitle } = window;
     ID('skip').disabled = gameInfo.drawFirst || inContest;
     ID('report').disabled = gameInfo.drawFirst || inContest;
@@ -2580,8 +2691,9 @@
     newCanvas.classList.add(gameInfo.image ? 'captioning' : 'drawing');
     if (anbt.isStroking) strokeEnd();
     unlock();
-    for (let i = anbt.svg.childNodes.length - 1; i > 0; i--)
+    for (let i = anbt.svg.childNodes.length - 1; i > 0; i--) {
       anbt.svg.removeChild(anbt.svg.childNodes[i]);
+    }
     seek(0);
     moveSeekbar(1);
     anbt.unsaved = false;
@@ -2589,14 +2701,16 @@
     if (!gameInfo.image) {
       const paletteData = getPalData(palette);
       if (!paletteData) {
-        if (!palette)
+        if (!palette) {
           alert(
             'Error, please report! Failed to extract the palette.\nAre you using the latest ANBT version?'
           );
-        else
+        } else {
           alert(
             `Error, please report! Unknown palette: '${palette}'.\nAre you using the latest ANBT version?`
           );
+        }
+        lock();
         ID('submit').disabled = true;
       } else {
         setPaletteByName(paletteData[0]);
@@ -2628,9 +2742,9 @@
     handleCommonParameters();
     window.timesUp = false;
     updateTimer();
-  };
+  }
 
-  const getParametersFromPlay = () => {
+  function getParametersFromPlay() {
     const { inContest, friendGameId } = window;
     const url = inContest
       ? '/contests/play/'
@@ -2654,9 +2768,9 @@
         handlePlayParameters();
       }
     });
-  };
+  }
 
-  const report = () => {
+  function report() {
     if (!confirm('Report this panel?')) return;
     ajax('POST', '/play/flag.json', {
       obj: {
@@ -2667,12 +2781,13 @@
         getParametersFromPlay();
       }
     });
-  };
+  }
 
-  const unsavedStopAction = () =>
-    anbt.unsaved && !confirm("You haven't saved the drawing. Abandon?");
+  function unsavedStopAction() {
+    return anbt.unsaved && !confirm("You haven't saved the drawing. Abandon?");
+  }
 
-  const skip = () => {
+  function skip() {
     if (unsavedStopAction()) return;
     ID('skip').disabled = true;
     ajax('POST', '/play/skip.json', {
@@ -2685,15 +2800,15 @@
         getParametersFromPlay();
       }
     });
-  };
+  }
 
-  const start = () => {
+  function start() {
     if (unsavedStopAction()) return;
     ID('start').disabled = true;
     getParametersFromPlay();
-  };
+  }
 
-  const onCaptionSuccess = title => {
+  function onCaptionSuccess(title) {
     const { options, gameInfo } = window;
     if (!options.bookmarkOwnCaptions) return;
     const games = window.getLocalStorageItem('gpe_gameBookmarks', {});
@@ -2703,9 +2818,9 @@
       own: true
     };
     localStorage.setItem('gpe_gameBookmarks', JSON.stringify(games));
-  };
+  }
 
-  const submitCaption = () => {
+  function submitCaption() {
     const { inContest, gameInfo } = window;
     const title = ID('caption').value;
     if (!title) {
@@ -2732,13 +2847,15 @@
         }
         if (response.error) {
           ID('submitcaption').disabled = false;
-          if (typeof response.error === 'object')
+          if (typeof response.error === 'object') {
             alert(
               `Error! Please report this data:\ngame: ${
                 gameInfo.gameId
               }\n\nresponse: \n${JSON.stringify(response.error)}`
             );
-          else alert(response.error);
+          } else {
+            alert(response.error);
+          }
         } else if (response.message) {
           ID('submitcaption').disabled = false;
           alert(response.message);
@@ -2753,9 +2870,9 @@
         alert('Server error. :( Try again?');
       }
     });
-  };
+  }
 
-  const submitDrawing = () => {
+  function submitDrawing() {
     const { inContest, gameInfo, options, pako } = window;
     const moreThanMinuteLeft = globals.timerStart - Date.now() > 60000;
     if (
@@ -2766,8 +2883,9 @@
       return;
     ID('submit').disabled = true;
     makePng(300, 250, true);
-    if (options.backup)
+    if (options.backup) {
       localStorage.setItem('anbt_drawingbackup_newcanvas', anbt.pngBase64);
+    }
     window.submitting = true;
     const url = inContest ? '/contests/submit-drawing.json' : '/play/draw.json';
     const pathList = [...anbt.svg.childNodes].filter(
@@ -2804,13 +2922,15 @@
         }
         if (response.error) {
           ID('submit').disabled = false;
-          if (typeof response.error === 'object')
+          if (typeof response.error === 'object') {
             alert(
               `Error! Please report this data:\ngame: ${
                 gameInfo.gameId
               }\n\nresponse:\n${JSON.stringify(response.error)}`
             );
-          else alert(response.error);
+          } else {
+            alert(response.error);
+          }
         } else if (response.message) {
           ID('submit').disabled = false;
           alert(response.message);
@@ -2825,9 +2945,9 @@
         alert('Server error. :( Try again?');
       }
     });
-  };
+  }
 
-  const timePlus = () => {
+  function timePlus() {
     let { gameInfo } = window;
     if (!gameInfo.friend) return;
     ID('timeplus').disabled = true;
@@ -2857,13 +2977,13 @@
         alert('Server error. :( Try again?');
       }
     });
-  };
+  }
 
-  const updateUsedChars = () => {
+  function updateUsedChars() {
     ID('usedchars').textContent = 45 - ID('caption').value.length;
-  };
+  }
 
-  const bindCanvasEvents = () => {
+  function bindCanvasEvents() {
     const { options, inForum } = window;
     if (inForum) {
       ID('quit').addEventListener('click', quit);
@@ -2888,9 +3008,9 @@
     ID('caption').addEventListener('keydown', updateUsedChars);
     ID('caption').addEventListener('input', updateUsedChars);
     ID('timeplus').addEventListener('click', timePlus);
-  };
+  }
 
-  const handleSandboxParameters = () => {
+  function handleSandboxParameters() {
     const { gameInfo, versionTitle, options } = window;
     if (gameInfo.drawingByLink) {
       const [playerName, playerLink] = gameInfo.drawingByLink;
@@ -2912,9 +3032,9 @@
       ID('drawthis').classList.add('onlyplay');
     }
     handleCommonParameters();
-  };
+  }
 
-  const needToGoDeeper = () => {
+  function needToGoDeeper() {
     const { options, inSandbox, panelId, paletteInfo } = window;
     window.onerror = (error, file, line) => {
       if (error.toString().includes('periodsToSeconds')) return;
@@ -2942,7 +3062,7 @@
     }
     bindCanvasEvents();
     if (inSandbox) {
-      if (panelId)
+      if (panelId) {
         ajax('GET', `/panel/drawing/${panelId}/-/`, {
           load: response => {
             window.gameInfo = extractInfoFromHTML(response);
@@ -2953,7 +3073,7 @@
             alert('Error loading the panel page. Please try again.');
           }
         });
-      else {
+      } else {
         ajax('GET', '/sandbox/', {
           load: response => {
             window.gameInfo = extractInfoFromHTML(response);
@@ -2988,7 +3108,7 @@
       window.$ = null;
       throw new Error('Script conflict with ANBT new canvas');
     };
-  };
+  }
 
   window.needToGoDeeper = needToGoDeeper;
   if (!window.options) window.options = {};

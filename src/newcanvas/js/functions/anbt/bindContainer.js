@@ -1,7 +1,7 @@
-import anbt from '../../anbt'
-import createSvgElement from '../createSvgElement'
+import { anbt } from '../../anbt'
+import { createSvgElement } from '../createSvgElement'
 
-const bindContainer = element => {
+export function bindContainer(element) {
   anbt.container = element
   anbt.canvas.width = 600
   anbt.canvas.height = 500
@@ -15,7 +15,9 @@ const bindContainer = element => {
     anbt.contextDisplay = anbt.canvasDisplay.getContext('2d')
     anbt.contextDisplay.lineJoin = anbt.contextDisplay.lineCap = 'round'
     anbt.container.appendChild(anbt.canvasDisplay)
-  } else anbt.drawDisplayLine = anbt.drawDisplayLinePresto // Opera Presto is faster with SVG redrawing
+  } else {
+    anbt.drawDisplayLine = anbt.drawDisplayLinePresto // Opera Presto is faster with SVG redrawing
+  }
   anbt.container.appendChild(anbt.svgDisplay)
   const rect = createSvgElement('rect', {
     class: 'eraser',
@@ -27,5 +29,3 @@ const bindContainer = element => {
   })
   anbt.svg.appendChild(rect)
 }
-
-export default bindContainer

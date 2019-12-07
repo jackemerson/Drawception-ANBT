@@ -1,4 +1,4 @@
-const extractInfoFromHTML = html => {
+export function extractInfoFromHTML(html) {
   const doc = document.implementation.createHTMLDocument('')
   doc.body.innerHTML = html
   const drawapp = doc.querySelector('draw-app-svg') ||
@@ -39,5 +39,3 @@ const extractInfoFromHTML = html => {
     html
   }
 }
-
-export default extractInfoFromHTML

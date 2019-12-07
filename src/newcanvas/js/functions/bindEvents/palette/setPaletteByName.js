@@ -1,10 +1,10 @@
-import anbt from '../../../anbt'
-import palettes from '../../../palettes'
-import ID from '../../idSelector'
-import colorClick from '../colorClick'
-import noDefault from '../noDefault'
+import { anbt } from '../../../anbt'
+import { palettes } from '../../../palettes'
+import { ID } from '../../idSelector'
+import { colorClick } from '../colorClick'
+import { noDefault } from '../noDefault'
 
-const setPaletteByName = (name, customColors) => {
+export function setPaletteByName(name, customColors) {
   ID('palettename').childNodes[0].nodeValue = name
   const colors = palettes[name] || customColors
   anbt.palette = colors
@@ -25,4 +25,4 @@ const setPaletteByName = (name, customColors) => {
   })
 }
 
-export default setPaletteByName
+

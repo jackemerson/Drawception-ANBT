@@ -1,13 +1,13 @@
-import options from '../../options'
-import addStyle from '../addStyle'
-import getLocalStorageItem from '../getLocalStorageItem'
-import linkifyDrawingPanels from '../linkifyDrawingPanels'
-import linkifyNodeText from '../linkifyNodeText'
-import $ from '../selector'
-import setupNewCanvas from '../setupNewCanvas'
-import formatTimestamp from '../time/formatTimestamp'
+import { options } from '../../options'
+import { addStyle } from '../addStyle'
+import { getLocalStorageItem } from '../getLocalStorageItem'
+import { linkifyDrawingPanels } from '../linkifyDrawingPanels'
+import { linkifyNodeText } from '../linkifyNodeText'
+import { $ } from '../selector'
+import { setupNewCanvas } from '../setupNewCanvas'
+import { formatTimestamp } from '../time/formatTimestamp'
 
-const betterForums = () => {
+export function betterForums() {
   // Linkify the links
   $('.comment-body *', true).forEach(comment => linkifyNodeText(comment))
 
@@ -19,12 +19,13 @@ const betterForums = () => {
     const hideUserIds = options.forumHiddenUsers
       ? options.forumHiddenUsers.split(',')
       : ''
-    if (hideUserIds)
+    if (hideUserIds) {
       addStyle(
         '.anbt_hideUserPost:not(:target) {opacity: 0.4; margin-bottom: 10px}' +
           '.anbt_hideUserPost:not(:target) .comment-body, .anbt_hideUserPost:not(:target) .avatar {display: none}' +
           ''
       )
+    }
     let lastId = 0
     $('.comment-avatar', true).forEach(({ parentNode }) => {
       const commentHolder = parentNode.parentNode.parentNode
@@ -69,27 +70,30 @@ const betterForums = () => {
       $('.comment-holder') &&
       $('.comment-holder').length === 20 &&
       $('#comment-form .btn-primary')
-    )
+    ) {
       $('#comment-form .btn-primary').insertAdjacentHTML(
         'afterend',
         '<div>Note: posting to another page</div>'
       )
+    }
   }
 
-  if (options.proxyImgur)
+  if (options.proxyImgur) {
     $('img[src*="imgur.com/"]', true).forEach(img =>
       img.setAttribute(
         'src',
         img.src.replace('imgur.com', 'filmot.com').replace('https', 'http')
       )
     )
+  }
 
   const pagination = $('.pagination', true)
-  if (pagination.length)
+  if (pagination.length) {
     $('.breadcrumb').insertAdjacentHTML(
       'afterend',
       `<div class="text-center">${pagination[0].outerHTML}</div>`
     )
+  }
 
   // For the topic list pages only
   if (location.pathname.match(/\/forums\/(\w+)\/$/)) {
@@ -139,8 +143,8 @@ const betterForums = () => {
       $('#main').classList.toggle('anbt_showt')
     })
     if (!hidden) tempUnhideLink.style.display = 'none'
-    if ($('#js-btn-toggle-thread'))
-      $('#js-btn-toggle-thread').parentNode.appendChild(tempUnhideLink)
+    const threadToggle = $('#js-btn-toggle-thread')
+    if (threadToggle) threadToggle.parentNode.appendChild(tempUnhideLink)
   }
   $('.btn.btn-default', true).forEach(button =>
     button.addEventListener('click', () => {
@@ -148,5 +152,3 @@ const betterForums = () => {
     })
   )
 }
-
-export default betterForums

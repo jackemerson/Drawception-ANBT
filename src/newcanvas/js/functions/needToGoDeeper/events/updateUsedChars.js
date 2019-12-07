@@ -1,7 +1,7 @@
-import ID from '../../idSelector'
+import { ID } from '../../idSelector'
 
-const updateUsedChars = () => {
+export function updateUsedChars() {
   ID('usedchars').textContent = 45 - ID('caption').value.length
 }
 
-export default updateUsedChars
+

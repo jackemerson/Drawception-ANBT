@@ -1,6 +1,6 @@
-import anbt from './anbt'
+import { anbt } from './anbt'
 
-const globals = {
+export const globals = {
   rectangle: {},
   touchSingle: false,
   lastTouch: {},
@@ -8,5 +8,3 @@ const globals = {
   brushSizes: [2, 6, 14, 42],
   timerStart: 0
 }
-
-export default globals

@@ -14,7 +14,7 @@
 (function() {
   'use strict';
 
-  const addDarkCSS = () =>
+  function addDarkCSS() {
     localStorage.setItem(
       'gpe_darkCSS',
       (
@@ -64,17 +64,18 @@
         .replace(/~/g, 'background-color:')
         .replace(/\$/g, ' !important')
     );
+  }
 
-  const getLocalStorageItem = (name, empty) => {
+  function getLocalStorageItem(name, empty) {
     const item = localStorage.getItem(name);
     try {
       return item ? JSON.parse(item) : empty || '';
     } catch (e) {
       return item ? item : empty || '';
     }
-  };
+  }
 
-  const setDarkMode = () => {
+  function setDarkMode() {
     const settings = getLocalStorageItem('gpe_anbtSettings', {});
     if (settings.anbtDarkMode || typeof settings.anbtDarkMode === 'undefined') {
       if (getLocalStorageItem('gpe_inDark', 0)) {
@@ -84,17 +85,14 @@
         css.appendChild(
           document.createTextNode(getLocalStorageItem('gpe_darkCSS'))
         );
-        if (document.head) document.head.appendChild(css);
-        else {
-          const darkLoad = setInterval(() => {
-            if (!document.head) return;
-            document.head.appendChild(css);
-            clearInterval(darkLoad);
-          }, 100);
-        }
+        const darkLoad = setInterval(() => {
+          if (!document.head) return;
+          document.head.appendChild(css);
+          clearInterval(darkLoad);
+        }, 100);
       }
     }
-  };
+  }
 
   const options = {
     enableWacom: 0,
@@ -127,7 +125,7 @@
     anbtDarkMode: 1
   };
 
-  const $ = (selector, array = false) => {
+  function $(selector, array = false) {
     const elements = selector.startsWith('<')
       ? [
           ...new DOMParser().parseFromString(selector, 'text/html').body
@@ -135,25 +133,26 @@
         ]
       : [...document.querySelectorAll(selector)];
     return elements.length > 1 || array ? elements : elements[0];
-  };
+  }
 
-  const betterCreate = () => {
-    if (!options.enterToCaption) {
-      if ($('#prompt'))
-        $('#prompt').addEventListener('keydown', event => {
-          if (event.keyCode === 13) event.preventDefault();
-        });
+  function betterCreate() {
+    if (options.enterToCaption) return;
+    const prompt = $('#prompt');
+    if (prompt) {
+      prompt.addEventListener('keydown', event => {
+        if (event.keyCode === 13) event.preventDefault();
+      });
     }
-  };
+  }
 
-  const addStyle = css => {
+  function addStyle(css) {
     const parent =
       document.getElementsByTagName('head')[0] || document.documentElement;
     const style = document.createElement('style');
     style.type = 'text/css';
     style.appendChild(document.createTextNode(css));
     parent.appendChild(style);
-  };
+  }
 
   const globals = {
     userId: getLocalStorageItem(
@@ -201,42 +200,49 @@
     ]
   };
 
-  const decimalToBase62 = number => {
-    let result = '';
+  function decimalToBase62(number) {
+    let result;
     while (number !== 0) {
       const quotient = number % 62;
       result = globals.alphabet[quotient] + result;
       number = (number - quotient) / 62;
     }
     return result;
-  };
+  }
 
-  const scrambleID = number => {
+  function scrambleID(number) {
     if (isNaN(number)) throw new Error('Invalid panel ID');
     return [...decimalToBase62(parseInt(number, 10) + 3521614606208)]
       .reverse()
       .join('');
-  };
+  }
 
-  const linkifyDrawingPanels = img => {
+  function linkifyDrawingPanels(img) {
     if (img.parentNode.nodeName !== 'A') {
       if (
         img.src.match(/\/images\/panels\//) ||
         img.src.match(/\/pub\/panels\//)
-      )
+      ) {
         img.outerHTML = `<a href="/game/${
           img.src.match(/\/([^-]+)-\d+.png/)[1]
         }/-/">${img.outerHTML}</a>`;
-      if (img.src.match(/\/drawings\//))
+      }
+      if (img.src.match(/\/drawings\//)) {
         img.outerHTML = `<a href="/panel/drawing/${
           img.src.match(/(\w+).png$/)[1]
         }/-/">${img.outerHTML}</a>`;
-      if (img.src.match(/\/panel\//))
+      }
+      if (img.src.match(/\/panel\//)) {
         img.outerHTML = `<a href="${img.src}-/">${img.outerHTML}</a>`;
-      if (img.src.match(/\/images\/games\//) || img.src.match(/\/pub\/games\//))
+      }
+      if (
+        img.src.match(/\/images\/games\//) ||
+        img.src.match(/\/pub\/games\//)
+      ) {
         img.outerHTML = `<a href="/game/${
           img.src.match(/\/([^/]+)\.png/)[1]
         }/-/">${img.outerHTML}</a>`;
+      }
       if (img.src.match(/\/display-panel.php?/)) {
         const newSrc = `/panel/drawing/${scrambleID(
           img.src.match(/x=(\d+)/)[1]
@@ -245,29 +251,27 @@
         img.outerHTML = `<a href="${newSrc}-/">${img.outerHTML}</a>`;
       }
     }
-  };
+  }
 
-  const linkifyNodeText = node => {
-    if (node.textContent.includes('://'))
-      node.innerHTML = node.innerHTML.replace(
-        /([^"]|^)(https?:\/\/(?:(?:(?:[^\s<()]*\([^\s<()]*\))+)|(?:[^\s<()]+)))/g,
-        '$1<a href="$2">$2</a>'
-      );
-  };
+  function linkifyNodeText(node) {
+    if (!node.textContent.includes('://')) return;
+    node.innerHTML = node.innerHTML.replace(
+      /([^"]|^)(https?:\/\/(?:(?:(?:[^\s<()]*\([^\s<()]*\))+)|(?:[^\s<()]+)))/g,
+      '$1<a href="$2">$2</a>'
+    );
+  }
 
-  const versions = {
-    scriptVersion: '2.6.2019.11',
-    newCanvasVersion: 59,
-    siteVersion: 'fef0b4f1',
-    runtimeVersion: '1ba6bf05'
-  };
+  const scriptVersion = '2.6.2019.11';
+  const newCanvasVersion = 59;
+  const siteVersion = 'fef0b4f1';
+  const runtimeVersion = '1ba6bf05';
 
-  const setupNewCanvas = (inSandbox, url) => {
+  function setupNewCanvas(inSandbox, url) {
     const canvasHTML = localStorage.getItem('anbt_canvasHTML');
     const canvasHTMLVersion = localStorage.getItem('anbt_canvasHTMLver');
     if (
       !canvasHTML ||
-      canvasHTMLVersion < versions.newCanvasVersion ||
+      canvasHTMLVersion < newCanvasVersion ||
       canvasHTML.length < 10000
     ) {
       const request = new XMLHttpRequest();
@@ -284,7 +288,7 @@
           location.pathname = '/';
         } else {
           localStorage.setItem('anbt_canvasHTML', request.responseText);
-          localStorage.setItem('anbt_canvasHTMLver', versions.newCanvasVersion);
+          localStorage.setItem('anbt_canvasHTMLver', newCanvasVersion);
           setupNewCanvas(inSandbox, url);
         }
       };
@@ -302,7 +306,7 @@
     const panelId = url.match(/sandbox\/(?!\?palette=)#?([^/]+)\/?/);
     const inContest =
       url.match(/contests\/play\//) && document.getElementById('canvas-holder');
-    const versionTitle = `ANBT v${versions.scriptVersion}`;
+    const versionTitle = `ANBT v${scriptVersion}`;
     if (inContest) window.onbeforeunload = () => {};
     const normalUrl =
       inSandbox && !inForum
@@ -371,31 +375,33 @@
     };
     document.write(canvasHTML);
     document.close();
-  };
+  }
 
-  const formatTimestamp = date => {
+  function formatTimestamp(date) {
     if (typeof date === 'number') date = new Date(date);
-    if (options.localeTimestamp) return date.toLocaleString();
-    return `${('0' + date.getDate()).slice(-2)} ${
-      globals.months[date.getMonth()]
-    } ${date.getFullYear()} ${('0' + date.getHours()).slice(-2)}:${(
-      '0' + date.getMinutes()
-    ).slice(-2)}`;
-  };
+    return options.localeTimestamp
+      ? date.toLocaleString()
+      : `${('0' + date.getDate()).slice(-2)} ${
+          globals.months[date.getMonth()]
+        } ${date.getFullYear()} ${('0' + date.getHours()).slice(-2)}:${(
+          '0' + date.getMinutes()
+        ).slice(-2)}`;
+  }
 
-  const betterForums = () => {
+  function betterForums() {
     $('.comment-body *', true).forEach(comment => linkifyNodeText(comment));
     $('img', true).forEach(img => linkifyDrawingPanels(img));
     if (location.pathname.match(/\/forums\/(\w+|-)\/.+/)) {
       const hideUserIds = options.forumHiddenUsers
         ? options.forumHiddenUsers.split(',')
         : '';
-      if (hideUserIds)
+      if (hideUserIds) {
         addStyle(
           '.anbt_hideUserPost:not(:target) {opacity: 0.4; margin-bottom: 10px}' +
             '.anbt_hideUserPost:not(:target) .comment-body, .anbt_hideUserPost:not(:target) .avatar {display: none}' +
             ''
         );
+      }
       let lastId = 0;
       $('.comment-avatar', true).forEach(({ parentNode }) => {
         const commentHolder = parentNode.parentNode.parentNode;
@@ -438,25 +444,28 @@
         $('.comment-holder') &&
         $('.comment-holder').length === 20 &&
         $('#comment-form .btn-primary')
-      )
+      ) {
         $('#comment-form .btn-primary').insertAdjacentHTML(
           'afterend',
           '<div>Note: posting to another page</div>'
         );
+      }
     }
-    if (options.proxyImgur)
+    if (options.proxyImgur) {
       $('img[src*="imgur.com/"]', true).forEach(img =>
         img.setAttribute(
           'src',
           img.src.replace('imgur.com', 'filmot.com').replace('https', 'http')
         )
       );
+    }
     const pagination = $('.pagination', true);
-    if (pagination.length)
+    if (pagination.length) {
       $('.breadcrumb').insertAdjacentHTML(
         'afterend',
         `<div class="text-center">${pagination[0].outerHTML}</div>`
       );
+    }
     if (location.pathname.match(/\/forums\/(\w+)\/$/)) {
       const hiddenTopics = getLocalStorageItem('gpe_forumHiddenTopics', []);
       let hidden = 0;
@@ -500,17 +509,17 @@
         $('#main').classList.toggle('anbt_showt');
       });
       if (!hidden) tempUnhideLink.style.display = 'none';
-      if ($('#js-btn-toggle-thread'))
-        $('#js-btn-toggle-thread').parentNode.appendChild(tempUnhideLink);
+      const threadToggle = $('#js-btn-toggle-thread');
+      if (threadToggle) threadToggle.parentNode.appendChild(tempUnhideLink);
     }
     $('.btn.btn-default', true).forEach(button =>
       button.addEventListener('click', () => {
         if (button.textContent === 'Draw') setupNewCanvas(true, location.href);
       })
     );
-  };
+  }
 
-  const betterComments = () => {
+  function betterComments() {
     const comments = [...$('#comments').nextElementSibling.children].slice(1);
     comments.forEach(x => {
       x.parentNode.parentNode.classList.add('comment-holder');
@@ -536,9 +545,10 @@
     const gameId = location.href.match(/game\/([^/]+)\//)[1];
     if (comments) {
       const hour = Math.floor(Date.now() / (1000 * 60 * 60));
-      for (const temporaryGame in seenComments)
+      for (const temporaryGame in seenComments) {
         if (seenComments[temporaryGame].h + 24 * 7 < hour)
           delete seenComments[temporaryGame];
+      }
       let maxSeenId = 0;
       comments.forEach(holder => {
         const dateElement = holder.querySelector('a.text-muted');
@@ -583,11 +593,12 @@
           }
         }
       });
-      if (maxSeenId)
+      if (maxSeenId) {
         seenComments[gameId] = {
           h: hour,
           id: maxSeenId
         };
+      }
       localStorage.setItem('gpe_seenComments', JSON.stringify(seenComments));
     }
     for (const playerId in gamePlayers) {
@@ -614,21 +625,21 @@
         })
       );
     }
-  };
+  }
 
-  const waitForComments = () => {
+  function waitForComments() {
     const comments = $('#comments')
       ? [...$('#comments').nextElementSibling.children].slice(1)
       : '';
-    if (comments.length && !comments[0].classList.contains('spinner'))
+    if (comments.length && !comments[0].classList.contains('spinner')) {
       betterComments();
-    else {
+    } else {
       if (comments.length === 0) return;
       setTimeout(waitForComments, 1000);
     }
-  };
+  }
 
-  const checkForRecording = (url, success, retrying) => {
+  function checkForRecording(url, success, retrying) {
     const request = new XMLHttpRequest();
     request.open('GET', `${url}?anbt`, true);
     request.responseType = 'arraybuffer';
@@ -642,8 +653,9 @@
         i += 4;
         const chunkName = dataView.getUint32(i);
         i += 4;
-        if (chunkName === 0x73764762) return success();
-        else {
+        if (chunkName === 0x73764762) {
+          return success();
+        } else {
           if (chunkName === 0x49454e44) break;
           i += chunkLength;
         }
@@ -656,9 +668,9 @@
       if (!retrying) checkForRecording(`${url}?anbt`, success, true);
     };
     request.send();
-  };
+  }
 
-  const addReplayButton = drawing => {
+  function addReplayButton(drawing) {
     if (drawing.replayAdded) return;
     drawing.replayAdded = true;
     const { parentNode, src } = drawing;
@@ -677,16 +689,16 @@
       });
       parentNode.insertAdjacentHTML('beforebegin', replayButton.outerHTML);
     });
-  };
+  }
 
-  const reversePanels = () => {
+  function reversePanels() {
     const element = $('.gamepanel-holder')[0].parentNode.parentNode;
     [...element.childNodes]
       .reverse()
       .forEach(child => element.appendChild(child));
-  };
+  }
 
-  const betterGame = () => {
+  function betterGame() {
     if (document.title === 'Not Safe For Work (18+) Gate') {
       if (options.autoBypassNSFW) window.DrawceptionPlay.bypassNsfwGate();
       return;
@@ -694,11 +706,13 @@
     const drawings = $(
       'img[src^="https://cdn.drawception.com/images/panels/"],img[src^="https://cdn.drawception.com/drawings/"]'
     );
-    if ($('#btn-copy-url'))
-      $('#btn-copy-url').insertAdjacentHTML(
+    const copyButton = $('#btn-copy-url');
+    if (copyButton) {
+      copyButton.insertAdjacentHTML(
         'afterend',
         ' <a href="#" class="btn btn-default reversePanels" title="Reverse panels"><span class="fas fa-sort-amount-up"></span> Reverse</a>'
       );
+    }
     $('.reversePanels').addEventListener('click', reversePanels);
     const favoriteButton = $(
       '<span class="panel-number anbt_favpanel fas fa-heart text-muted" title="Favorite"></span>'
@@ -713,10 +727,11 @@
       const id = parentNode
         .querySelector('.gamepanel-tools>a:last-child')
         .href.match(/\/panel\/[^/]+\/([^/]+)\/[^/]+\//)[1];
-      if (panels[id])
+      if (panels[id]) {
         parentNode
           .querySelector('.anbt_favpanel')
           .classList.add('anbt_favedpanel');
+      }
     });
     $('.anbt_favpanel', true).forEach(favoritePanelButton => {
       favoritePanelButton.addEventListener('click', () => {
@@ -748,18 +763,21 @@
       });
     });
     if (options.newCanvas) {
-      if (drawings)
+      if (drawings) {
         drawings.forEach(drawing =>
           drawing.addEventListener('load', addReplayButton(drawing))
         );
+      }
     }
     setTimeout(waitForComments, 200);
-  };
+  }
 
-  const getCookie = name =>
-    document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`))[2] || null;
+  function getCookie(name) {
+    const cookie = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`))[2];
+    return cookie || null;
+  }
 
-  const setCookie = (name, value, expire) => {
+  function setCookie(name, value, expire) {
     if (expire) {
       const time = new Date();
       time.setTime(time.getTime() + 24 * expire * 60 * 60 * 1e3);
@@ -768,14 +786,14 @@
     document.cookie = `${name}=${value ? JSON.stringify(value) : ''}; expires=${
       expire ? expire : 'Thu, 01 Jan 1970 00:00:00 UTC'
     }; path=/`;
-  };
+  }
 
-  const getPanelId = url => {
+  function getPanelId(url) {
     const match = url.match(/\/panel\/[^/]+\/(\w+)\//);
     if (match) return match[1];
-  };
+  }
 
-  const base62ToDecimal = number => {
+  function base62ToDecimal(number) {
     number = number.toString();
     const cachePosition = {};
     let result = 0;
@@ -789,12 +807,13 @@
       power *= 62;
     }
     return result;
-  };
+  }
 
-  const unscrambleID = string =>
-    base62ToDecimal([...string].reverse().join('')) - 3521614606208;
+  function unscrambleID(string) {
+    return base62ToDecimal([...string].reverse().join('')) - 3521614606208;
+  }
 
-  const betterPanel = () => {
+  function betterPanel() {
     let favoriteButton = $(
       '<button class="btn btn-info" style="margin-top: 20px"><span class="fas fa-heart"></span> <b>Favorite</b></button>'
     );
@@ -840,7 +859,7 @@
     const panelId = getPanelId(location.pathname);
     if (options.newCanvas && panelId && unscrambleID(panelId) >= 14924553) {
       const img = $('.gamepanel img');
-      if (img)
+      if (img) {
         checkForRecording(img.src, () => {
           const replayLink = $(
             `<a class="btn btn-primary" style="margin-top: 20px" href="/sandbox/#${panelId}"><span class="fas fa-redo-alt"></span> <b>Replay</b></a> `
@@ -852,6 +871,7 @@
           });
           $('.gamepanel').insertAdjacentHTML('afterend', replayLink.outerHTML);
         });
+      }
     }
     if (
       $('.btn-primary').length > 1 &&
@@ -871,7 +891,9 @@
               'Max cover creator drawings selected. Please remove some before adding more.'
             );
             return;
-          } else idList.push(id.toString());
+          } else {
+            idList.push(id.toString());
+          }
         } else {
           coverButton
             .setAttribute('disabled', 'disabled')
@@ -885,38 +907,38 @@
       });
       $('.gamepanel').insertAdjacentHTML('afterend', coverButton.outerHTML);
     }
-  };
+  }
 
-  const rot13 = number =>
-    [...number.toString()]
+  function rot13(number) {
+    return [...number.toString()]
       .map(character => {
         character = character.charCodeAt(0);
-        if (character >= 97 && character <= 122)
+        if (character >= 97 && character <= 122) {
           character = ((character - 97 + 13) % 26) + 97;
-        if (character >= 65 && character <= 90)
+        } else if (character >= 65 && character <= 90) {
           character = ((character - 65 + 13) % 26) + 65;
+        }
         return String.fromCharCode(character);
       })
       .join('');
+  }
 
-  const simpleHash = number =>
-    number
+  function simpleHash(number) {
+    return number
       .toString()
       .split('')
-      .reduce((a, b) => {
-        a = (a << 5) - a + b.charCodeAt(0);
-        return a & a;
-      }, 0);
+      .reduce((a, b) => (a << 5) - a + b.charCodeAt(0), 0);
+  }
 
-  const randomGreeting = () => {
+  function randomGreeting() {
     const changeEveryHalfDay = Math.floor(Date.now() / (1000 * 60 * 60 * 12));
     const rndData = simpleHash(
-      changeEveryHalfDay + parseInt(globals.userid, 10) + 178889
+      changeEveryHalfDay + parseInt(globals.userId, 10) + 178889
     );
     return rot13(globals.greetings[rndData % globals.greetings.length]);
-  };
+  }
 
-  const addReplaySign = drawing => {
+  function addReplaySign(drawing) {
     if (drawing.replayAdded) return;
     drawing.replayAdded = true;
     const panel = drawing.parentNode.parentNode;
@@ -933,9 +955,9 @@
             );
       panel.appendChild(replaySign);
     });
-  };
+  }
 
-  const fadeOut = (element, duration = 400) => {
+  function fadeOut(element, duration = 400) {
     duration = duration === 'slow' ? 600 : duration;
     element.style.opacity = element.style.opacity
       ? parseFloat(element.style.opacity) - 0.1
@@ -943,13 +965,14 @@
     if (parseFloat(element.style.opacity) < 0) {
       element.style.opacity = 0;
       element.style.display = 'none';
-    } else
+    } else {
       setTimeout(() => {
         fadeOut(element, duration);
       }, duration / 10);
-  };
+    }
+  }
 
-  const viewMyGameBookmarks = () => {
+  function viewMyGameBookmarks() {
     const removeButtonHTML =
       '<a class="anbt_gamedel pull-right lead fas fa-times btn btn-sm btn-danger" href="#" title="Remove" style="margin-left: 10px"></a>';
     const games = getLocalStorageItem('gpe_gameBookmarks', {});
@@ -1010,10 +1033,11 @@
           }
         };
         xhr.send();
-      } else if (id.length === 10)
+      } else if (id.length === 10) {
         result.push(
           `<p class="well${extraClass}" id="${id}"><a href="${games[id].url}">${games[id].title}</a>${removeButtonHTML}</p>`
         );
+      }
     }
     $('#anbt_userpage').innerHTML = result.length
       ? result.join('')
@@ -1027,9 +1051,9 @@
         localStorage.setItem('gpe_gameBookmarks', JSON.stringify(games));
       })
     );
-  };
+  }
 
-  const viewMyPanelFavorites = () => {
+  function viewMyPanelFavorites() {
     const panels = getLocalStorageItem('gpe_panelFavorites', {});
     let result = '';
     let needsUpdate = false;
@@ -1070,9 +1094,9 @@
         localStorage.setItem('gpe_panelFavorites', JSON.stringify(panels));
       })
     );
-  };
+  }
 
-  const betterPlayer = () => {
+  function betterPlayer() {
     const publicInfo = $('.profile-header-info .text-muted > span:last-child');
     if (publicInfo) linkifyNodeText(publicInfo.parentNode);
     const currentLocation = location.href;
@@ -1109,20 +1133,22 @@
       if (location.hash.includes('#anbt_gamebookmarks')) viewMyGameBookmarks();
       if (window.date) {
         const publicInfo = $('.profile-user-header>div.row>div>h1+p');
-        if (publicInfo)
+        if (publicInfo) {
           [...publicInfo.childNodes][4].nodeValue = ` ${formatTimestamp(
             window.date
           )} \xa0`;
+        }
       }
     } else {
       const drawings = $(
         'img[src^="https://cdn.drawception.com/images/panels/"],img[src^="https://cdn.drawception.com/drawings/"]',
         true
       );
-      if (options.newCanvas)
+      if (options.newCanvas) {
         drawings.forEach(drawing =>
           drawing.addEventListener('load', addReplaySign(drawing))
         );
+      }
       drawings.forEach(({ src, parentNode }) => {
         if (src.match(/-1\.png$/))
           parentNode.parentNode.appendChild(
@@ -1167,18 +1193,19 @@
         postLink.parentNode.parentNode.removeChild(postLink.parentNode);
       });
     }
-  };
+  }
 
-  const escapeHTML = value =>
-    value
+  function escapeHTML(value) {
+    return value
       .toString()
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#039;');
+  }
 
-  const addGroup = (name, settings) => {
+  function addGroup(name, settings) {
     const controlGroup = $('<div class="control-group"></div>');
     controlGroup.appendChild($(`<label class="control-label">${name}</label>`));
     settings.forEach(setting => {
@@ -1215,36 +1242,41 @@
       controlGroup.appendChild(controls);
     });
     return controlGroup;
-  };
+  }
 
-  const fadeIn = (element, duration = 400) => {
+  function fadeIn(element, duration = 400) {
     element.style.display = 'inline';
     duration = duration === 'slow' ? 600 : duration;
     element.style.opacity = element.style.opacity
       ? parseFloat(element.style.opacity) + 0.1
       : 0.2;
-    if (parseFloat(element.style.opacity) > 1) element.style.opacity = 1;
-    else
+    if (parseFloat(element.style.opacity) > 1) {
+      element.style.opacity = 1;
+    } else {
       setTimeout(() => {
         fadeIn(element, duration);
       }, duration / 10);
-  };
+    }
+  }
 
-  const loadScriptSettings = () => {
+  function loadScriptSettings() {
     const localOptions = getLocalStorageItem('gpe_anbtSettings', null);
     if (!localOptions) return;
-    for (const option in localOptions)
+    for (const option in localOptions) {
       window.options[option] = localOptions[option];
-  };
+    }
+  }
 
-  const updateScriptSettings = ({ currentTarget: theForm }) => {
+  function updateScriptSettings({ currentTarget: theForm }) {
     const result = {};
     theForm.querySelectorAll('input,textarea').forEach(fromField => {
-      if (fromField.type === 'checkbox')
+      if (fromField.type === 'checkbox') {
         result[fromField.name] = fromField.checked ? 1 : 0;
-      else if (fromField.getAttribute('data-subtype') === 'number')
+      } else if (fromField.getAttribute('data-subtype') === 'number') {
         result[fromField.name] = parseFloat(fromField.value) || 0;
-      else result[fromField.name] = fromField.value;
+      } else {
+        result[fromField.name] = fromField.value;
+      }
     });
     localStorage.setItem('gpe_anbtSettings', JSON.stringify(result));
     loadScriptSettings();
@@ -1252,9 +1284,9 @@
     setTimeout(() => {
       fadeOut($('#anbtSettingsOK'), 'slow');
     }, 800);
-  };
+  }
 
-  const betterSettings = () => {
+  function betterSettings() {
     const theForm = $(
       '<form class="regForm form-horizontal settingsForm" action="#"></form>'
     );
@@ -1388,15 +1420,12 @@
       '<br><div class="control-group"><div class="controls"><input name="submit" type="submit" class="btn btn-primary settingsFormSubmit" value="Apply"> <b id="anbtSettingsOK" class="label label-theme_holiday" style="display:none">Saved!</b></div></div>'
     ).forEach(node => theForm.appendChild(node));
     $('#main').insertAdjacentHTML('afterbegin', theForm.outerHTML);
-    $('.settingsForm').addEventListener(
-      'submit',
-      form => updateScriptSettings(form) && false
-    );
-    if ($('input[name="location"]'))
-      $('input[name="location"]').setAttribute('maxlength', '65');
-  };
+    $('.settingsForm').addEventListener('submit', updateScriptSettings);
+    const location = $('input[name="location"]');
+    if (location) location.setAttribute('maxlength', '65');
+  }
 
-  const betterStore = () => {
+  function betterStore() {
     const storeSections = $('.grid-store');
     if (!storeSections) return;
     storeSections.shift();
@@ -1434,7 +1463,7 @@
     addStyle(
       '@media screen and (min-width:768px) and (max-width:1279px){.grid-store-btn{display:flex;flex-direction:column;align-items:center}.btn-group-justified>.btn,.btn-group-justified>.btn-group,.btn-group-justified>div{width:100%}.btn-group>.btn{border-radius:.2em!important}}'
     );
-  };
+  }
 
   const betterPages = {
     betterCreate,
@@ -1446,20 +1475,20 @@
     betterStore
   };
 
-  const bold = (
+  function bold(
     value,
     length,
     selectionStart,
     selectionEnd,
     selection,
     textarea
-  ) => {
+  ) {
     const selRegex = new RegExp(
       `\\*\\*(${selection.replace(/\*/g, '')})\\*\\*`
     );
-    if (selection.match(selRegex))
+    if (selection.match(selRegex)) {
       selection = selection.replace(selRegex, '$1');
-    else if (selectionStart > 0 && selectionEnd < length) {
+    } else if (selectionStart > 0 && selectionEnd < length) {
       if (
         value.substring(selectionStart - 1, selectionEnd + 1).match(selRegex)
       ) {
@@ -1476,10 +1505,11 @@
         selection = value
           .substring(selectionStart, selectionEnd)
           .replace(selRegex, '$1');
-      } else
+      } else {
         selection = selection.match(/\*\*.+\*\*/g)
           ? selection.replace(/\*\*/g, '')
           : `**${selection.replace(/\n/g, '**\n**')}**`;
+      }
     } else {
       if (
         !selectionStart &&
@@ -1497,34 +1527,36 @@
         selection = value
           .substring(selectionStart, selectionEnd)
           .replace(selRegex, '$1');
-      } else
+      } else {
         selection = selection.match(/\*\*.+\*\*/g)
           ? selection.replace(/\*\*/g, '')
           : `**${selection.replace(/\n/g, '**\n**')}**`;
+      }
     }
     textarea.value =
       value.substring(0, selectionStart) +
       selection +
       value.substring(selectionEnd, length);
-  };
+  }
 
-  const code = (
+  function code(
     value,
     length,
     selectionStart,
     selectionEnd,
     selection,
     textarea
-  ) => {
+  ) {
     const selRegex = /^ {4}(.*)/gm;
-    if (selection.match(selRegex)) selection = selection.replace(/^ {4}/gm, '');
-    else if (
+    if (selection.match(selRegex)) {
+      selection = selection.replace(/^ {4}/gm, '');
+    } else if (
       selectionStart === 0 ||
       value.substring(selectionStart - 1, selectionEnd).match(/\n.*/gm)
     ) {
-      if (selection.match(/^ {4}/gm))
+      if (selection.match(/^ {4}/gm)) {
         selection = selection.replace(/^ {4}/gm, '');
-      else
+      } else {
         selection = `${
           selectionStart === 0
             ? ''
@@ -1532,7 +1564,8 @@
             ? '\n'
             : '\n\n'
         }    ${selection.replace(/\n/g, '\n    ')}`;
-    } else
+      }
+    } else {
       selection = `${
         value.substring(selectionStart - 1, selectionEnd).match(/^\n/)
           ? '\n'
@@ -1540,35 +1573,38 @@
       }    ${selection.replace(/\n^(.*)/gm, '\n    $1')}${
         value.substring(selectionEnd, selectionEnd + 1).match(/\n/) ? '' : '\n'
       }`;
+    }
     textarea.value =
       value.substring(0, selectionStart) +
       selection +
       value.substring(selectionEnd, length);
-  };
+  }
 
-  const heading = (
+  function heading(
     value,
     length,
     selectionStart,
     selectionEnd,
     selection,
     textarea
-  ) => {
+  ) {
     const selRegex = /^#+ .*/gm;
     if (selection.match(selRegex)) {
       selection = selection.replace(/^# /gm, '');
-      if (selection.match(/^#{2,} /gm)) selection.replace(/(^#*)# /gm, '$1 ');
+      if (selection.match(/^#{2,} /gm)) {
+        selection.replace(/(^#*)# /gm, '$1 ');
+      }
     } else if (
       !selectionStart ||
       value.substring(selectionStart - 1, selectionEnd).match(/\n.*/gm)
-    )
+    ) {
       selection = `${
         value.substring(selectionStart - 1, selectionEnd).match(/\n^.*/gm) ||
         !selectionStart
           ? ''
           : '\n'
       }###### ${selection.replace(/\n/g, '\n###### ')}`;
-    else if (
+    } else if (
       value.substring(selectionStart - 1, selectionEnd).match(selRegex)
     ) {
       selectionStart -= 4;
@@ -1582,25 +1618,27 @@
       selection = value
         .substring(selectionStart, selectionEnd)
         .replace(/(^#*)# /gm, '$1 ');
-    } else selection = `\n###### ${selection.replace(/\n/g, '\n###### ')}`;
+    } else {
+      selection = `\n###### ${selection.replace(/\n/g, '\n###### ')}`;
+    }
     textarea.value =
       value.substring(0, selectionStart) +
       selection +
       value.substring(selectionEnd, length);
-  };
+  }
 
-  const highlighter = (
+  function highlighter(
     value,
     length,
     selectionStart,
     selectionEnd,
     selection,
     textarea
-  ) => {
+  ) {
     const selRegex = new RegExp(`\`(${selection.replace(/`/g, '')})\``);
-    if (selection.match(selRegex))
+    if (selection.match(selRegex)) {
       selection = selection.replace(selRegex, '$1');
-    else if (selectionStart > 0 && selectionEnd < length) {
+    } else if (selectionStart > 0 && selectionEnd < length) {
       if (
         value.substring(selectionStart - 1, selectionEnd + 1).match(selRegex)
       ) {
@@ -1641,23 +1679,23 @@
       value.substring(0, selectionStart) +
       selection +
       value.substring(selectionEnd, length);
-  };
+  }
 
-  const image = (
+  function image(
     value,
     length,
     selectionStart,
     selectionEnd,
     selection,
     textarea
-  ) => {
+  ) {
     const selRegex = /!\[(.*)\]\((\S*)( ".*")?\)/;
-    if (selection.match(selRegex))
+    if (selection.match(selRegex)) {
       textarea.value =
         value.substring(0, selectionStart) +
         selection.replace(selRegex, '$1 $2') +
         value.substring(selectionEnd, length);
-    else {
+    } else {
       let link = '';
       if (!selection.match(/\[(.*)\]\((\S*)( ".*")?\)/)) {
         link = selection.match(/https?:\/\/\S*/) || '';
@@ -1665,7 +1703,9 @@
           .replace(link[0], '')
           .replace(/ +/g, ' ')
           .trim();
-      } else selection = '';
+      } else {
+        selection = '';
+      }
       const divModal = $(
         `<div class="v--modal-overlay scrollable overlay-fade-enter-active" style="opacity: 0" id="markdown"><div class="v--modal-background-click"><div class="v--modal-top-right"></div><div class="v--modal-box v--modal" style="top: 89px; left: 240px; width: 800px; height: auto;"><div style="padding: 30px;"><button type="button" class="close">×</button><h4 class="clear-top">Markdown informations box</h4><hr><div><h4 class="clear-top">Text:</h4><input id="markdown-text" type="text" placeholder="Insert text here" class="form-control input-lg input-prompt"><h4>Link:</h4><input id="markdown-link" type="text" placeholder="Insert link here" class="form-control input-lg input-prompt"><h4>Hover message:</h4><input id="markdown-hover" type="text" placeholder="Message when hover the link (optional)" class="form-control input-lg input-prompt"></div><hr><p class="text-center clear-bot"><button type="button" id="markdown-done" class="btn btn-default">Done</button></p></div></div></div></div>`
       );
@@ -1697,16 +1737,16 @@
         $('#markdown').outerHTML = '';
       });
     }
-  };
+  }
 
-  const italic = (
+  function italic(
     value,
     length,
     selectionStart,
     selectionEnd,
     selection,
     textarea
-  ) => {
+  ) {
     const selRegex = new RegExp(
       `\\*(?=\\S*${selection.replace(
         /(.*)\*(.*)/g,
@@ -1714,9 +1754,9 @@
       )})((?:\\*\\*|\\\\[\\s\\S]|\\s+(?:\\\\[\\s\\S]|[^\\s\\*\\\\]|\\*\\*)|[^\\s\\*\\\\])+?)\\*(?!\\*)`
     );
     const italicRegex = /\*(?=\S)((?:\*\*|\\[\s\S]|\s+(?:\\[\s\S]|[^\s\*\\]|\*\*)|[^\s\*\\])+?)\*(?!\*)/g;
-    if (selection.match(selRegex))
+    if (selection.match(selRegex)) {
       selection = selection.replace(selRegex, '$1');
-    else if (selectionStart > 0 && selectionEnd < length) {
+    } else if (selectionStart > 0 && selectionEnd < length) {
       if (
         value.substring(selectionStart - 1, selectionEnd + 1).match(selRegex)
       ) {
@@ -1747,32 +1787,33 @@
         selection = value
           .substring(selectionStart, selectionEnd)
           .replace(selRegex, '$1');
-      } else
+      } else {
         selection = selection.match(italicRegex)
           ? selection.replace(italicRegex, '$1')
           : `*${selection.replace(/\n/g, '*\n*')}*`;
+      }
     }
     textarea.value =
       value.substring(0, selectionStart) +
       selection +
       value.substring(selectionEnd, length);
-  };
+  }
 
-  const link = (
+  function link(
     value,
     length,
     selectionStart,
     selectionEnd,
     selection,
     textarea
-  ) => {
+  ) {
     const selRegex = /^(?!!)\[(.*)\]\((\S*)( ".*")?\)/;
-    if (selection.match(selRegex))
+    if (selection.match(selRegex)) {
       textarea.value =
         value.substring(0, selectionStart) +
         selection.replace(selRegex, '$1 $2') +
         value.substring(selectionEnd, length);
-    else {
+    } else {
       let imageLink = '';
       if (!selection.match(/!\[(.*)\]\((\S*)( ".*")?\)/)) {
         imageLink = selection.match(/https?:\/\/\S*/) || '';
@@ -1809,16 +1850,16 @@
         $('#markdown').outerHTML = '';
       });
     }
-  };
+  }
 
-  const listOl = (
+  function listOl(
     value,
     length,
     selectionStart,
     selectionEnd,
     selection,
     textarea
-  ) => {
+  ) {
     const selRegex = /^( {3})*\d+\. (.*)/gm;
     if (selection.match(selRegex)) {
       selection = selection.match(/^ {3}/)
@@ -1880,25 +1921,25 @@
       value.substring(0, selectionStart) +
       selection +
       value.substring(selectionEnd, length);
-  };
+  }
 
-  const listUl = (
+  function listUl(
     value,
     length,
     selectionStart,
     selectionEnd,
     selection,
     textarea
-  ) => {
+  ) {
     const selRegex = /^( {3})*- (.*)/;
-    if (selection.match(selRegex))
+    if (selection.match(selRegex)) {
       selection = selection.match(/^ {3}/)
         ? selection.replace(/^ {3}/gm, '')
         : selection.replace(/^- /gm, '');
-    else if (
+    } else if (
       !selectionStart ||
       value.substring(selectionStart - 1, selectionEnd).match(/^\n.*/)
-    )
+    ) {
       selection = `${
         value.substring(selectionStart - 1, selectionEnd).match(/\n^.*/gm) ||
         !selectionStart
@@ -1911,7 +1952,7 @@
           ? '\n'
           : '\n\n'
       }`;
-    else if (
+    } else if (
       value.substring(selectionStart - 1, selectionEnd).match(selRegex)
     ) {
       selectionStart--;
@@ -1925,7 +1966,7 @@
       selection = value
         .substring(selectionStart, selectionEnd)
         .replace(/( {3})*- /g, '$1   - ');
-    } else
+    } else {
       selection = `\n- ${selection.replace(/\n/g, '\n- ')}${
         value.substring(selectionEnd, selectionEnd + 2).match(/\n\n/) ||
         selectionEnd === length
@@ -1934,29 +1975,30 @@
           ? '\n'
           : '\n\n'
       }`;
+    }
     textarea.value =
       value.substring(0, selectionStart) +
       selection +
       value.substring(selectionEnd, length);
-  };
+  }
 
-  const quoteRight = (
+  function quoteRight(
     value,
     length,
     selectionStart,
     selectionEnd,
     selection,
     textarea
-  ) => {
+  ) {
     const selRegex = /^>+\s.*/gm;
-    if (selection.match(selRegex))
+    if (selection.match(selRegex)) {
       selection = selection.match(/^> /gm)
         ? selection.replace(/^> /gm, '')
         : selection.replace(/(^>*)> /gm, '$1 ');
-    else if (
+    } else if (
       !selectionStart ||
       value.substring(selectionStart - 1, selectionEnd).match(/^\n.*/)
-    )
+    ) {
       selection = `${
         value.substring(selectionStart - 1, selectionEnd).match(/\n^.*/gm) ||
         !selectionStart
@@ -1969,7 +2011,7 @@
           ? '\n'
           : '\n\n'
       }`;
-    else if (
+    } else if (
       value.substring(selectionStart - 1, selectionEnd).match(selRegex)
     ) {
       selectionStart--;
@@ -1983,7 +2025,7 @@
       selection = value
         .substring(selectionStart, selectionEnd)
         .replace(/(^>*)\s/gm, '$1> ');
-    } else
+    } else {
       selection = `\n> ${selection.replace(/\n/g, '\n> ')}${
         value.substring(selectionEnd, selectionEnd + 2).match(/\n\n/) ||
         selectionEnd === length
@@ -1992,26 +2034,28 @@
           ? '\n'
           : '\n\n'
       }`;
+    }
     textarea.value =
       value.substring(0, selectionStart) +
       selection +
       value.substring(selectionEnd, length);
-  };
+  }
 
-  const strikethrough = (
+  function strikethrough(
     value,
     length,
     selectionStart,
     selectionEnd,
     selection,
     textarea
-  ) => {
+  ) {
     const selRegex = /~~((.*\W?)*)~~/;
-    if (selection.match(selRegex))
+    if (selection.match(selRegex)) {
       selection = selection.replace(selRegex, '$1');
-    else if (selectionStart > 0 && selectionEnd < length) {
-      if (selection.match(selRegex)) selection.replace(selRegex, '$1');
-      else if (
+    } else if (selectionStart > 0 && selectionEnd < length) {
+      if (selection.match(selRegex)) {
+        selection.replace(selRegex, '$1');
+      } else if (
         value.substring(selectionStart - 1, selectionEnd + 1).match(selRegex)
       ) {
         selectionStart--;
@@ -2059,61 +2103,61 @@
       value.substring(0, selectionStart) +
       selection +
       value.substring(selectionEnd, length);
-  };
+  }
 
   const markdown = {
     bold: {
       title: 'bold text',
-      replace: bold
+      execute: bold
     },
     italic: {
       title: 'italic text',
-      replace: italic
+      execute: italic
     },
     heading: {
       title: 'enlarges/reduces the text',
-      replace: heading
+      execute: heading
     },
     strikethrough: {
       title: 'strikethrough text',
-      replace: strikethrough
+      execute: strikethrough
     },
     highlighter: {
       title: 'highlighted text',
-      replace: highlighter
+      execute: highlighter
     },
     'list-ul': {
       title: 'unordered list',
-      replace: listUl
+      execute: listUl
     },
     'list-ol': {
       title: 'ordered list',
-      replace: listOl
+      execute: listOl
     },
     'quote-right': {
       title: 'quote',
-      replace: quoteRight
+      execute: quoteRight
     },
     code: {
       title: 'block of code',
-      replace: code
+      execute: code
     },
     link: {
       title: 'insert link',
-      replace: link
+      execute: link
     },
     image: {
       title: 'insert image',
-      replace: image
+      execute: image
     }
   };
 
-  const getSelectedText = event => {
+  function getSelectedText(event) {
     const textarea = $('#input-comment');
     const { value, selectionStart, selectionEnd } = textarea;
     const { length } = value;
     const selection = value.substring(selectionStart, selectionEnd);
-    markdown[`${event.currentTarget.id}`].replace(
+    markdown[`${event.currentTarget.id}`].execute(
       value,
       length,
       selectionStart,
@@ -2121,9 +2165,9 @@
       selection,
       textarea
     );
-  };
+  }
 
-  const addMarkdownTools = () => {
+  function addMarkdownTools() {
     const textarea = $('#input-comment');
     if (!textarea) return;
     const markdownDiv = $('<div id="markdown-editor"></div>');
@@ -2138,23 +2182,9 @@
     [...$('#markdown-editor').children].forEach(children =>
       children.addEventListener('click', getSelectedText)
     );
-  };
+  }
 
-  const getNotifications = () => {
-    if (!window.notificationsOpened) {
-      $('#user-notify-list').innerHTML =
-        '<img src="/img/loading.gif" alt="Loading...."/>';
-      const request = new XMLHttpRequest();
-      request.open('GET', '/notification/view/');
-      request.onload = () => {
-        if (request.status === 200) $('#user-notify-count').textContent = '0';
-        $('#user-notify-list').innerHTML = request.responseText;
-        window.notificationsOpened = true;
-      };
-    }
-  };
-
-  const toggleLight = () => {
+  function toggleLight() {
     if (options.anbtDarkMode) {
       const inDark = getLocalStorageItem('gpe_inDark', 0);
       if (!inDark) {
@@ -2178,9 +2208,22 @@
         setCookie('theme-night', 1, 365);
       }
     }
-  };
+  }
 
-  const pageEnhancements = () => {
+  function getNotifications() {
+    if (window.notificationsOpened) return;
+    $('#user-notify-list').innerHTML =
+      '<img src="/img/loading.gif" alt="Loading...."/>';
+    const request = new XMLHttpRequest();
+    request.open('GET', '/notification/view/');
+    request.onload = () => {
+      if (request.status === 200) $('#user-notify-count').textContent = '0';
+      $('#user-notify-list').innerHTML = request.responseText;
+      window.notificationsOpened = true;
+    };
+  }
+
+  function pageEnhancements() {
     loadScriptSettings();
     if (typeof DrawceptionPlay === 'undefined') return;
     if (document.getElementById('newcanvasyo')) return;
@@ -2298,8 +2341,9 @@
         })
       );
     }
-    if ($('.navbar-toggle')) {
-      const navbarToggle = $('.navbar-toggle').parentNode;
+    const navToggle = $('.navbar-toggle');
+    if (navToggle) {
+      const navbarToggle = navToggle.parentNode;
       const navbarButtonsList = [
         '<span class="gpe-wide gpe-spacer"></span>',
         '<a href="/sandbox/" title="Sandbox" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item" style="background:#5A5"><span class="fas fa-edit" style="color:#BFB" /></a>',
@@ -2340,18 +2384,18 @@
       `#user-notify-list .list-group .list-group-item .fas {color: #888}#user-notify-list .list-group .list-group-item:nth-child(-n+${number}) .fas {color: #2F5}a.wrong-order {color: #F99} div.comment-holder:target {background-color: #DFD}.comment-new a.text-muted:last-child:after {content: 'New'; color: #2F5; font-weight: bold; background-color: #183; border-radius: 9px; display: inline-block; padding: 0px 6px; margin-left: 10px;}`
     );
     window.getNotifications = getNotifications;
-    let versionDisplay = `ANBT v${versions.scriptVersion}`;
+    let versionDisplay = `ANBT v${scriptVersion}`;
     try {
       const appVersion = $('script[src^="/build/app"]').src.match(
         /(\w+)\.js$/
       )[1];
-      const runtimeVersion = $('script[src^="/build/runtime"]').src.match(
+      const runtimeVer = $('script[src^="/build/runtime"]').src.match(
         /(\w+)\.js$/
       )[1];
       versionDisplay += ` | app ${appVersion}`;
-      if (appVersion !== versions.siteVersion) versionDisplay += '*';
-      versionDisplay += ` | runtime ${runtimeVersion}`;
-      if (runtimeVersion !== versions.runtimeVersion) versionDisplay += '*!!!';
+      if (appVersion !== siteVersion) versionDisplay += '*';
+      versionDisplay += ` | runtime ${runtimeVer}`;
+      if (runtimeVer !== runtimeVersion) versionDisplay += '*!!!';
     } catch (e) {}
     const wrapperSection = $('.wrapper');
     if (wrapperSection)
@@ -2368,22 +2412,21 @@
       footerLists.forEach((list, index) =>
         list.appendChild($(linkList[index]))
       );
-  };
+  }
 
-  const wrapper = () => {
+  function wrapper() {
     window.options = options;
     const mark = document.createElement('b');
     mark.id = '_anbt_';
     mark.style.display = 'none';
     document.body.appendChild(mark);
-    if (!window.DrawceptionPlay) {
-      const loader = setInterval(() => {
-        if (!window.DrawceptionPlay) return;
-        pageEnhancements();
-        clearInterval(loader);
-      }, 100);
-    } else pageEnhancements();
-  };
+    if (window.DrawceptionPlay) return pageEnhancements();
+    const loader = setInterval(() => {
+      if (!window.DrawceptionPlay) return;
+      pageEnhancements();
+      clearInterval(loader);
+    }, 100);
+  }
 
   addDarkCSS();
   setDarkMode();

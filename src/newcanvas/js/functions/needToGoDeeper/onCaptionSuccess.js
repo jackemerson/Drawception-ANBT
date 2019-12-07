@@ -1,4 +1,4 @@
-const onCaptionSuccess = title => {
+export function onCaptionSuccess(title) {
   const { options, gameInfo } = window
   if (!options.bookmarkOwnCaptions) return
   const games = window.getLocalStorageItem('gpe_gameBookmarks', {})
@@ -10,4 +10,4 @@ const onCaptionSuccess = title => {
   localStorage.setItem('gpe_gameBookmarks', JSON.stringify(games))
 }
 
-export default onCaptionSuccess
+

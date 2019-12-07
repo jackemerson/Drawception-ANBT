@@ -1,10 +1,10 @@
-import anbt from '../../anbt'
-import makePng from '../anbt/makePng'
-import uploadToImgur from '../anbt/uploadToImgur'
-import ID from '../idSelector'
-import warnStrokesAfterPosition from './warnStrokesAfterPosition'
+import { anbt } from '../../anbt'
+import { makePng } from '../anbt/makePng'
+import { uploadToImgur } from '../anbt/uploadToImgur'
+import { ID } from '../idSelector'
+import { warnStrokesAfterPosition } from './warnStrokesAfterPosition'
 
-const exportToImgur = event => {
+export function exportToImgur(event) {
   event.preventDefault()
   if (warnStrokesAfterPosition()) return
   ID('imgur').childNodes[0].nodeValue = 'Uploading...'
@@ -23,10 +23,11 @@ const exportToImgur = event => {
         'imgurdelete'
       ).href = `http://imgur.com/delete/${request.data.deletehash}`
       ID('imgurerror').childNodes[0].nodeValue = ''
-      if (window.inForum)
+      if (window.inForum) {
         window.frameElement.ownerDocument.getElementById(
           'input-comment'
         ).value += `![](http://i.imgur.com/${request.data.id}.png)`
+      }
     } else {
       const error = request.data
         ? `Imgur error: ${request.data.error}`
@@ -36,5 +37,3 @@ const exportToImgur = event => {
     ID('imgur').disabled = false
   })
 }
-
-export default exportToImgur

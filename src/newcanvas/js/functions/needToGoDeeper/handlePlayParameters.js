@@ -1,22 +1,22 @@
-import anbt from '../../anbt'
-import globals from '../../globals'
-import palettes from '../../palettes'
-import lock from '../anbt/lock'
-import moveSeekbar from '../anbt/moveSeekbar'
-import seek from '../anbt/seek'
-import setBackground from '../anbt/setBackground'
-import strokeEnd from '../anbt/strokeEnd'
-import unlock from '../anbt/unlock'
-import setPaletteByName from '../bindEvents/palette/setPaletteByName'
-import updateColorIndicators from '../bindEvents/updateColorIndicators'
-import ID from '../idSelector'
-import updateTimer from '../updateTimer'
-import exitToSandbox from './exitToSandbox'
-import getPalData from './getPalData'
-import handleCommonParameters from './handleCommonParameters'
-import timerCallback from './timerCallback'
+import { anbt } from '../../anbt'
+import { globals } from '../../globals'
+import { palettes } from '../../palettes'
+import { lock } from '../anbt/lock'
+import { moveSeekbar } from '../anbt/moveSeekbar'
+import { seek } from '../anbt/seek'
+import { setBackground } from '../anbt/setBackground'
+import { strokeEnd } from '../anbt/strokeEnd'
+import { unlock } from '../anbt/unlock'
+import { setPaletteByName } from '../bindEvents/palette/setPaletteByName'
+import { updateColorIndicators } from '../bindEvents/updateColorIndicators'
+import { ID } from '../idSelector'
+import { updateTimer } from '../updateTimer'
+import { exitToSandbox } from './exitToSandbox'
+import { getPalData } from './getPalData'
+import { handleCommonParameters } from './handleCommonParameters'
+import { timerCallback } from './timerCallback'
 
-const handlePlayParameters = () => {
+export function handlePlayParameters() {
   const { options, gameInfo, inContest, versionTitle } = window
   ID('skip').disabled = gameInfo.drawFirst || inContest
   ID('report').disabled = gameInfo.drawFirst || inContest
@@ -57,8 +57,9 @@ const handlePlayParameters = () => {
   // Clear
   if (anbt.isStroking) strokeEnd()
   unlock()
-  for (let i = anbt.svg.childNodes.length - 1; i > 0; i--)
+  for (let i = anbt.svg.childNodes.length - 1; i > 0; i--) {
     anbt.svg.removeChild(anbt.svg.childNodes[i])
+  }
   seek(0)
   moveSeekbar(1)
   anbt.unsaved = false
@@ -66,16 +67,17 @@ const handlePlayParameters = () => {
   if (!gameInfo.image) {
     const paletteData = getPalData(palette)
     if (!paletteData) {
-      if (!palette)
+      if (!palette) {
         alert(
           'Error, please report! Failed to extract the palette.\nAre you using the latest ANBT version?'
         )
-      else
+      } else {
         alert(
           `Error, please report! Unknown palette: '${palette}'.\nAre you using the latest ANBT version?`
         )
+      }
       // Prevent from drawing with a wrong palette
-      lock
+      lock()
       ID('submit').disabled = true
     } else {
       setPaletteByName(paletteData[0])
@@ -109,5 +111,3 @@ const handlePlayParameters = () => {
   window.timesUp = false
   updateTimer()
 }
-
-export default handlePlayParameters

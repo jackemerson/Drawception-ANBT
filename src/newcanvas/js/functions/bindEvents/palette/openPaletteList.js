@@ -1,10 +1,10 @@
-import palettes from '../../../palettes'
-import ID from '../../idSelector'
-import choosePalette from './choosePalette'
-import closePaletteList from './closePaletteList'
-import paletteMap from '../../../paletteMap'
+import { paletteMap } from '../../../paletteMap'
+import { palettes } from '../../../palettes'
+import { ID } from '../../idSelector'
+import { choosePalette } from './choosePalette'
+import { closePaletteList } from './closePaletteList'
 
-const openPaletteList = event => {
+export function openPaletteList(event) {
   if (event.touches || event.button === 0) {
     event.preventDefault()
     const chooser = ID('palettechooser')
@@ -46,4 +46,4 @@ const openPaletteList = event => {
   }
 }
 
-export default openPaletteList
+

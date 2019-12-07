@@ -1,11 +1,9 @@
-import anbt from '../../anbt'
-import getSeekMax from '../anbt/getSeekMax'
+import { anbt } from '../../anbt'
+import { getSeekMax } from '../anbt/getSeekMax'
 
-const warnStrokesAfterPosition = () => {
-  if (anbt.position < getSeekMax())
-    return !confirm(
-      'Strokes after current position wi)ll be discarded. Continue?'
-    )
+export function warnStrokesAfterPosition() {
+  return (
+    anbt.position < getSeekMax() &&
+    !confirm('Strokes after current position will be discarded. Continue?')
+  )
 }
-
-export default warnStrokesAfterPosition

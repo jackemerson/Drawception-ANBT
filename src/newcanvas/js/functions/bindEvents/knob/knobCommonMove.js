@@ -1,9 +1,9 @@
-import globals from '../../../globals'
-import getSeekMax from '../../anbt/getSeekMax'
-import seek from '../../anbt/seek'
-import ID from '../../idSelector'
+import { globals } from '../../../globals'
+import { getSeekMax } from '../../anbt/getSeekMax'
+import { seek } from '../../anbt/seek'
+import { ID } from '../../idSelector'
 
-const knobCommonMove = event => {
+export function knobCommonMove(event) {
   event.preventDefault()
   const length = getSeekMax()
   let x = event.touches
@@ -17,5 +17,3 @@ const knobCommonMove = event => {
   seek(position)
   ID('play').classList.remove('pause')
 }
-
-export default knobCommonMove

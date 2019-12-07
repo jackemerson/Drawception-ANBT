@@ -1,8 +1,8 @@
-import anbt from '../../../anbt'
-import globals from '../../../globals'
-import strokeAdd from '../../anbt/strokeAdd'
+import { anbt } from '../../../anbt'
+import { globals } from '../../../globals'
+import { strokeAdd } from '../../anbt/strokeAdd'
 
-const windowMouseMove = event => {
+export function windowMouseMove(event) {
   event.preventDefault()
   if (!anbt.isStroking) return
   const x = event.pageX - globals.rectangle.left - pageXOffset
@@ -10,4 +10,4 @@ const windowMouseMove = event => {
   strokeAdd(x, y)
 }
 
-export default windowMouseMove
+

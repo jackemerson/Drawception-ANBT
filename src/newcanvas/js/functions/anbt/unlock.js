@@ -1,5 +1,5 @@
-import anbt from '../../anbt'
+import { anbt } from '../../anbt'
 
-const unlock = () => (anbt.locked = false)
-
-export default unlock
+export function unlock() {
+  anbt.locked = false
+}

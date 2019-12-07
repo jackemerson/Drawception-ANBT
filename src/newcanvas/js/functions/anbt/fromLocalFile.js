@@ -1,7 +1,7 @@
-import anbt from '../../anbt'
-import fromPng from './fromPng'
+import { anbt } from '../../anbt'
+import { fromPng } from './fromPng'
 
-const fromLocalFile = () => {
+export function fromLocalFile() {
   if (!anbt.fileInput) {
     anbt.fileInput = document.createElement('input')
     anbt.fileInput.style.position = 'absolute'
@@ -22,5 +22,3 @@ const fromLocalFile = () => {
   }
   anbt.fileInput.click()
 }
-
-export default fromLocalFile

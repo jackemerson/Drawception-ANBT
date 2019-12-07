@@ -1,8 +1,7 @@
-import colorToRgba from './colorToRgba'
+import { colorToRgba } from './colorToRgba'
 
-const colorToDword = color =>
-  colorToRgba(color)
+export function colorToDword(color) {
+  return colorToRgba(color)
     .map(value => String.fromCharCode(value))
     .join('')
-
-export default colorToDword
+}

@@ -1,7 +1,7 @@
-import paletteMap from '../../paletteMap'
-import palettes from '../../palettes'
+import { paletteMap } from '../../paletteMap'
+import { palettes } from '../../palettes'
 
-const getPalData = palette => {
+export function getPalData(palette) {
   if (palette === 'theme_roulette') {
     // Since site update, the game reports already chosen palette,
     // but apparently this still happens sometimes. ???
@@ -17,5 +17,3 @@ const getPalData = palette => {
     if (palette) return paletteMap[palette.toLowerCase()]
   }
 }
-
-export default getPalData

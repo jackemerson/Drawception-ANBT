@@ -1,16 +1,16 @@
-import betterPages from '../betterPages'
-import options from '../options'
-import versions from '../versions'
-import addMarkdownTools from './addMarkdownTools'
-import addStyle from './addStyle'
-import setCookie from './cookie/setCookie'
-import getNotifications from './getNotifications'
-import $ from './selector'
-import loadScriptSettings from './settings/loadScriptSettings'
-import setupNewCanvas from './setupNewCanvas'
-import toggleLight from './darkMode/toggleLight'
+import { betterPages } from '../betterPages'
+import { options } from '../options'
+import { runtimeVersion, scriptVersion, siteVersion } from '../versions'
+import { addMarkdownTools } from './addMarkdownTools'
+import { addStyle } from './addStyle'
+import { setCookie } from './cookie/setCookie'
+import { toggleLight } from './darkMode/toggleLight'
+import { getNotifications } from './getNotifications'
+import { $ } from './selector'
+import { loadScriptSettings } from './settings/loadScriptSettings'
+import { setupNewCanvas } from './setupNewCanvas'
 
-const pageEnhancements = () => {
+export function pageEnhancements() {
   loadScriptSettings()
   if (typeof DrawceptionPlay === 'undefined') return // Firefox Greasemonkey seems to call pageEnhancements() after document.write...
   if (document.getElementById('newcanvasyo')) return // Chrome, I'm looking at you too...
@@ -128,8 +128,9 @@ const pageEnhancements = () => {
     )
   }
   // Enhance menu for higher resolutions
-  if ($('.navbar-toggle')) {
-    const navbarToggle = $('.navbar-toggle').parentNode
+  const navToggle = $('.navbar-toggle')
+  if (navToggle) {
+    const navbarToggle = navToggle.parentNode
     const navbarButtonsList = [
       '<span class="gpe-wide gpe-spacer"></span>',
       '<a href="/sandbox/" title="Sandbox" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item" style="background:#5A5"><span class="fas fa-edit" style="color:#BFB" /></a>',
@@ -175,16 +176,16 @@ const pageEnhancements = () => {
   // Show an error if it occurs instead of "loading forever"
   window.getNotifications = getNotifications
 
-  let versionDisplay = `ANBT v${versions.scriptVersion}`
+  let versionDisplay = `ANBT v${scriptVersion}`
   try {
     const appVersion = $('script[src^="/build/app"]').src.match(/(\w+)\.js$/)[1]
-    const runtimeVersion = $('script[src^="/build/runtime"]').src.match(
+    const runtimeVer = $('script[src^="/build/runtime"]').src.match(
       /(\w+)\.js$/
     )[1]
     versionDisplay += ` | app ${appVersion}`
-    if (appVersion !== versions.siteVersion) versionDisplay += '*'
-    versionDisplay += ` | runtime ${runtimeVersion}`
-    if (runtimeVersion !== versions.runtimeVersion) versionDisplay += '*!!!' // didn't break with one update, hurray
+    if (appVersion !== siteVersion) versionDisplay += '*'
+    versionDisplay += ` | runtime ${runtimeVer}`
+    if (runtimeVer !== runtimeVersion) versionDisplay += '*!!!' // didn't break with one update, hurray
   } catch (e) {}
   const wrapperSection = $('.wrapper')
   if (wrapperSection)
@@ -199,5 +200,3 @@ const pageEnhancements = () => {
   if (footerLists)
     footerLists.forEach((list, index) => list.appendChild($(linkList[index])))
 }
-
-export default pageEnhancements

@@ -1,8 +1,7 @@
-import getLocalStorageItem from './functions/getLocalStorageItem'
-import $ from './functions/selector'
+import { getLocalStorageItem } from './functions/getLocalStorageItem'
+import { $ } from './functions/selector'
 
-// prettier-ignore
-const globals = {
+export const globals = {
   userId: getLocalStorageItem(
     'gpe_lastSeenId',
     $('.player-dropdown a[href^="/player/"]') &&
@@ -10,7 +9,20 @@ const globals = {
         /\/player\/(\d+)\//
       )[1]
   ),
-  months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+  months: [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+  ],
   alphabet: '36QtfkmuFds0UjlvCGIXZ125bEMhz48JSYgipwKn7OVHRBPoy9DLWaceqxANTr',
   greetings: [
     'Oruvaq lbh!',
@@ -34,5 +46,3 @@ const globals = {
     'Gbqnl vf n tbbq qnl.'
   ]
 }
-
-export default globals

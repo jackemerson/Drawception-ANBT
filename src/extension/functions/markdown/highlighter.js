@@ -1,14 +1,15 @@
-const highlighter = (
+export function highlighter(
   value,
   length,
   selectionStart,
   selectionEnd,
   selection,
   textarea
-) => {
+) {
   const selRegex = new RegExp(`\`(${selection.replace(/`/g, '')})\``)
-  if (selection.match(selRegex)) selection = selection.replace(selRegex, '$1')
-  else if (selectionStart > 0 && selectionEnd < length) {
+  if (selection.match(selRegex)) {
+    selection = selection.replace(selRegex, '$1')
+  } else if (selectionStart > 0 && selectionEnd < length) {
     if (value.substring(selectionStart - 1, selectionEnd + 1).match(selRegex)) {
       selectionStart--
       selectionEnd++
@@ -48,5 +49,3 @@ const highlighter = (
     selection +
     value.substring(selectionEnd, length)
 }
-
-export default highlighter

@@ -1,8 +1,8 @@
-import strokeEnd from '../../anbt/strokeEnd'
-import simulateSingleTouchStart from '../simulateSingleTouchStart'
-import touchMove from './touchMove'
+import { strokeEnd } from '../../anbt/strokeEnd'
+import { simulateSingleTouchStart } from '../simulateSingleTouchStart'
+import { touchMove } from './touchMove'
 
-const touchEnd = event => {
+export function touchEnd(event) {
   if (event.touches.length !== 0) return
   simulateSingleTouchStart()
   event.preventDefault()
@@ -11,4 +11,4 @@ const touchEnd = event => {
   strokeEnd()
 }
 
-export default touchEnd
+

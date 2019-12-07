@@ -1,12 +1,12 @@
-import anbt from '../../../anbt'
-import globals from '../../../globals'
-import strokeEnd from '../../anbt/strokeEnd'
-import checkPlayingAndStop from '../checkPlayingAndStop'
-import touchEnd from '../windowEvents/touchEnd'
-import touchMove from '../windowEvents/touchMove'
-import touchUndoRedo from '../windowEvents/touchUndoRedo'
+import { anbt } from '../../../anbt'
+import { globals } from '../../../globals'
+import { strokeEnd } from '../../anbt/strokeEnd'
+import { checkPlayingAndStop } from '../checkPlayingAndStop'
+import { touchEnd } from '../windowEvents/touchEnd'
+import { touchMove } from '../windowEvents/touchMove'
+import { touchUndoRedo } from '../windowEvents/touchUndoRedo'
 
-const touchStart = event => {
+export function touchStart(event) {
   if (event.touches.length === 1) {
     if (checkPlayingAndStop()) return
     // Let two-finger scrolling, pinching, etc. work.
@@ -32,5 +32,3 @@ const touchStart = event => {
     if (anbt.isStroking) strokeEnd()
   }
 }
-
-export default touchStart

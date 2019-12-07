@@ -1,4 +1,4 @@
-const fadeOut = (element, duration = 400) => {
+export function fadeOut(element, duration = 400) {
   duration = duration === 'slow' ? 600 : duration
   element.style.opacity = element.style.opacity
     ? parseFloat(element.style.opacity) - 0.1
@@ -6,10 +6,9 @@ const fadeOut = (element, duration = 400) => {
   if (parseFloat(element.style.opacity) < 0) {
     element.style.opacity = 0
     element.style.display = 'none'
-  } else
+  } else {
     setTimeout(() => {
       fadeOut(element, duration)
     }, duration / 10)
+  }
 }
-
-export default fadeOut

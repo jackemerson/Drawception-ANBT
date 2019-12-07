@@ -1,7 +1,7 @@
-import anbt from '../../anbt'
-import colorToHex from '../conversions/colorToHex'
+import { anbt } from '../../anbt'
+import { colorToHex } from '../conversions/colorToHex'
 
-const setBackground = color => {
+export function setBackground(color) {
   const transparent = color === 'eraser'
   anbt.transparent = transparent
   anbt.canvas.style.background = transparent ? 'none' : color
@@ -14,5 +14,3 @@ const setBackground = color => {
       erased.setAttribute(erased.nodeName === 'path' ? 'stroke' : 'fill', color)
     )
 }
-
-export default setBackground

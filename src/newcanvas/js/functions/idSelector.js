@@ -1,3 +1,3 @@
-const ID = id => document.getElementById(id)
-
-export default ID
+export function ID(id) {
+  return document.getElementById(id)
+}

@@ -1,16 +1,16 @@
-import anbt from '../../../anbt'
-import globals from '../../../globals'
-import eyedropper from '../../anbt/eyedropper'
-import setColor from '../../anbt/setColor'
-import strokeBegin from '../../anbt/strokeBegin'
-import ID from '../../idSelector'
-import checkPlayingAndStop from '../checkPlayingAndStop'
-import getPointerType from '../getPointerType'
-import updateColorIndicators from '../updateColorIndicators'
-import windowMouseMove from '../windowEvents/mouseMove'
-import mouseUp from './mouseUp'
+import { anbt } from '../../../anbt'
+import { globals } from '../../../globals'
+import { eyedropper } from '../../anbt/eyedropper'
+import { setColor } from '../../anbt/setColor'
+import { strokeBegin } from '../../anbt/strokeBegin'
+import { ID } from '../../idSelector'
+import { checkPlayingAndStop } from '../checkPlayingAndStop'
+import { getPointerType } from '../getPointerType'
+import { updateColorIndicators } from '../updateColorIndicators'
+import { windowMouseMove } from '../windowEvents/mouseMove'
+import { mouseUp } from './mouseUp'
 
-const mouseDown = event => {
+export function mouseDown(event) {
   const { options } = window
   if (event.button === 0 || event.button === 2) {
     if (anbt.isStroking) return mouseUp(event)
@@ -34,4 +34,4 @@ const mouseDown = event => {
   }
 }
 
-export default mouseDown
+

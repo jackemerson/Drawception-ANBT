@@ -1,9 +1,9 @@
-import buildSmoothPath from '../buildSmoothPath'
-import stringToBytes from '../conversions/stringToBytes'
-import createSvgElement from '../createSvgElement'
-import int16be from '../int16be'
+import { buildSmoothPath } from '../buildSmoothPath'
+import { stringToBytes } from '../conversions/stringToBytes'
+import { createSvgElement } from '../createSvgElement'
+import { int16be } from '../int16be'
 
-const unpackPlayback = bytes => {
+export function unpackPlayback(bytes) {
   const { pako } = window
   const version = bytes[0]
   let start
@@ -13,8 +13,11 @@ const unpackPlayback = bytes => {
   } else if (version === 3) {
     bytes = stringToBytes(pako.inflate(bytes.subarray(1), { to: 'string' }))
     start = 0
-  } else if (version === 2) start = 1
-  else throw new Error(`Unsupported version: ${version}`)
+  } else if (version === 2) {
+    start = 1
+  } else {
+    throw new Error(`Unsupported version: ${version}`)
+  }
   const svg = createSvgElement('svg', {
     xmlns: 'http://www.w3.org/2000/svg',
     version: '1.1',
@@ -69,7 +72,9 @@ const unpackPlayback = bytes => {
           path.pathSegList.appendItem(
             path.createSVGPathSegLinetoAbs(last.x, last.y + 0.001)
           )
-        } else buildSmoothPath(points, path)
+        } else {
+          buildSmoothPath(points, path)
+        }
         path.orig = points
         path.pattern = last.pattern
         svg.appendChild(path)
@@ -88,8 +93,9 @@ const unpackPlayback = bytes => {
           // TODO: fix ugly code
           if (last.color === 'rgba(255,255,255,0)') last.color = 'eraser'
           i += 4
-          if (x === -1) last.size = y / 100
-          else
+          if (x === -1) {
+            last.size = y / 100
+          } else {
             svg.appendChild(
               createSvgElement('rect', {
                 class: last.color === 'eraser' ? last.color : null,
@@ -100,6 +106,7 @@ const unpackPlayback = bytes => {
                 fill: last.color === 'eraser' ? background : last.color
               })
             )
+          }
         } else if (x === -3) {
           last.pattern = y
           i += 4
@@ -113,5 +120,3 @@ const unpackPlayback = bytes => {
   }
   return svg
 }
-
-export default unpackPlayback

@@ -1,7 +1,7 @@
-import anbt from '../../anbt'
-import formatDrawingData from './formatDrawingData'
+import { anbt } from '../../anbt'
+import { formatDrawingData } from './formatDrawingData'
 
-function uploadToDrawception(callback) {
+export function uploadToDrawception(callback) {
   const { pako } = window
   const pathList = [...anbt.svg.childNodes].filter(
     childNode => childNode.nodeName === 'path'
@@ -35,5 +35,3 @@ function uploadToDrawception(callback) {
   request.onerror = error => callback(`error: ${error}`)
   request.send(JSON.stringify({ drawdata }))
 }
-
-export default uploadToDrawception

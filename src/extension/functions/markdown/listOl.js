@@ -1,11 +1,11 @@
-const listOl = (
+export function listOl(
   value,
   length,
   selectionStart,
   selectionEnd,
   selection,
   textarea
-) => {
+) {
   const selRegex = /^( {3})*\d+\. (.*)/gm
   if (selection.match(selRegex)) {
     selection = selection.match(/^ {3}/)
@@ -64,5 +64,3 @@ const listOl = (
     selection +
     value.substring(selectionEnd, length)
 }
-
-export default listOl

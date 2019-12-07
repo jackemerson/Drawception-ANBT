@@ -1,10 +1,8 @@
-import $ from './selector'
+import { $ } from './selector'
 
-const reversePanels = () => {
+export function reversePanels() {
   const element = $('.gamepanel-holder')[0].parentNode.parentNode
   ;[...element.childNodes]
     .reverse()
     .forEach(child => element.appendChild(child))
 }
-
-export default reversePanels

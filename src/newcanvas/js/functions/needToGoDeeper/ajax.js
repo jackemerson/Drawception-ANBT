@@ -1,4 +1,4 @@
-const ajax = (type, url, params) => {
+export function ajax(type, url, params) {
   const { options } = window
   const request = new XMLHttpRequest()
   request.open(type, url)
@@ -35,13 +35,17 @@ const ajax = (type, url, params) => {
     params.load(request.responseText)
   }
   request.onerror = () => {
-    if (params.error) params.error(request)
-    else params.load(request)
+    if (params.error) {
+      params.error(request)
+    } else {
+      params.load(request)
+    }
   }
-  if (params.obj) request.send(JSON.stringify(params.obj))
-  else request.send()
+  if (params.obj) {
+    request.send(JSON.stringify(params.obj))
+  } else {
+    request.send()
+  }
   document.body.style.cursor = ''
   return
 }
-
-export default ajax

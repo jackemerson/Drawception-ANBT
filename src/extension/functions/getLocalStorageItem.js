@@ -1,4 +1,4 @@
-const getLocalStorageItem = (name, empty) => {
+export function getLocalStorageItem(name, empty) {
   const item = localStorage.getItem(name)
   try {
     return item ? JSON.parse(item) : empty || ''
@@ -6,5 +6,3 @@ const getLocalStorageItem = (name, empty) => {
     return item ? item : empty || ''
   }
 }
-
-export default getLocalStorageItem

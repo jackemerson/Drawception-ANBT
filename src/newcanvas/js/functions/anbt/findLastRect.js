@@ -1,6 +1,6 @@
-import anbt from '../../anbt'
+import { anbt } from '../../anbt'
 
-const findLastRect = endPosition => {
+export function findLastRect(endPosition) {
   if (!endPosition) endPosition = anbt.svg.childNodes.length - 1
   for (let i = endPosition; i > 0; i--) {
     const element = anbt.svg.childNodes[i]
@@ -8,5 +8,3 @@ const findLastRect = endPosition => {
   }
   return 0
 }
-
-export default findLastRect

@@ -1,13 +1,13 @@
-import options from '../options'
-import versions from '../versions'
-import getLocalStorageItem from './getLocalStorageItem'
+import { options } from '../options'
+import { newCanvasVersion, scriptVersion } from '../versions'
+import { getLocalStorageItem } from './getLocalStorageItem'
 
-const setupNewCanvas = (inSandbox, url) => {
+export function setupNewCanvas(inSandbox, url) {
   const canvasHTML = localStorage.getItem('anbt_canvasHTML')
   const canvasHTMLVersion = localStorage.getItem('anbt_canvasHTMLver')
   if (
     !canvasHTML ||
-    canvasHTMLVersion < versions.newCanvasVersion ||
+    canvasHTMLVersion < newCanvasVersion ||
     canvasHTML.length < 10000
   ) {
     const request = new XMLHttpRequest()
@@ -24,7 +24,7 @@ const setupNewCanvas = (inSandbox, url) => {
         location.pathname = '/'
       } else {
         localStorage.setItem('anbt_canvasHTML', request.responseText)
-        localStorage.setItem('anbt_canvasHTMLver', versions.newCanvasVersion)
+        localStorage.setItem('anbt_canvasHTMLver', newCanvasVersion)
         setupNewCanvas(inSandbox, url)
       }
     }
@@ -42,7 +42,7 @@ const setupNewCanvas = (inSandbox, url) => {
   const panelId = url.match(/sandbox\/(?!\?palette=)#?([^/]+)\/?/)
   const inContest =
     url.match(/contests\/play\//) && document.getElementById('canvas-holder') // Handle drawing contests only
-  const versionTitle = `ANBT v${versions.scriptVersion}`
+  const versionTitle = `ANBT v${scriptVersion}`
 
   // Disable built-in safety warning
   if (inContest) window.onbeforeunload = () => {}
@@ -119,5 +119,3 @@ const setupNewCanvas = (inSandbox, url) => {
   document.write(canvasHTML)
   document.close()
 }
-
-export default setupNewCanvas

@@ -1,10 +1,10 @@
-import anbt from '../../anbt'
-import bytesToStrings from '../conversions/bytesToStrings'
-import colorToDword from '../conversions/colorToDword'
-import stringToBytes from '../conversions/stringToBytes'
-import packUint16be from '../pack/packUint16be'
+import { anbt } from '../../anbt'
+import { bytesToString } from '../conversions/bytesToStrings'
+import { colorToDword } from '../conversions/colorToDword'
+import { stringToBytes } from '../conversions/stringToBytes'
+import { packUint16be } from '../pack/packUint16be'
 
-const packPlayback = svg => {
+export function packPlayback(svg) {
   const { pako } = window
   const array = [colorToDword(anbt.background)]
   const last = {
@@ -55,9 +55,9 @@ const packPlayback = svg => {
       array.push(packUint16be(-2))
       array.push(packUint16be(0)) // reserved for the future
       array.push(color)
-    } else throw new Error('Unknown node name: ' + element.nodeName)
+    } else {
+      throw new Error('Unknown node name: ' + element.nodeName)
+    }
   })
-  return '\x04' + bytesToStrings(pako.deflate(stringToBytes(array.join(''))))
+  return '\x04' + bytesToString(pako.deflate(stringToBytes(array.join(''))))
 }
-
-export default packPlayback

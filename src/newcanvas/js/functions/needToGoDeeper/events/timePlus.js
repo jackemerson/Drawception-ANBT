@@ -1,9 +1,9 @@
-import globals from '../../../globals'
-import ID from '../../idSelector'
-import ajax from '../ajax'
-import extractInfoFromHTML from '../extractInfoFromHTML'
+import { globals } from '../../../globals'
+import { ID } from '../../idSelector'
+import { ajax } from '../ajax'
+import { extractInfoFromHTML } from '../extractInfoFromHTML'
 
-const timePlus = () => {
+export function timePlus() {
   let { gameInfo } = window
   if (!gameInfo.friend) return
   ID('timeplus').disabled = true
@@ -35,4 +35,4 @@ const timePlus = () => {
   })
 }
 
-export default timePlus
+

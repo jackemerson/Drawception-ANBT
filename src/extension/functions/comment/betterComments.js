@@ -1,9 +1,9 @@
-import options from '../../options'
-import getLocalStorageItem from '../getLocalStorageItem'
-import $ from '../selector'
-import formatTimestamp from '../time/formatTimestamp'
+import { options } from '../../options'
+import { getLocalStorageItem } from '../getLocalStorageItem'
+import { $ } from '../selector'
+import { formatTimestamp } from '../time/formatTimestamp'
 
-const betterComments = () => {
+export function betterComments() {
   // Linkify the links and add ability to address comment holders again
   const comments = [...$('#comments').nextElementSibling.children].slice(1)
   comments.forEach(x => {
@@ -34,9 +34,10 @@ const betterComments = () => {
     // Clear old tracked comments
     const hour = Math.floor(Date.now() / (1000 * 60 * 60)) // timestamp with 1 hour precision
     // Store game entry for up to a week after last tracked comment
-    for (const temporaryGame in seenComments)
+    for (const temporaryGame in seenComments) {
       if (seenComments[temporaryGame].h + 24 * 7 < hour)
         delete seenComments[temporaryGame]
+    }
     let maxSeenId = 0
     comments.forEach(holder => {
       const dateElement = holder.querySelector('a.text-muted')
@@ -84,11 +85,12 @@ const betterComments = () => {
         }
       }
     })
-    if (maxSeenId)
+    if (maxSeenId) {
       seenComments[gameId] = {
         h: hour,
         id: maxSeenId
       }
+    }
     localStorage.setItem('gpe_seenComments', JSON.stringify(seenComments))
   }
   for (const playerId in gamePlayers) {
@@ -116,5 +118,3 @@ const betterComments = () => {
     )
   }
 }
-
-export default betterComments

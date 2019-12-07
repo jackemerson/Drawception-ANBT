@@ -1,20 +1,20 @@
-import $ from '../selector'
+import { $ } from "../selector"
 
-const link = (
+export function link(
   value,
   length,
   selectionStart,
   selectionEnd,
   selection,
   textarea
-) => {
+) {
   const selRegex = /^(?!!)\[(.*)\]\((\S*)( ".*")?\)/
-  if (selection.match(selRegex))
+  if (selection.match(selRegex)) {
     textarea.value =
       value.substring(0, selectionStart) +
       selection.replace(selRegex, '$1 $2') +
       value.substring(selectionEnd, length)
-  else {
+  } else {
     let imageLink = ''
     if (!selection.match(/!\[(.*)\]\((\S*)( ".*")?\)/)) {
       imageLink = selection.match(/https?:\/\/\S*/) || ''
@@ -50,5 +50,3 @@ const link = (
     })
   }
 }
-
-export default link

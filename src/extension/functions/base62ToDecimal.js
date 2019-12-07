@@ -1,6 +1,6 @@
-import globals from '../globals'
+import { globals } from '../globals'
 
-const base62ToDecimal = number => {
+export function base62ToDecimal(number) {
   number = number.toString()
   const cachePosition = {}
   let result = 0
@@ -15,5 +15,3 @@ const base62ToDecimal = number => {
   }
   return result
 }
-
-export default base62ToDecimal

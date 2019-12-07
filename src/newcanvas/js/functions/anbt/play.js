@@ -1,9 +1,9 @@
-import anbt from '../../anbt'
-import drawSvgElement from './drawSvgElement'
-import moveSeekbar from './moveSeekbar'
-import playTimer from './playTimer'
+import { anbt } from '../../anbt'
+import { drawSvgElement } from './drawSvgElement'
+import { moveSeekbar } from './moveSeekbar'
+import { playTimer } from './playTimer'
 
-const play = () => {
+export function play() {
   if (anbt.locked) return
   anbt.rewindCache.length = 0 // TODO: make rewind data remember its position
   if (anbt.position === anbt.svg.childNodes.length - 1) {
@@ -16,5 +16,3 @@ const play = () => {
   anbt.isPlaying = true
   playTimer()
 }
-
-export default play

@@ -1,7 +1,5 @@
-import anbt from '../../anbt'
+import { anbt } from '../../anbt'
 
-const moveSeekbar = position => {
+export function moveSeekbar(position) {
   if (anbt.seekbarMove) anbt.seekbarMove(position)
 }
-
-export default moveSeekbar

@@ -1,10 +1,10 @@
-import anbt from '../../anbt'
-import setSize from '../anbt/setSize'
-import strokeBegin from '../anbt/strokeBegin'
-import strokeEnd from '../anbt/strokeEnd'
-import ID from '../idSelector'
+import { anbt } from '../../anbt'
+import { setSize } from '../anbt/setSize'
+import { strokeBegin } from '../anbt/strokeBegin'
+import { strokeEnd } from '../anbt/strokeEnd'
+import { ID } from '../idSelector'
 
-const changeBrushSize = event => {
+export function changeBrushSize(event) {
   event.preventDefault()
   const size = [...event.currentTarget.classList]
     .filter(htmlClass => htmlClass.startsWith('size-'))[0]
@@ -18,5 +18,3 @@ const changeBrushSize = event => {
   const lastPoint = anbt.points[anbt.points.length - 1]
   strokeBegin(lastPoint.x, lastPoint.y)
 }
-
-export default changeBrushSize

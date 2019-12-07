@@ -1,14 +1,17 @@
-import anbt from '../../anbt'
-import base64ToBytes from '../conversions/base64ToBytes'
+import { anbt } from '../../anbt'
+import { base64ToBytes } from '../conversions/base64ToBytes'
 
-const uploadToImgur = callback => {
+export function uploadToImgur(callback) {
   const request = new XMLHttpRequest()
   request.open('POST', 'https://api.imgur.com/3/image')
   request.onload = () => {
     let response = request.responseText
     try {
       response = JSON.parse(response)
-    } catch (e) {}
+    } catch (error) {
+      console.error(error)
+    }
+    console.log(response)
     if (response.success) {
       // To set description
       const request2 = new XMLHttpRequest()
@@ -40,5 +43,3 @@ const uploadToImgur = callback => {
   formData.append('description', 'http://grompe.org.ru/drawit/')
   request.send(formData)
 }
-
-export default uploadToImgur

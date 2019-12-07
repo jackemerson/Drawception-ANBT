@@ -1,6 +1,6 @@
-import colorToRgba from './colorToRgba'
-import rgbToHex from './rgbToHex'
+import { colorToRgba } from './colorToRgba'
+import { rgbToHex } from './rgbToHex'
 
-const colorToHex = color => rgbToHex(colorToRgba(color))
-
-export default colorToHex
+export function colorToHex(color) {
+  return rgbToHex(colorToRgba(color))
+}

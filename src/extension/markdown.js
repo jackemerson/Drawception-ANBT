@@ -1,60 +1,58 @@
-import bold from './functions/markdown/bold'
-import code from './functions/markdown/code'
-import heading from './functions/markdown/heading'
-import highlighter from './functions/markdown/highlighter'
-import image from './functions/markdown/image'
-import italic from './functions/markdown/italic'
-import link from './functions/markdown/link'
-import listOl from './functions/markdown/listOl'
-import listUl from './functions/markdown/listUl'
-import quoteRight from './functions/markdown/quoteRight'
-import strikethrough from './functions/markdown/strikethrough'
+import { bold } from './functions/markdown/bold'
+import { code } from './functions/markdown/code'
+import { heading } from './functions/markdown/heading'
+import { highlighter } from './functions/markdown/highlighter'
+import { image } from './functions/markdown/image'
+import { italic } from './functions/markdown/italic'
+import { link } from './functions/markdown/link'
+import { listOl } from './functions/markdown/listOl'
+import { listUl } from './functions/markdown/listUl'
+import { quoteRight } from './functions/markdown/quoteRight'
+import { strikethrough } from './functions/markdown/strikethrough'
 
-const markdown = {
+export const markdown = {
   bold: {
     title: 'bold text',
-    replace: bold
+    execute: bold
   },
   italic: {
     title: 'italic text',
-    replace: italic
+    execute: italic
   },
   heading: {
     title: 'enlarges/reduces the text',
-    replace: heading
+    execute: heading
   },
   strikethrough: {
     title: 'strikethrough text',
-    replace: strikethrough
+    execute: strikethrough
   },
   highlighter: {
     title: 'highlighted text',
-    replace: highlighter
+    execute: highlighter
   },
   'list-ul': {
     title: 'unordered list',
-    replace: listUl
+    execute: listUl
   },
   'list-ol': {
     title: 'ordered list',
-    replace: listOl
+    execute: listOl
   },
   'quote-right': {
     title: 'quote',
-    replace: quoteRight
+    execute: quoteRight
   },
   code: {
     title: 'block of code',
-    replace: code
+    execute: code
   },
   link: {
     title: 'insert link',
-    replace: link
+    execute: link
   },
   image: {
     title: 'insert image',
-    replace: image
+    execute: image
   }
 }
-
-export default markdown

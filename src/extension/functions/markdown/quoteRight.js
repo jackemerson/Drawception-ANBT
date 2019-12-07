@@ -1,20 +1,20 @@
-const quoteRight = (
+export function quoteRight(
   value,
   length,
   selectionStart,
   selectionEnd,
   selection,
   textarea
-) => {
+) {
   const selRegex = /^>+\s.*/gm
-  if (selection.match(selRegex))
+  if (selection.match(selRegex)) {
     selection = selection.match(/^> /gm)
       ? selection.replace(/^> /gm, '')
       : selection.replace(/(^>*)> /gm, '$1 ')
-  else if (
+  } else if (
     !selectionStart ||
     value.substring(selectionStart - 1, selectionEnd).match(/^\n.*/)
-  )
+  ) {
     selection = `${
       value.substring(selectionStart - 1, selectionEnd).match(/\n^.*/gm) ||
       !selectionStart
@@ -27,7 +27,9 @@ const quoteRight = (
         ? '\n'
         : '\n\n'
     }`
-  else if (value.substring(selectionStart - 1, selectionEnd).match(selRegex)) {
+  } else if (
+    value.substring(selectionStart - 1, selectionEnd).match(selRegex)
+  ) {
     selectionStart--
     selection = value
       .substring(selectionStart, selectionEnd)
@@ -39,7 +41,7 @@ const quoteRight = (
     selection = value
       .substring(selectionStart, selectionEnd)
       .replace(/(^>*)\s/gm, '$1> ')
-  } else
+  } else {
     selection = `\n> ${selection.replace(/\n/g, '\n> ')}${
       value.substring(selectionEnd, selectionEnd + 2).match(/\n\n/) ||
       selectionEnd === length
@@ -48,10 +50,9 @@ const quoteRight = (
         ? '\n'
         : '\n\n'
     }`
+  }
   textarea.value =
     value.substring(0, selectionStart) +
     selection +
     value.substring(selectionEnd, length)
 }
-
-export default quoteRight

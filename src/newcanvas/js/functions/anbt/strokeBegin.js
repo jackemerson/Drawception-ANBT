@@ -1,12 +1,15 @@
-import anbt from '../../anbt'
-import createSvgElement from '../createSvgElement'
-import drawDisplayLine from './drawDisplayLine'
-import drawDisplayLinePresto from './drawDisplayLinePresto'
+import { anbt } from '../../anbt'
+import { createSvgElement } from '../createSvgElement'
+import { drawDisplayLine } from './drawDisplayLine'
+import { drawDisplayLinePresto } from './drawDisplayLinePresto'
 
-const strokeBegin = (x, y, left) => {
+export function strokeBegin(x, y, left) {
   if (anbt.locked) return
-  if (!left) left = anbt.lastLeft
-  else anbt.lastLeft = left
+  if (!left) {
+    left = anbt.lastLeft
+  } else {
+    anbt.lastLeft = left
+  }
   let color = left ? anbt.colors[0] : anbt.colors[1]
   const cls = color === 'eraser' ? color : null
   color = color === 'eraser' ? anbt.background : color
@@ -25,12 +28,13 @@ const strokeBegin = (x, y, left) => {
   anbt.path.pathSegList.appendItem(
     anbt.path.createSVGPathSegLinetoAbs(x, y + 0.001)
   )
-  if (navigator.userAgent.match(/\bPresto\b/)) drawDisplayLinePresto(true)
-  else drawDisplayLine(x, y, x, y + 0.001)
+  if (navigator.userAgent.match(/\bPresto\b/)) {
+    drawDisplayLinePresto(true)
+  } else {
+    drawDisplayLine(x, y, x, y + 0.001)
+  }
   anbt.points = []
   anbt.points.push({ x, y })
   anbt.blot = true
   anbt.isStroking = true
 }
-
-export default strokeBegin

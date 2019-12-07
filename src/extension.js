@@ -1,7 +1,7 @@
-import addDarkCSS from './extension/functions/darkMode/addDarkCSS'
-import setDarkMode from './extension/functions/darkMode/setDarkMode'
-import getLocalStorageItem from './extension/functions/getLocalStorageItem'
-import wrapper from './extension/wrapper'
+import { addDarkCSS } from './extension/functions/darkMode/addDarkCSS'
+import { setDarkMode } from './extension/functions/darkMode/setDarkMode'
+import { getLocalStorageItem } from './extension/functions/getLocalStorageItem'
+import { wrapper } from './extension/wrapper'
 
 addDarkCSS()
 setDarkMode()

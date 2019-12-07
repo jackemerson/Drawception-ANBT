@@ -1,6 +1,6 @@
-import ID from '../../idSelector'
+import { ID } from '../../idSelector'
 
-const closePaletteList = event => {
+export function closePaletteList(event) {
   if (event.touches || event.button === 0) {
     ID('palettechooser').classList.remove('open')
     window.removeEventListener('mousedown', closePaletteList)
@@ -8,4 +8,4 @@ const closePaletteList = event => {
   }
 }
 
-export default closePaletteList
+

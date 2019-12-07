@@ -1,26 +1,24 @@
-import anbt from '../../anbt'
+import { anbt } from '../../anbt'
 
-const drawSvgElement = (element, context) => {
+export function drawSvgElement(element, context) {
   if (!context) context = anbt.context
   context.globalCompositeOperation =
     element.getAttribute('class') === 'eraser'
       ? 'destination-out'
       : 'source-over'
   if (element.nodeName === 'path') {
-    //var c = el.getAttribute("stroke");
-    //context.strokeStyle = el.pattern ? anbt.MakePattern(c, el.pattern) : c;
     context.strokeStyle = element.getAttribute('stroke')
     context.lineWidth = element.getAttribute('stroke-width')
     context.beginPath()
     for (let i = 0; i < element.pathSegList.numberOfItems; i++) {
       const segment = element.pathSegList.getItem(i)
-      if (segment.pathSegTypeAsLetter === 'M')
+      if (segment.pathSegTypeAsLetter === 'M') {
         context.moveTo(segment.x, segment.y)
-      else if (segment.pathSegTypeAsLetter === 'L')
+      } else if (segment.pathSegTypeAsLetter === 'L') {
         context.lineTo(segment.x, segment.y)
-      else if (segment.pathSegTypeAsLetter === 'Q')
+      } else if (segment.pathSegTypeAsLetter === 'Q') {
         context.quadraticCurveTo(segment.x1, segment.y1, segment.x, segment.y)
-      else if (segment.pathSegTypeAsLetter === 'C')
+      } else if (segment.pathSegTypeAsLetter === 'C') {
         context.bezierCurveTo(
           segment.x1,
           segment.y1,
@@ -29,6 +27,7 @@ const drawSvgElement = (element, context) => {
           segment.x,
           segment.y
         )
+      }
     }
     context.stroke()
   } else if (element.nodeName === 'rect') {
@@ -40,5 +39,3 @@ const drawSvgElement = (element, context) => {
     context.fillRect(x, y, width, height)
   }
 }
-
-export default drawSvgElement

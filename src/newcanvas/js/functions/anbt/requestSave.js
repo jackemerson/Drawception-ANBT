@@ -1,6 +1,6 @@
-import anbt from '../../anbt'
+import { anbt } from '../../anbt'
 
-const requestSave = (dataUrl, extension) => {
+export function requestSave(dataUrl, extension) {
   if (!dataUrl) {
     dataUrl = anbt.pngBase64
     extension = '.png'
@@ -26,8 +26,8 @@ const requestSave = (dataUrl, extension) => {
       extension
     ].join('')
     anbt.saveLink.click()
-  } else window.open(dataUrl)
+  } else {
+    window.open(dataUrl)
+  }
   return true
 }
-
-export default requestSave

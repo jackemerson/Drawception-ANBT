@@ -1,4 +1,4 @@
-const isFloridaDST = () => {
+export function isFloridaDST() {
   const date = new Date(Date.now() - 6 * 60 * 60 * 1000)
   const month = date.getUTCMonth()
   const day = date.getUTCDate()
@@ -19,5 +19,3 @@ const isFloridaDST = () => {
     return day <= dayOfWeef
   }
 }
-
-export default isFloridaDST

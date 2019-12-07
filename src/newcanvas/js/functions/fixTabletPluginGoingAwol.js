@@ -1,6 +1,6 @@
-import ID from './idSelector'
+import { ID } from './idSelector'
 
-const fixTabletPluginGoingAwol = () => {
+export function fixTabletPluginGoingAwol() {
   const stupidPlugin = ID('wacom')
   const container = ID('wacomContainer')
   window.onblur = () => {
@@ -11,4 +11,4 @@ const fixTabletPluginGoingAwol = () => {
   }
 }
 
-export default fixTabletPluginGoingAwol
+

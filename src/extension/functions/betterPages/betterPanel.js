@@ -1,14 +1,14 @@
-import options from '../../options'
-import getCookie from '../cookie/getCookie'
-import setCookie from '../cookie/setCookie'
-import getLocalStorageItem from '../getLocalStorageItem'
-import getPanelId from '../getPanelId'
-import checkForRecording from '../replay/checkForRecording'
-import $ from '../selector'
-import setupNewCanvas from '../setupNewCanvas'
-import unscrambleID from '../unscrambleID'
+import { options } from '../../options'
+import { getCookie } from '../cookie/getCookie'
+import { setCookie } from '../cookie/setCookie'
+import { getLocalStorageItem } from '../getLocalStorageItem'
+import { getPanelId } from '../getPanelId'
+import { checkForRecording } from '../replay/checkForRecording'
+import { $ } from '../selector'
+import { setupNewCanvas } from '../setupNewCanvas'
+import { unscrambleID } from '../unscrambleID'
 
-const betterPanel = () => {
+export function betterPanel() {
   let favoriteButton = $(
     '<button class="btn btn-info" style="margin-top: 20px"><span class="fas fa-heart"></span> <b>Favorite</b></button>'
   )
@@ -58,7 +58,7 @@ const betterPanel = () => {
   // Only panels after 14924553 might have a recording
   if (options.newCanvas && panelId && unscrambleID(panelId) >= 14924553) {
     const img = $('.gamepanel img')
-    if (img)
+    if (img) {
       checkForRecording(img.src, () => {
         const replayLink = $(
           `<a class="btn btn-primary" style="margin-top: 20px" href="/sandbox/#${panelId}"><span class="fas fa-redo-alt"></span> <b>Replay</b></a> `
@@ -70,6 +70,7 @@ const betterPanel = () => {
         })
         $('.gamepanel').insertAdjacentHTML('afterend', replayLink.outerHTML)
       })
+    }
   }
   if (
     $('.btn-primary').length > 1 &&
@@ -90,7 +91,9 @@ const betterPanel = () => {
             'Max cover creator drawings selected. Please remove some before adding more.'
           )
           return
-        } else idList.push(id.toString())
+        } else {
+          idList.push(id.toString())
+        }
       } else {
         coverButton
           .setAttribute('disabled', 'disabled')
@@ -105,5 +108,3 @@ const betterPanel = () => {
     $('.gamepanel').insertAdjacentHTML('afterend', coverButton.outerHTML)
   }
 }
-
-export default betterPanel

@@ -1,7 +1,7 @@
-import $ from '../selector'
-import addStyle from '../addStyle'
+import { addStyle } from '../addStyle'
+import { $ } from '../selector'
 
-const betterStore = () => {
+export function betterStore() {
   const storeSections = $('.grid-store')
   if (!storeSections) return
   storeSections.shift()
@@ -38,5 +38,3 @@ const betterStore = () => {
     '@media screen and (min-width:768px) and (max-width:1279px){.grid-store-btn{display:flex;flex-direction:column;align-items:center}.btn-group-justified>.btn,.btn-group-justified>.btn-group,.btn-group-justified>div{width:100%}.btn-group>.btn{border-radius:.2em!important}}'
   )
 }
-
-export default betterStore

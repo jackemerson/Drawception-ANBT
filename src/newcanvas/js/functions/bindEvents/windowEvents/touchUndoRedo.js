@@ -1,9 +1,9 @@
-import globals from '../../../globals'
-import redo from '../../anbt/redo'
-import undo from '../../anbt/undo'
-import ID from '../../idSelector'
+import { globals } from '../../../globals'
+import { redo } from '../../anbt/redo'
+import { undo } from '../../anbt/undo'
+import { ID } from '../../idSelector'
 
-const touchUndoRedo = event => {
+export function touchUndoRedo(event) {
   if (event.changedTouches.length === 1 && event.touches.length === 1) {
     const { pageX, pageY } = event.changedTouches[0]
     if (
@@ -18,4 +18,4 @@ const touchUndoRedo = event => {
   window.removeEventListener('touchend', touchUndoRedo)
 }
 
-export default touchUndoRedo
+

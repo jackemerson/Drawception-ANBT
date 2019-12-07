@@ -1,8 +1,8 @@
-import play from '../anbt/play'
-import ID from '../idSelector'
-import handleCommonParameters from './handleCommonParameters'
+import { play } from '../anbt/play'
+import { ID } from '../idSelector'
+import { handleCommonParameters } from './handleCommonParameters'
 
-const handleSandboxParameters = () => {
+export function handleSandboxParameters() {
   const { gameInfo, versionTitle, options } = window
   if (gameInfo.drawingByLink) {
     const [playerName, playerLink] = gameInfo.drawingByLink
@@ -25,5 +25,3 @@ const handleSandboxParameters = () => {
   }
   handleCommonParameters()
 }
-
-export default handleSandboxParameters

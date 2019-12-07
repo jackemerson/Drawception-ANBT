@@ -1,7 +1,7 @@
-import globals from '../globals'
+import { globals } from "../globals"
 
-const decimalToBase62 = number => {
-  let result = ''
+export function decimalToBase62(number) {
+  let result
   while (number !== 0) {
     const quotient = number % 62
     result = globals.alphabet[quotient] + result
@@ -10,4 +10,4 @@ const decimalToBase62 = number => {
   return result
 }
 
-export default decimalToBase62
+

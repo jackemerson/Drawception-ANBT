@@ -1,19 +1,19 @@
-import anbt from '../../../anbt'
-import globals from '../../../globals'
-import redo from '../../anbt/redo'
-import setBackground from '../../anbt/setBackground'
-import setColor from '../../anbt/setColor'
-import showEyedropperCursor from '../../anbt/showEyedropperCursor'
-import strokeBegin from '../../anbt/strokeBegin'
-import strokeEnd from '../../anbt/strokeEnd'
-import undo from '../../anbt/undo'
-import ID from '../../idSelector'
-import playCommonDown from '../playCommonDown'
-import removeEyedropper from '../removeEyedropper'
-import updateChooseBackground from '../updateChooseBackground'
-import updateColorIndicators from '../updateColorIndicators'
+import { anbt } from '../../../anbt'
+import { globals } from '../../../globals'
+import { redo } from '../../anbt/redo'
+import { setBackground } from '../../anbt/setBackground'
+import { setColor } from '../../anbt/setColor'
+import { showEyedropperCursor } from '../../anbt/showEyedropperCursor'
+import { strokeBegin } from '../../anbt/strokeBegin'
+import { strokeEnd } from '../../anbt/strokeEnd'
+import { undo } from '../../anbt/undo'
+import { ID } from '../../idSelector'
+import { playCommonDown } from '../playCommonDown'
+import { removeEyedropper } from '../removeEyedropper'
+import { updateChooseBackground } from '../updateChooseBackground'
+import { updateColorIndicators } from '../updateColorIndicators'
 
-const keyDown = event => {
+export function keyDown(event) {
   const { options } = window
   if (document.activeElement instanceof HTMLInputElement) return true
   // Alt
@@ -73,7 +73,10 @@ const keyDown = event => {
     anbt.previousColorKey = index
     if (options.colorDoublePress) {
       if (anbt.previousColorKeyTimer) clearTimeout(anbt.previousColorKeyTimer)
-      anbt.previousColorKeyTimer = setTimeout(() => (anbt.previousColorKey = -1), 500)
+      anbt.previousColorKeyTimer = setTimeout(
+        () => (anbt.previousColorKey = -1),
+        500
+      )
     }
     const elements = ID('colors').querySelectorAll('b')
     if (index < elements.length) {
@@ -133,8 +136,7 @@ const keyDown = event => {
     (event.ctrlKey || event.metaKey) &&
     !event.altKey &&
     !event.shiftKey
-  )
+  ) {
     playCommonDown(event)
+  }
 }
-
-export default keyDown

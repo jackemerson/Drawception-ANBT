@@ -1,6 +1,6 @@
-import ID from '../../idSelector'
+import { ID } from '../../idSelector'
 
-const knobMove = fraction => {
+export function knobMove(fraction) {
   const x = Math.floor(fraction * 502 - 10)
   if (fraction > 0) {
     ID('knob').classList.add('smooth')
@@ -13,4 +13,4 @@ const knobMove = fraction => {
   }
 }
 
-export default knobMove
+

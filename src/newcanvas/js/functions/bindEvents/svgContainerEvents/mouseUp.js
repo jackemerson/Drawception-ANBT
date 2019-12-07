@@ -1,9 +1,9 @@
-import anbt from '../../../anbt'
-import strokeEnd from '../../anbt/strokeEnd'
-import ID from '../../idSelector'
-import windowMouseMove from '../windowEvents/mouseMove'
+import { anbt } from '../../../anbt'
+import { strokeEnd } from '../../anbt/strokeEnd'
+import { ID } from '../../idSelector'
+import { windowMouseMove } from '../windowEvents/mouseMove'
 
-const mouseUp = event => {
+export function mouseUp(event) {
   const { options } = window
   if (event.button === 0 || event.button === 2) {
     event.preventDefault()
@@ -13,5 +13,3 @@ const mouseUp = event => {
     window.removeEventListener('mousemove', windowMouseMove)
   }
 }
-
-export default mouseUp

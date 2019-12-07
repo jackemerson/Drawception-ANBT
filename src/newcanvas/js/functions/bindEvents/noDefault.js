@@ -1,3 +1,3 @@
-const noDefault = event => event.preventDefault()
-
-export default noDefault
+export function noDefault(event) {
+  event.preventDefault()
+}

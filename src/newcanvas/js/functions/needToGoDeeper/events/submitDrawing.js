@@ -1,11 +1,11 @@
-import anbt from '../../../anbt'
-import globals from '../../../globals'
-import makePng from '../../anbt/makePng'
-import ID from '../../idSelector'
-import ajax from '../ajax'
-import formatDrawingData from '../../anbt/formatDrawingData'
+import { anbt } from '../../../anbt'
+import { globals } from '../../../globals'
+import { formatDrawingData } from '../../anbt/formatDrawingData'
+import { makePng } from '../../anbt/makePng'
+import { ID } from '../../idSelector'
+import { ajax } from '../ajax'
 
-const submitDrawing = () => {
+export function submitDrawing() {
   const { inContest, gameInfo, options, pako } = window
   const moreThanMinuteLeft = globals.timerStart - Date.now() > 60000
   if (
@@ -16,8 +16,9 @@ const submitDrawing = () => {
     return
   ID('submit').disabled = true
   makePng(300, 250, true)
-  if (options.backup)
+  if (options.backup) {
     localStorage.setItem('anbt_drawingbackup_newcanvas', anbt.pngBase64)
+  }
   window.submitting = true
   const url = inContest ? '/contests/submit-drawing.json' : '/play/draw.json'
   const pathList = [...anbt.svg.childNodes].filter(
@@ -54,13 +55,15 @@ const submitDrawing = () => {
       }
       if (response.error) {
         ID('submit').disabled = false
-        if (typeof response.error === 'object')
+        if (typeof response.error === 'object') {
           alert(
             `Error! Please report this data:\ngame: ${
               gameInfo.gameId
             }\n\nresponse:\n${JSON.stringify(response.error)}`
           )
-        else alert(response.error)
+        } else {
+          alert(response.error)
+        }
       } else if (response.message) {
         ID('submit').disabled = false
         alert(response.message)
@@ -76,5 +79,3 @@ const submitDrawing = () => {
     }
   })
 }
-
-export default submitDrawing

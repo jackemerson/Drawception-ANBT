@@ -1,8 +1,8 @@
-import $ from '../selector'
-import addGroup from '../settings/addGroup'
-import updateScriptSettings from '../settings/updateScriptSettings'
+import { $ } from '../selector'
+import { addGroup } from '../settings/addGroup'
+import { updateScriptSettings } from '../settings/updateScriptSettings'
 
-const betterSettings = () => {
+export function betterSettings() {
   const theForm = $(
     '<form class="regForm form-horizontal settingsForm" action="#"></form>'
   )
@@ -137,14 +137,9 @@ const betterSettings = () => {
     '<br><div class="control-group"><div class="controls"><input name="submit" type="submit" class="btn btn-primary settingsFormSubmit" value="Apply"> <b id="anbtSettingsOK" class="label label-theme_holiday" style="display:none">Saved!</b></div></div>'
   ).forEach(node => theForm.appendChild(node))
   $('#main').insertAdjacentHTML('afterbegin', theForm.outerHTML)
-  $('.settingsForm').addEventListener(
-    'submit',
-    form => updateScriptSettings(form) && false
-  )
+  $('.settingsForm').addEventListener('submit', updateScriptSettings)
 
   // Extend "location" input to max server-accepted 65 characters
-  if ($('input[name="location"]'))
-    $('input[name="location"]').setAttribute('maxlength', '65')
+  const location = $('input[name="location"]')
+  if (location) location.setAttribute('maxlength', '65')
 }
-
-export default betterSettings

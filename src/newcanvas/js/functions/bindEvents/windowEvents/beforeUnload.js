@@ -1,10 +1,10 @@
-import anbt from '../../../anbt'
+import { anbt } from '../../../anbt'
 
-const beforeUnload = event => {
+export function beforeUnload(event) {
   if (!anbt.unsaved) return
   const message = "You haven't saved the drawing. Abandon?"
   event.returnValue = message
   return message
 }
 
-export default beforeUnload
+

@@ -1,7 +1,7 @@
-import setPaletteByName from './setPaletteByName'
-import anbt from '../../../anbt'
+import { anbt } from '../../../anbt'
+import { setPaletteByName } from './setPaletteByName'
 
-const choosePalette = event => {
+export function choosePalette(event) {
   if (event.touches || event.button === 0) {
     event.preventDefault()
     const name = event.currentTarget.childNodes[0].nodeValue
@@ -9,5 +9,3 @@ const choosePalette = event => {
     setPaletteByName(name)
   }
 }
-
-export default choosePalette

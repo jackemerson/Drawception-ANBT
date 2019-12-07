@@ -1,9 +1,9 @@
-import anbt from '../../anbt'
-import drawSvgElement from './drawSvgElement'
-import findLastRect from './findLastRect'
-import pause from './pause'
+import { anbt } from '../../anbt'
+import { drawSvgElement } from './drawSvgElement'
+import { findLastRect } from './findLastRect'
+import { pause } from './pause'
 
-const seek = newPosition => {
+export function seek(newPosition) {
   if (anbt.locked) return
   let start = -1
   pause(true)
@@ -16,16 +16,18 @@ const seek = newPosition => {
       anbt.rewindCache.splice(0, rewindSteps)
     } else {
       // Not cached; rebuild cache
-      start = 0
-      if (anbt.lastRect <= newPosition) start = anbt.lastRect
-      else start = findLastRect(newPosition)
+      start =
+        anbt.lastRect <= newPosition ? anbt.lastRect : findLastRect(newPosition)
       drawSvgElement(anbt.svg.childNodes[start])
     }
-  } else if (newPosition > anbt.position) start = anbt.position
+  } else if (newPosition > anbt.position) {
+    start = anbt.position
+  }
   if (start !== -1) {
     const forwardSteps = newPosition - start
-    if (forwardSteps >= anbt.fastUndoLevels) anbt.rewindCache.length = 0
-    else {
+    if (forwardSteps >= anbt.fastUndoLevels) {
+      anbt.rewindCache.length = 0
+    } else {
       // Ex: 3 cached, 10 max, 8 steps to play => delete 1 from the end
       const { length } = anbt.rewindCache
       const numRemove = Math.min(
@@ -42,5 +44,3 @@ const seek = newPosition => {
   }
   anbt.position = newPosition
 }
-
-export default seek

@@ -1,5 +1,5 @@
-import stringToBytes from './stringToBytes'
+import { stringToBytes } from './stringToBytes'
 
-const base64ToBytes = base64 => stringToBytes(atob(base64))
-
-export default base64ToBytes
+export function base64ToBytes(base64) {
+  return stringToBytes(atob(base64))
+}

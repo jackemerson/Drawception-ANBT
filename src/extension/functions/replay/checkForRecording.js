@@ -1,4 +1,4 @@
-const checkForRecording = (url, success, retrying) => {
+export function checkForRecording(url, success, retrying) {
   const request = new XMLHttpRequest()
   request.open('GET', `${url}?anbt`, true)
   request.responseType = 'arraybuffer'
@@ -12,8 +12,9 @@ const checkForRecording = (url, success, retrying) => {
       i += 4
       const chunkName = dataView.getUint32(i)
       i += 4
-      if (chunkName === 0x73764762) return success()
-      else {
+      if (chunkName === 0x73764762) {
+        return success()
+      } else {
         if (chunkName === 0x49454e44) break
         i += chunkLength
       }
@@ -27,5 +28,3 @@ const checkForRecording = (url, success, retrying) => {
   }
   request.send()
 }
-
-export default checkForRecording

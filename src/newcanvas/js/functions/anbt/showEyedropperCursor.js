@@ -1,6 +1,6 @@
-import anbt from '../../anbt'
+import { anbt } from '../../anbt'
 
-const showEyedropperCursor = isEyedropper => {
+export function showEyedropperCursor(isEyedropper) {
   if (!anbt.brushCursor) return
   const visibility = isEyedropper ? 'hidden' : 'visible'
   const visibility2 = isEyedropper ? 'visible' : 'hidden'
@@ -8,5 +8,3 @@ const showEyedropperCursor = isEyedropper => {
   anbt.brushCursor2.setAttribute('visibility', visibility)
   anbt.eyedropperCursor.setAttribute('visibility', visibility2)
 }
-
-export default showEyedropperCursor

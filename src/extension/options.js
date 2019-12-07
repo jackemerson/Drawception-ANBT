@@ -1,4 +1,4 @@
-const options = {
+export const options = {
   enableWacom: 0, // Whether to enable Wacom plugin and thus pressure sensitivity support
   fixTabletPluginGoingAWOL: 1, // Fix pressure sensitivity disappearing in case of stupid/old Wacom plugin
   hideCross: 0, // Whether to hide the cross when drawing
@@ -28,5 +28,3 @@ const options = {
   markdownTools: 1,
   anbtDarkMode: 1
 }
-
-export default options

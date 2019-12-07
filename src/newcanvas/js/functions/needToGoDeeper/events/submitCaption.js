@@ -1,9 +1,9 @@
-import ID from '../../idSelector'
-import ajax from '../ajax'
-import onCaptionSuccess from '../onCaptionSuccess'
-import anbt from '../../../anbt'
+import { anbt } from '../../../anbt'
+import { ID } from '../../idSelector'
+import { ajax } from '../ajax'
+import { onCaptionSuccess } from '../onCaptionSuccess'
 
-const submitCaption = () => {
+export function submitCaption() {
   const { inContest, gameInfo } = window
   const title = ID('caption').value
   if (!title) {
@@ -30,13 +30,15 @@ const submitCaption = () => {
       }
       if (response.error) {
         ID('submitcaption').disabled = false
-        if (typeof response.error === 'object')
+        if (typeof response.error === 'object') {
           alert(
             `Error! Please report this data:\ngame: ${
               gameInfo.gameId
             }\n\nresponse: \n${JSON.stringify(response.error)}`
           )
-        else alert(response.error)
+        } else {
+          alert(response.error)
+        }
       } else if (response.message) {
         ID('submitcaption').disabled = false
         alert(response.message)
@@ -52,5 +54,3 @@ const submitCaption = () => {
     }
   })
 }
-
-export default submitCaption

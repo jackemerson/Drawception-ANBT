@@ -1,11 +1,11 @@
-import anbt from '../../anbt'
-import packUint32be from '../pack/packUint32be'
-import moveSeekbar from './moveSeekbar'
-import setBackground from './setBackground'
-import unpackPlayback from './unpackPlayback'
-import updateView from './updateView'
+import { anbt } from '../../anbt'
+import { packUint32be } from '../pack/packUint32be'
+import { moveSeekbar } from './moveSeekbar'
+import { setBackground } from './setBackground'
+import { unpackPlayback } from './unpackPlayback'
+import { updateView } from './updateView'
 
-const fromPng = buffer => {
+export function fromPng(buffer) {
   const dataView = new DataView(buffer)
   const magic = dataView.getUint32(0)
   if (magic !== 0x89504e47)
@@ -32,5 +32,3 @@ const fromPng = buffer => {
   }
   throw new Error('No vector data found!')
 }
-
-export default fromPng

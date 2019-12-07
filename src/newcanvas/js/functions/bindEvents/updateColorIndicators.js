@@ -1,7 +1,7 @@
-import anbt from '../../anbt'
-import ID from '../idSelector'
+import { anbt } from '../../anbt'
+import { ID } from '../idSelector'
 
-const updateColorIndicators = () => {
+export function updateColorIndicators() {
   const { colors } = anbt
   ;['primary', 'secondary'].forEach((id, index) => {
     if (colors[index] === 'eraser') {
@@ -13,5 +13,3 @@ const updateColorIndicators = () => {
     }
   })
 }
-
-export default updateColorIndicators

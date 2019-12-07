@@ -1,3 +1,3 @@
-const svgContextMenu = event => event.preventDefault()
-
-export default svgContextMenu
+export function svgContextMenu(event) {
+  event.preventDefault()
+}

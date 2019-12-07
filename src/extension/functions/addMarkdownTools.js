@@ -1,8 +1,8 @@
-import markdown from '../markdown'
-import getSelectedText from './getSelectedText'
-import $ from './selector'
+import { markdown } from '../markdown'
+import { getSelectedText } from './getSelectedText'
+import { $ } from './selector'
 
-const addMarkdownTools = () => {
+export function addMarkdownTools() {
   const textarea = $('#input-comment')
   if (!textarea) return
   const markdownDiv = $('<div id="markdown-editor"></div>')
@@ -18,5 +18,3 @@ const addMarkdownTools = () => {
     children.addEventListener('click', getSelectedText)
   )
 }
-
-export default addMarkdownTools

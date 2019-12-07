@@ -1,8 +1,8 @@
-import options from '../../options'
-import $ from '../selector'
-import escapeHTML from './escapeHTML'
+import { options } from '../../options'
+import { $ } from '../selector'
+import { escapeHTML } from './escapeHTML'
 
-const addGroup = (name, settings) => {
+export function addGroup(name, settings) {
   const controlGroup = $('<div class="control-group"></div>')
   controlGroup.appendChild($(`<label class="control-label">${name}</label>`))
   settings.forEach(setting => {
@@ -40,5 +40,3 @@ const addGroup = (name, settings) => {
   })
   return controlGroup
 }
-
-export default addGroup

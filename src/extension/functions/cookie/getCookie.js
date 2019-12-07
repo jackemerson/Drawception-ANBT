@@ -1,4 +1,4 @@
-const getCookie = name =>
-  document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`))[2] || null
-
-export default getCookie
+export function getCookie(name) {
+  const cookie = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`))[2]
+  return cookie || null
+}

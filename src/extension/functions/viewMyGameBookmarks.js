@@ -1,9 +1,9 @@
-import fadeOut from './fade/fadeOut'
-import getLocalStorageItem from './getLocalStorageItem'
-import $ from './selector'
-import formatTimestamp from './time/formatTimestamp'
+import { fadeOut } from './fade/fadeOut'
+import { getLocalStorageItem } from './getLocalStorageItem'
+import { $ } from './selector'
+import { formatTimestamp } from './time/formatTimestamp'
 
-const viewMyGameBookmarks = () => {
+export function viewMyGameBookmarks() {
   const removeButtonHTML =
     '<a class="anbt_gamedel pull-right lead fas fa-times btn btn-sm btn-danger" href="#" title="Remove" style="margin-left: 10px"></a>'
   const games = getLocalStorageItem('gpe_gameBookmarks', {})
@@ -63,10 +63,12 @@ const viewMyGameBookmarks = () => {
         }
       }
       xhr.send()
-    } else if (id.length === 10)
+    } else if (id.length === 10) {
+      // game ID
       result.push(
         `<p class="well${extraClass}" id="${id}"><a href="${games[id].url}">${games[id].title}</a>${removeButtonHTML}</p>`
-      ) // game ID
+      )
+    }
   }
   $('#anbt_userpage').innerHTML = result.length
     ? result.join('')
@@ -81,5 +83,3 @@ const viewMyGameBookmarks = () => {
     })
   )
 }
-
-export default viewMyGameBookmarks

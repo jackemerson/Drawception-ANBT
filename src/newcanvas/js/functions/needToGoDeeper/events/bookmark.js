@@ -1,7 +1,7 @@
-import decodeHTML from '../decodeHTML'
-import ID from '../../idSelector'
+import { ID } from '../../idSelector'
+import { decodeHTML } from '../decodeHTML'
 
-const bookmark = () => {
+export function bookmark() {
   const { getLocalStorageItem } = window
   ID('bookmark').disabled = true
   const games = getLocalStorageItem('gpe_gameBookmarks', {})
@@ -13,4 +13,4 @@ const bookmark = () => {
   localStorage.setItem('gpe_gameBookmarks', JSON.stringify(games))
 }
 
-export default bookmark
+

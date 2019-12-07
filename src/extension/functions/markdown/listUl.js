@@ -1,20 +1,20 @@
-const listUl = (
+export function listUl(
   value,
   length,
   selectionStart,
   selectionEnd,
   selection,
   textarea
-) => {
+) {
   const selRegex = /^( {3})*- (.*)/
-  if (selection.match(selRegex))
+  if (selection.match(selRegex)) {
     selection = selection.match(/^ {3}/)
       ? selection.replace(/^ {3}/gm, '')
       : selection.replace(/^- /gm, '')
-  else if (
+  } else if (
     !selectionStart ||
     value.substring(selectionStart - 1, selectionEnd).match(/^\n.*/)
-  )
+  ) {
     selection = `${
       value.substring(selectionStart - 1, selectionEnd).match(/\n^.*/gm) ||
       !selectionStart
@@ -27,7 +27,9 @@ const listUl = (
         ? '\n'
         : '\n\n'
     }`
-  else if (value.substring(selectionStart - 1, selectionEnd).match(selRegex)) {
+  } else if (
+    value.substring(selectionStart - 1, selectionEnd).match(selRegex)
+  ) {
     selectionStart--
     selection = value
       .substring(selectionStart, selectionEnd)
@@ -39,7 +41,7 @@ const listUl = (
     selection = value
       .substring(selectionStart, selectionEnd)
       .replace(/( {3})*- /g, '$1   - ')
-  } else
+  } else {
     selection = `\n- ${selection.replace(/\n/g, '\n- ')}${
       value.substring(selectionEnd, selectionEnd + 2).match(/\n\n/) ||
       selectionEnd === length
@@ -48,10 +50,9 @@ const listUl = (
         ? '\n'
         : '\n\n'
     }`
+  }
   textarea.value =
     value.substring(0, selectionStart) +
     selection +
     value.substring(selectionEnd, length)
 }
-
-export default listUl

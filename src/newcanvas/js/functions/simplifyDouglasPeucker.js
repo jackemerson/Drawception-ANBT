@@ -1,6 +1,6 @@
-import getSqSegDist from './getSqSegDist'
+import { getSqSegDist } from './getSqSegDist'
 
-const simplifyDouglasPeucker = ({ points, smoothening: sqTolerance }) => {
+export function simplifyDouglasPeucker({ points, smoothening: sqTolerance }) {
   const length = points.length
   const MarkerArray = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
   const markers = new MarkerArray(length)
@@ -26,8 +26,8 @@ const simplifyDouglasPeucker = ({ points, smoothening: sqTolerance }) => {
     last = stack.pop()
     first = stack.pop()
   }
-  for (let i = 0; i < length; i++) if (markers[i]) newPoints.push(points[i])
+  for (let i = 0; i < length; i++) {
+    if (markers[i]) newPoints.push(points[i])
+  }
   return newPoints
 }
-
-export default simplifyDouglasPeucker

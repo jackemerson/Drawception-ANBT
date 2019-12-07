@@ -1,11 +1,11 @@
-const italic = (
+export function italic(
   value,
   length,
   selectionStart,
   selectionEnd,
   selection,
   textarea
-) => {
+) {
   const selRegex = new RegExp(
     `\\*(?=\\S*${selection.replace(
       /(.*)\*(.*)/g,
@@ -13,8 +13,9 @@ const italic = (
     )})((?:\\*\\*|\\\\[\\s\\S]|\\s+(?:\\\\[\\s\\S]|[^\\s\\*\\\\]|\\*\\*)|[^\\s\\*\\\\])+?)\\*(?!\\*)`
   )
   const italicRegex = /\*(?=\S)((?:\*\*|\\[\s\S]|\s+(?:\\[\s\S]|[^\s\*\\]|\*\*)|[^\s\*\\])+?)\*(?!\*)/g
-  if (selection.match(selRegex)) selection = selection.replace(selRegex, '$1')
-  else if (selectionStart > 0 && selectionEnd < length) {
+  if (selection.match(selRegex)) {
+    selection = selection.replace(selRegex, '$1')
+  } else if (selectionStart > 0 && selectionEnd < length) {
     if (value.substring(selectionStart - 1, selectionEnd + 1).match(selRegex)) {
       selectionStart--
       selectionEnd++
@@ -43,15 +44,14 @@ const italic = (
       selection = value
         .substring(selectionStart, selectionEnd)
         .replace(selRegex, '$1')
-    } else
+    } else {
       selection = selection.match(italicRegex)
         ? selection.replace(italicRegex, '$1')
         : `*${selection.replace(/\n/g, '*\n*')}*`
+    }
   }
   textarea.value =
     value.substring(0, selectionStart) +
     selection +
     value.substring(selectionEnd, length)
 }
-
-export default italic

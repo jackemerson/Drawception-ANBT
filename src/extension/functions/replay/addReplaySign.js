@@ -1,7 +1,7 @@
-import $ from '../selector'
-import checkForRecording from './checkForRecording'
+import { $ } from '../selector'
+import { checkForRecording } from './checkForRecording'
 
-const addReplaySign = drawing => {
+export function addReplaySign(drawing) {
   if (drawing.replayAdded) return
   drawing.replayAdded = true
   const panel = drawing.parentNode.parentNode
@@ -20,5 +20,3 @@ const addReplaySign = drawing => {
     // replaySign.tooltip();
   })
 }
-
-export default addReplaySign

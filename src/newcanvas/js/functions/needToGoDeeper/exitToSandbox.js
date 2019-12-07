@@ -1,15 +1,16 @@
-import globals from '../../globals'
-import unlock from '../anbt/unlock'
-import ID from '../idSelector'
-import updateTimer from '../updateTimer'
-import ajax from './ajax'
+import { globals } from '../../globals'
+import { unlock } from '../anbt/unlock'
+import { ID } from '../idSelector'
+import { updateTimer } from '../updateTimer'
+import { ajax } from './ajax'
 
-const exitToSandbox = () => {
+export function exitToSandbox() {
   const { inContest, gameInfo, drawingAborted, versionTitle } = window
-  if (inContest && !drawingAborted)
+  if (inContest && !drawingAborted) {
     ajax('POST', '/contests/exit.json', {
       load: () => alert('You have missed your contest.')
     })
+  }
   if (gameInfo.drawFirst && !drawingAborted) {
     ajax('POST', '/play/abort-start.json', {
       obj: {
@@ -35,5 +36,3 @@ const exitToSandbox = () => {
   } catch (e) {}
   unlock()
 }
-
-export default exitToSandbox

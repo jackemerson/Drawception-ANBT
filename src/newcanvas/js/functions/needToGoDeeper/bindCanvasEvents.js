@@ -1,18 +1,18 @@
-import ID from '../idSelector'
-import backToForum from './events/backToForum'
-import bookmark from './events/bookmark'
-import caption from './events/caption'
-import exit from './events/exit'
-import quit from './events/quit'
-import report from './events/report'
-import skip from './events/skip'
-import start from './events/start'
-import submitCaption from './events/submitCaption'
-import submitDrawing from './events/submitDrawing'
-import timePlus from './events/timePlus'
-import updateUsedChars from './events/updateUsedChars'
+import { ID } from '../idSelector'
+import { backToForum } from './events/backToForum'
+import { bookmark } from './events/bookmark'
+import { caption } from './events/caption'
+import { exit } from './events/exit'
+import { quit } from './events/quit'
+import { report } from './events/report'
+import { skip } from './events/skip'
+import { start } from './events/start'
+import { submitCaption } from './events/submitCaption'
+import { submitDrawing } from './events/submitDrawing'
+import { timePlus } from './events/timePlus'
+import { updateUsedChars } from './events/updateUsedChars'
 
-const bindCanvasEvents = () => {
+export function bindCanvasEvents() {
   const { options, inForum } = window
   if (inForum) {
     ID('quit').addEventListener('click', quit)
@@ -37,5 +37,3 @@ const bindCanvasEvents = () => {
   ID('caption').addEventListener('input', updateUsedChars)
   ID('timeplus').addEventListener('click', timePlus)
 }
-
-export default bindCanvasEvents

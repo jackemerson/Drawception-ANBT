@@ -1,21 +1,22 @@
-const buildSmoothPath = (points, path) => {
+export function buildSmoothPath(points, path) {
   const { length } = points
   if (length < 2) return
   path.pathSegList.initialize(
     path.createSVGPathSegMovetoAbs(points[0].x, points[0].y)
   )
   if (!window.options.smoothening) {
-    for (let i = 1; i < points.length; i++)
+    for (let i = 1; i < points.length; i++) {
       path.pathSegList.appendItem(
         path.createSVGPathSegLinetoAbs(points[i].x, points[i].y)
       )
+    }
     return
   }
   path.pathSegList.appendItem(
     path.createSVGPathSegLinetoAbs(points[1].x, points[1].y)
   )
   if (length < 3) return
-  let prevtangent
+  let previousTangent
   for (let i = 1; i < length - 1; i++) {
     const previousPoint = points[i - 1]
     const currentPoint = points[i]
@@ -38,8 +39,8 @@ const buildSmoothPath = (points, path) => {
       } else {
         if (good && dist1 / dist2 >= 0.4 && dist1 / dist2 <= 2.5) {
           const t1 = {
-            x: previousPoint.x + Math.cos(prevtangent) * dist1 * 0.4,
-            y: previousPoint.y + Math.sin(prevtangent) * dist1 * 0.4
+            x: previousPoint.x + Math.cos(previousTangent) * dist1 * 0.4,
+            y: previousPoint.y + Math.sin(previousTangent) * dist1 * 0.4
           }
           const t2 = {
             x: currentPoint.x - Math.cos(tangent) * dist2 * 0.4,
@@ -63,10 +64,8 @@ const buildSmoothPath = (points, path) => {
         }
       }
     }
-    prevtangent = tangent
+    previousTangent = tangent
   }
   const c = points[length - 1]
   path.pathSegList.appendItem(path.createSVGPathSegLinetoAbs(c.x, c.y))
 }
-
-export default buildSmoothPath

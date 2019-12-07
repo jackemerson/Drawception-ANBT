@@ -1,7 +1,5 @@
-import anbt from '../../anbt'
+import { anbt } from '../../anbt'
 
-const setColor = (number, color) => {
+export function setColor(number, color) {
   anbt.colors[number] = color
 }
-
-export default setColor

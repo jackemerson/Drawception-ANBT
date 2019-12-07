@@ -1,22 +1,20 @@
-import globals from '../../globals'
-import options from '../../options'
-import linkifyNodeText from '../linkifyNodeText'
-import randomGreeting from '../randomGreeting'
-import addReplaySign from '../replay/addReplaySign'
-import $ from '../selector'
-import formatTimestamp from '../time/formatTimestamp'
-import viewMyGameBookmarks from '../viewMyGameBookmarks'
-import viewMyPanelFavorites from '../viewMyPanelFavorites'
+import { globals } from '../../globals'
+import { options } from '../../options'
+import { linkifyNodeText } from '../linkifyNodeText'
+import { randomGreeting } from '../randomGreeting'
+import { addReplaySign } from '../replay/addReplaySign'
+import { $ } from '../selector'
+import { formatTimestamp } from '../time/formatTimestamp'
+import { viewMyGameBookmarks } from '../viewMyGameBookmarks'
+import { viewMyPanelFavorites } from '../viewMyPanelFavorites'
 
-const betterPlayer = () => {
+export function betterPlayer() {
   // Linkify the links in location
   const publicInfo = $('.profile-header-info .text-muted > span:last-child')
   if (publicInfo) linkifyNodeText(publicInfo.parentNode)
   const currentLocation = location.href
   // If it's user's homepage, add new buttons in there
-  if (
-    currentLocation.match(new RegExp(`/player/${globals.userId}/[^/]+/(?:$|#)`))
-  ) {
+  if (currentLocation.match(new RegExp(`/player/${globals.userId}/[^/]+/(?:$|#)`))) {
     const anbtSection = $('<h2>ANBT stuff: </h2>')
     const panelFavoritesButton = $(
       '<a class="btn btn-primary viewFavorites" href="#anbt_panelfavorites">Panel Favorites</a>'
@@ -41,18 +39,17 @@ const betterPlayer = () => {
       viewMyGameBookmarks()
     })
 
-    if (location.hash.includes('#anbt_panelfavorites'))
-      viewMyPanelFavorites()
-    if (location.hash.includes('#anbt_gamebookmarks'))
-      viewMyGameBookmarks()
+    if (location.hash.includes('#anbt_panelfavorites')) viewMyPanelFavorites()
+    if (location.hash.includes('#anbt_gamebookmarks')) viewMyGameBookmarks()
 
     // Show your exact registration date
     if (window.date) {
       const publicInfo = $('.profile-user-header>div.row>div>h1+p')
-      if (publicInfo)
+      if (publicInfo) {
         [...publicInfo.childNodes][4].nodeValue = ` ${formatTimestamp(
           window.date
         )} \xa0`
+      }
     }
   } else {
     // Not the current user's profile or not profile homepage
@@ -61,10 +58,11 @@ const betterPlayer = () => {
       true
     )
     // Show replayable panels; links are not straightforward to make since there's no panel ID
-    if (options.newCanvas)
+    if (options.newCanvas) {
       drawings.forEach(drawing =>
         drawing.addEventListener('load', addReplaySign(drawing))
       )
+    }
 
     // Detect Draw Firsts
     drawings.forEach(({ src, parentNode }) => {
@@ -116,5 +114,3 @@ const betterPlayer = () => {
     })
   }
 }
-
-export default betterPlayer

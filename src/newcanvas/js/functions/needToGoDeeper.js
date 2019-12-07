@@ -1,19 +1,19 @@
-import anbt from '../anbt'
-import fromPng from './anbt/fromPng'
-import fromUrl from './anbt/fromUrl'
-import base64ToBytes from './conversions/base64ToBytes'
-import fixTabletPluginGoingAwol from './fixTabletPluginGoingAwol'
-import ID from './idSelector'
-import ajax from './needToGoDeeper/ajax'
-import bindCanvasEvents from './needToGoDeeper/bindCanvasEvents'
-import extractInfoFromHTML from './needToGoDeeper/extractInfoFromHTML'
-import getParametersFromPlay from './needToGoDeeper/getParametersFromPlay'
-import handleSandboxParameters from './needToGoDeeper/handleSandboxParameters'
-import setPaletteByName from './bindEvents/palette/setPaletteByName'
-import setBackground from './anbt/setBackground'
-import updateColorIndicators from './bindEvents/updateColorIndicators'
+import { anbt } from '../anbt'
+import { fromPng } from './anbt/fromPng'
+import { fromUrl } from './anbt/fromUrl'
+import { setBackground } from './anbt/setBackground'
+import { setPaletteByName } from './bindEvents/palette/setPaletteByName'
+import { updateColorIndicators } from './bindEvents/updateColorIndicators'
+import { base64ToBytes } from './conversions/base64ToBytes'
+import { fixTabletPluginGoingAwol } from './fixTabletPluginGoingAwol'
+import { ID } from './idSelector'
+import { ajax } from './needToGoDeeper/ajax'
+import { bindCanvasEvents } from './needToGoDeeper/bindCanvasEvents'
+import { extractInfoFromHTML } from './needToGoDeeper/extractInfoFromHTML'
+import { getParametersFromPlay } from './needToGoDeeper/getParametersFromPlay'
+import { handleSandboxParameters } from './needToGoDeeper/handleSandboxParameters'
 
-const needToGoDeeper = () => {
+export function needToGoDeeper() {
   const { options, inSandbox, panelId, paletteInfo } = window
   window.onerror = (error, file, line) => {
     // Silence the bogus error message from the overwritten page's timer
@@ -43,7 +43,7 @@ const needToGoDeeper = () => {
   }
   bindCanvasEvents()
   if (inSandbox) {
-    if (panelId)
+    if (panelId) {
       ajax('GET', `/panel/drawing/${panelId}/-/`, {
         load: response => {
           window.gameInfo = extractInfoFromHTML(response)
@@ -54,7 +54,7 @@ const needToGoDeeper = () => {
           alert('Error loading the panel page. Please try again.')
         }
       })
-    else {
+    } else {
       ajax('GET', '/sandbox/', {
         load: response => {
           window.gameInfo = extractInfoFromHTML(response)
@@ -91,5 +91,3 @@ const needToGoDeeper = () => {
     throw new Error('Script conflict with ANBT new canvas')
   }
 }
-
-export default needToGoDeeper

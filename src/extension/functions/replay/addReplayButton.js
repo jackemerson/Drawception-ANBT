@@ -1,9 +1,9 @@
-import scrambleID from '../scrambleID'
-import $ from '../selector'
-import setupNewCanvas from '../setupNewCanvas'
-import checkForRecording from './checkForRecording'
+import { scrambleID } from '../scrambleID'
+import { $ } from '../selector'
+import { setupNewCanvas } from '../setupNewCanvas'
+import { checkForRecording } from './checkForRecording'
 
-const addReplayButton = drawing => {
+export function addReplayButton(drawing) {
   if (drawing.replayAdded) return
   drawing.replayAdded = true
   const { parentNode, src } = drawing
@@ -23,5 +23,3 @@ const addReplayButton = drawing => {
     parentNode.insertAdjacentHTML('beforebegin', replayButton.outerHTML)
   })
 }
-
-export default addReplayButton

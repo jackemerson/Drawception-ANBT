@@ -1,9 +1,9 @@
-import ID from '../../idSelector'
-import ajax from '../ajax'
-import getParametersFromPlay from '../getParametersFromPlay'
-import unsavedStopAction from '../unsavedStopAction'
+import { ID } from '../../idSelector'
+import { ajax } from '../ajax'
+import { getParametersFromPlay } from '../getParametersFromPlay'
+import { unsavedStopAction } from '../unsavedStopAction'
 
-const skip = () => {
+export function skip() {
   if (unsavedStopAction()) return
   ID('skip').disabled = true
   ajax('POST', '/play/skip.json', {
@@ -18,4 +18,4 @@ const skip = () => {
   })
 }
 
-export default skip
+

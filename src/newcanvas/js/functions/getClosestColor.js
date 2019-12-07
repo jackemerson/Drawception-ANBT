@@ -1,10 +1,10 @@
-import colorToHex from './conversions/colorToHex'
-import colorToRgba from './conversions/colorToRgba'
-import rgbToHex from './conversions/rgbToHex'
-import getColorDistance from './getColorDistance'
-import ID from './idSelector'
+import { colorToHex } from './conversions/colorToHex'
+import { colorToRgba } from './conversions/colorToRgba'
+import { rgbToHex } from './conversions/rgbToHex'
+import { getColorDistance } from './getColorDistance'
+import { ID } from './idSelector'
 
-const getClosestColor = (rgb, palette) => {
+export function getClosestColor(rgb, palette) {
   // Allow any color in sandbox and friend games
   if (
     ID('newcanvasyo').classList.contains('sandbox') ||
@@ -19,4 +19,4 @@ const getClosestColor = (rgb, palette) => {
   return colorToHex(closestColor)
 }
 
-export default getClosestColor
+

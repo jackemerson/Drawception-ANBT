@@ -1,3 +1,3 @@
-const error = event => alert(event)
-
-export default error
+export function error(event) {
+  alert(event)
+}

@@ -1,12 +1,12 @@
-import anbt from '../../anbt'
-import crc32 from '../crc32'
-import packUint32be from '../pack/packUint32be'
-import cutHistoryBeforeClearAndAfterPosition from './cutHistoryBeforeClearAndAfterPosition'
-import drawSvgElement from './drawSvgElement'
-import moveSeekbar from './moveSeekbar'
-import packPlayback from './packPlayback'
+import { anbt } from '../../anbt'
+import { crc32 } from '../crc32'
+import { packUint32be } from '../pack/packUint32be'
+import { cutHistoryBeforeClearAndAfterPosition } from './cutHistoryBeforeClearAndAfterPosition'
+import { drawSvgElement } from './drawSvgElement'
+import { moveSeekbar } from './moveSeekbar'
+import { packPlayback } from './packPlayback'
 
-const makePng = (width, height, fromBuffer) => {
+export function makePng(width, height, fromBuffer) {
   // Cut all needless SVG data that comes before clearing whole canvas
   cutHistoryBeforeClearAndAfterPosition()
   moveSeekbar(1)
@@ -19,8 +19,9 @@ const makePng = (width, height, fromBuffer) => {
     context.fillStyle = anbt.background
     context.fillRect(0, 0, width, height)
   }
-  if (fromBuffer) context.drawImage(anbt.canvas, 0, 0, width, height)
-  else {
+  if (fromBuffer) {
+    context.drawImage(anbt.canvas, 0, 0, width, height)
+  } else {
     context.lineJoin = context.lineCap = 'round'
     context.scale(width / 600, height / 500)
     for (let i = 0; i < anbt.svg.childNodes.length; i++) {
@@ -50,5 +51,3 @@ const makePng = (width, height, fromBuffer) => {
   anbt.pngBase64 =
     anbt.pngBase64.substr(0, anbt.pngBase64.length - 20) + btoa(custom)
 }
-
-export default makePng

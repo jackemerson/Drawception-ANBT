@@ -1,7 +1,7 @@
-import anbt from '../../anbt'
-import createSvgElement from '../createSvgElement'
+import { anbt } from '../../anbt'
+import { createSvgElement } from '../createSvgElement'
 
-const moveCursor = (x, y) => {
+export function moveCursor(x, y) {
   if (anbt.locked) return
   if (!anbt.brushCursor) {
     anbt.brushCursor = createSvgElement('circle', {
@@ -40,5 +40,3 @@ const moveCursor = (x, y) => {
   anbt.brushCursor.setAttribute('r', anbt.size / 2 + 0.5)
   anbt.brushCursor2.setAttribute('r', anbt.size / 2 - 0.5)
 }
-
-export default moveCursor

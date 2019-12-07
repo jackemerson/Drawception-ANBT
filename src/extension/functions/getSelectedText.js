@@ -1,12 +1,12 @@
-import markdown from '../markdown'
-import $ from './selector'
+import { markdown } from "../markdown"
+import { $ } from "./selector"
 
-const getSelectedText = event => {
+export function getSelectedText(event) {
   const textarea = $('#input-comment')
   const { value, selectionStart, selectionEnd } = textarea
   const { length } = value
   const selection = value.substring(selectionStart, selectionEnd)
-  markdown[`${event.currentTarget.id}`].replace(
+  markdown[`${event.currentTarget.id}`].execute(
     value,
     length,
     selectionStart,
@@ -15,5 +15,3 @@ const getSelectedText = event => {
     textarea
   )
 }
-
-export default getSelectedText

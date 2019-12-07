@@ -1,11 +1,11 @@
-import options from '../../options'
-import waitForComments from '../comment/waitForComments'
-import getLocalStorageItem from '../getLocalStorageItem'
-import addReplayButton from '../replay/addReplayButton'
-import reversePanels from '../reversePanels'
-import $ from '../selector'
+import { options } from '../../options'
+import { waitForComments } from '../comment/waitForComments'
+import { getLocalStorageItem } from '../getLocalStorageItem'
+import { addReplayButton } from '../replay/addReplayButton'
+import { reversePanels } from '../reversePanels'
+import { $ } from '../selector'
 
-const betterGame = () => {
+export function betterGame() {
   if (document.title === 'Not Safe For Work (18+) Gate') {
     if (options.autoBypassNSFW) window.DrawceptionPlay.bypassNsfwGate()
     return
@@ -15,11 +15,13 @@ const betterGame = () => {
   )
 
   // Reverse panels button
-  if ($('#btn-copy-url'))
-    $('#btn-copy-url').insertAdjacentHTML(
+  const copyButton = $('#btn-copy-url')
+  if (copyButton) {
+    copyButton.insertAdjacentHTML(
       'afterend',
       ' <a href="#" class="btn btn-default reversePanels" title="Reverse panels"><span class="fas fa-sort-amount-up"></span> Reverse</a>'
     )
+  }
 
   $('.reversePanels').addEventListener('click', reversePanels)
 
@@ -37,10 +39,11 @@ const betterGame = () => {
     const id = parentNode
       .querySelector('.gamepanel-tools>a:last-child')
       .href.match(/\/panel\/[^/]+\/([^/]+)\/[^/]+\//)[1]
-    if (panels[id])
+    if (panels[id]) {
       parentNode
         .querySelector('.anbt_favpanel')
         .classList.add('anbt_favedpanel')
+    }
   })
   $('.anbt_favpanel', true).forEach(favoritePanelButton => {
     favoritePanelButton.addEventListener('click', () => {
@@ -76,13 +79,12 @@ const betterGame = () => {
 
   // Panel replay button
   if (options.newCanvas) {
-    if (drawings)
+    if (drawings) {
       drawings.forEach(drawing =>
         drawing.addEventListener('load', addReplayButton(drawing))
       )
+    }
   }
 
   setTimeout(waitForComments, 200)
 }
-
-export default betterGame

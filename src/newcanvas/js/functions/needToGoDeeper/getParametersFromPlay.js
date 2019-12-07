@@ -1,8 +1,8 @@
-import ajax from './ajax'
-import extractInfoFromHTML from './extractInfoFromHTML'
-import handlePlayParameters from './handlePlayParameters'
+import { ajax } from './ajax'
+import { extractInfoFromHTML } from './extractInfoFromHTML'
+import { handlePlayParameters } from './handlePlayParameters'
 
-const getParametersFromPlay = () => {
+export function getParametersFromPlay() {
   const { inContest, friendGameId } = window
   const url = inContest
     ? '/contests/play/'
@@ -29,5 +29,3 @@ const getParametersFromPlay = () => {
     }
   })
 }
-
-export default getParametersFromPlay

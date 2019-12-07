@@ -1,6 +1,6 @@
-import rgbToLab from './conversions/rgbToLab'
+import { rgbToLab } from './conversions/rgbToLab'
 
-const getColorDistance = (rgb1, rgb2) => {
+export function getColorDistance(rgb1, rgb2) {
   const lab1 = rgbToLab(rgb1)
   const lab2 = rgbToLab(rgb2)
   const l = lab2[0] - lab1[0]
@@ -9,4 +9,4 @@ const getColorDistance = (rgb1, rgb2) => {
   return Math.sqrt(l ** 2 * 2 + a ** 2 + b ** 2)
 }
 
-export default getColorDistance
+

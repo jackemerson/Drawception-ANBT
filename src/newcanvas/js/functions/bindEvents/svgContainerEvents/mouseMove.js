@@ -1,10 +1,10 @@
-import anbt from '../../../anbt'
-import globals from '../../../globals'
-import eyedropper from '../../anbt/eyedropper'
-import moveCursor from '../../anbt/moveCursor'
-import ID from '../../idSelector'
+import { anbt } from '../../../anbt'
+import { globals } from '../../../globals'
+import { eyedropper } from '../../anbt/eyedropper'
+import { moveCursor } from '../../anbt/moveCursor'
+import { ID } from '../../idSelector'
 
-const svgMouseMove = event => {
+export function svgMouseMove(event) {
   const { options } = window
   globals.rectangle = event.currentTarget.getBoundingClientRect()
   const x = event.pageX - globals.rectangle.left - pageXOffset
@@ -26,4 +26,4 @@ const svgMouseMove = event => {
   }
 }
 
-export default svgMouseMove
+

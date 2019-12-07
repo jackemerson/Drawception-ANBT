@@ -1,12 +1,10 @@
-import anbt from '../../anbt'
-import ID from '../idSelector'
-import pause from '../anbt/pause'
+import { anbt } from '../../anbt'
+import { pause } from '../anbt/pause'
+import { ID } from '../idSelector'
 
-const checkPlayingAndStop = () => {
+export function checkPlayingAndStop() {
   if (!anbt.isPlaying) return false
   pause()
   ID('play').classList.remove('pause')
   return true
 }
-
-export default checkPlayingAndStop

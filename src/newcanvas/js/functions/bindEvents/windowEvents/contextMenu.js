@@ -1,7 +1,7 @@
-import anbt from '../../../anbt'
+import { anbt } from '../../../anbt'
 
-const windowContextMenu = event => {
+export function windowContextMenu(event) {
   if (anbt.isStroking) event.preventDefault()
 }
 
-export default windowContextMenu
+

@@ -1,4 +1,4 @@
-const rgbToLab = rgb => {
+export function rgbToLab(rgb) {
   const [red, green, blue] = rgb.map(value =>
     value > 10
       ? Math.pow((value / 255 + 0.055) / 1.055, 2.4)
@@ -14,4 +14,4 @@ const rgbToLab = rgb => {
   return [116 * y - 16, 500 * (x - y), 200 * (y - z)]
 }
 
-export default rgbToLab
+

@@ -1,8 +1,8 @@
-import anbt from '../../anbt'
-import createSvgElement from '../createSvgElement'
-import addToSvg from './addToSvg'
+import { anbt } from '../../anbt'
+import { createSvgElement } from '../createSvgElement'
+import { addToSvg } from './addToSvg'
 
-const clearWithColor = color => {
+export function clearWithColor(color) {
   addToSvg(
     createSvgElement('rect', {
       class: color,
@@ -15,5 +15,3 @@ const clearWithColor = color => {
   )
   anbt.lastRect = anbt.position
 }
-
-export default clearWithColor

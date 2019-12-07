@@ -1,9 +1,9 @@
-import anbt from '../../anbt'
-import drawSvgElement from './drawSvgElement'
-import moveSeekbar from './moveSeekbar'
-import pause from './pause'
+import { anbt } from '../../anbt'
+import { drawSvgElement } from './drawSvgElement'
+import { moveSeekbar } from './moveSeekbar'
+import { pause } from './pause'
 
-const playTimer = () => {
+export function playTimer() {
   if (!anbt.isPlaying) return
   const positionMax = anbt.svg.childNodes.length - 1
   let { delay } = anbt
@@ -65,8 +65,9 @@ const playTimer = () => {
     (anbt.position + (indexMax ? anbt.animateIndex / indexMax : 0)) /
       positionMax
   )
-  if (anbt.position < positionMax) setTimeout(anbt.playTimer, delay)
-  else pause()
+  if (anbt.position < positionMax) {
+    setTimeout(anbt.playTimer, delay)
+  } else {
+    pause()
+  }
 }
-
-export default playTimer

@@ -1,8 +1,8 @@
-import options from '../../options'
-import setCookie from '../cookie/setCookie'
-import getLocalStorageItem from '../getLocalStorageItem'
+import { options } from '../../options'
+import { setCookie } from '../cookie/setCookie'
+import { getLocalStorageItem } from '../getLocalStorageItem'
 
-const toggleLight = () => {
+export function toggleLight() {
   if (options.anbtDarkMode) {
     const inDark = getLocalStorageItem('gpe_inDark', 0)
     if (!inDark) {
@@ -27,5 +27,3 @@ const toggleLight = () => {
     }
   }
 }
-
-export default toggleLight

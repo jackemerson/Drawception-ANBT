@@ -9,7 +9,7 @@ import prettier from 'rollup-plugin-prettier'
 import replaceHtmlVars from 'rollup-plugin-replace-html-vars'
 import scss from 'rollup-plugin-scss'
 import { terser } from 'rollup-plugin-terser'
-import banner from './src/extension/banner'
+import { banner } from './src/extension/banner'
 
 const waitFile = path => {
   return new Promise(resolve => {

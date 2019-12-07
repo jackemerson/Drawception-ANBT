@@ -1,11 +1,11 @@
-import globals from '../../globals'
-import setBackground from '../anbt/setBackground'
-import setColor from '../anbt/setColor'
-import getPointerType from './getPointerType'
-import updateChooseBackground from './updateChooseBackground'
-import updateColorIndicators from './updateColorIndicators'
+import { globals } from '../../globals'
+import { setBackground } from '../anbt/setBackground'
+import { setColor } from '../anbt/setColor'
+import { getPointerType } from './getPointerType'
+import { updateChooseBackground } from './updateChooseBackground'
+import { updateColorIndicators } from './updateColorIndicators'
 
-const colorClick = event => {
+export function colorClick(event) {
   if (event.touches || event.button === 0 || event.button === 2) {
     event.preventDefault()
     const colorButton = event.currentTarget
@@ -16,11 +16,12 @@ const colorClick = event => {
     } else {
       if (colorButton.id === 'eraser') color = 'eraser'
       // PointerType == 3 is pen tablet eraser
-      if (event.button === 2 || getPointerType() === 3) setColor(1, color)
-      else setColor(0, color)
+      if (event.button === 2 || getPointerType() === 3) {
+        setColor(1, color)
+      } else {
+        setColor(0, color)
+      }
       updateColorIndicators()
     }
   }
 }
-
-export default colorClick

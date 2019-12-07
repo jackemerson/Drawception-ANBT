@@ -1,16 +1,18 @@
-const strikethrough = (
+export function strikethrough(
   value,
   length,
   selectionStart,
   selectionEnd,
   selection,
   textarea
-) => {
+) {
   const selRegex = /~~((.*\W?)*)~~/
-  if (selection.match(selRegex)) selection = selection.replace(selRegex, '$1')
-  else if (selectionStart > 0 && selectionEnd < length) {
-    if (selection.match(selRegex)) selection.replace(selRegex, '$1')
-    else if (
+  if (selection.match(selRegex)) {
+    selection = selection.replace(selRegex, '$1')
+  } else if (selectionStart > 0 && selectionEnd < length) {
+    if (selection.match(selRegex)) {
+      selection.replace(selRegex, '$1')
+    } else if (
       value.substring(selectionStart - 1, selectionEnd + 1).match(selRegex)
     ) {
       selectionStart--
@@ -59,5 +61,3 @@ const strikethrough = (
     selection +
     value.substring(selectionEnd, length)
 }
-
-export default strikethrough

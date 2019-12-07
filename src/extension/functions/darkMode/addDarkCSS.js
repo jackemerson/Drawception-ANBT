@@ -1,4 +1,4 @@
-const addDarkCSS = () =>
+export function addDarkCSS() {
   localStorage.setItem(
     'gpe_darkCSS',
     (
@@ -50,5 +50,4 @@ const addDarkCSS = () =>
       .replace(/~/g, 'background-color:')
       .replace(/\$/g, ' !important')
   )
-
-export default addDarkCSS
+}

@@ -1,10 +1,9 @@
-import getLocalStorageItem from '../getLocalStorageItem'
+import { getLocalStorageItem } from '../getLocalStorageItem'
 
-const loadScriptSettings = () => {
+export function loadScriptSettings() {
   const localOptions = getLocalStorageItem('gpe_anbtSettings', null)
   if (!localOptions) return
-  for (const option in localOptions)
+  for (const option in localOptions) {
     window.options[option] = localOptions[option]
+  }
 }
-
-export default loadScriptSettings

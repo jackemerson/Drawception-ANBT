@@ -1,6 +1,4 @@
-const popupClose = event => {
+export function popupClose(event) {
   event.preventDefault()
   event.currentTarget.parentElement.classList.remove('show')
 }
-
-export default popupClose

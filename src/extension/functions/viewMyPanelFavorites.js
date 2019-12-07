@@ -1,9 +1,9 @@
-import fadeOut from './fade/fadeOut'
-import getLocalStorageItem from './getLocalStorageItem'
-import $ from './selector'
-import formatTimestamp from './time/formatTimestamp'
+import { fadeOut } from './fade/fadeOut'
+import { getLocalStorageItem } from './getLocalStorageItem'
+import { $ } from './selector'
+import { formatTimestamp } from './time/formatTimestamp'
 
-const viewMyPanelFavorites = () => {
+export function viewMyPanelFavorites() {
   const panels = getLocalStorageItem('gpe_panelFavorites', {})
   let result = ''
   let needsUpdate = false
@@ -46,5 +46,3 @@ const viewMyPanelFavorites = () => {
     })
   )
 }
-
-export default viewMyPanelFavorites

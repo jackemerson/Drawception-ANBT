@@ -1,9 +1,9 @@
-import anbt from '../../../anbt'
-import globals from '../../../globals'
-import strokeAdd from '../../anbt/strokeAdd'
-import simulateSingleTouchStart from '../simulateSingleTouchStart'
+import { anbt } from '../../../anbt'
+import { globals } from '../../../globals'
+import { strokeAdd } from '../../anbt/strokeAdd'
+import { simulateSingleTouchStart } from '../simulateSingleTouchStart'
 
-const touchMove = event => {
+export function touchMove(event) {
   if (event.touches.length !== 1) return
   simulateSingleTouchStart()
   event.preventDefault()
@@ -13,4 +13,4 @@ const touchMove = event => {
   strokeAdd(x, y)
 }
 
-export default touchMove
+

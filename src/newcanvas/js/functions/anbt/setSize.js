@@ -1,9 +1,7 @@
-import anbt from '../../anbt'
-import moveCursor from './moveCursor'
+import { anbt } from '../../anbt'
+import { moveCursor } from './moveCursor'
 
-const setSize = size => {
+export function setSize(size) {
   anbt.size = size
   moveCursor()
 }
-
-export default setSize

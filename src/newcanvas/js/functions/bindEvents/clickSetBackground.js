@@ -1,9 +1,7 @@
-import globals from '../../globals'
-import updateChooseBackground from './updateChooseBackground'
+import { globals } from '../../globals'
+import { updateChooseBackground } from './updateChooseBackground'
 
-const clickSetBackground = event => {
+export function clickSetBackground(event) {
   event.preventDefault()
   updateChooseBackground(!globals.chooseBackground)
 }
-
-export default clickSetBackground

@@ -1,4 +1,4 @@
-const paletteMap = {
+export const paletteMap = {
   default: ['Normal', '#fffdc9'],
   theme_thanksgiving: ['Thanksgiving', '#f5e9ce'],
   halloween: ['Halloween', '#444444'],
@@ -38,5 +38,3 @@ const paletteMap = {
   theme_witches_brew: ['Witches Brew', '#100b16'],
   theme_wilting_rose: ['Wilting Rose', '#e6c3c3']
 }
-
-export default paletteMap

@@ -1,8 +1,8 @@
-import ID from '../../idSelector'
-import ajax from '../ajax'
-import exitToSandbox from '../exitToSandbox'
+import { ID } from '../../idSelector'
+import { ajax } from '../ajax'
+import { exitToSandbox } from '../exitToSandbox'
 
-const exit = () => {
+export function exit() {
   const { gameInfo, inContest } = window
   if (inContest) {
     if (!confirm('Quit the contest? Entry coins will be lost!')) return
@@ -54,4 +54,4 @@ const exit = () => {
   })
 }
 
-export default exit
+

@@ -1,6 +1,6 @@
-import knobCommonMove from './knobCommonMove'
+import { knobCommonMove } from './knobCommonMove'
 
-const knobCommonUp = event => {
+export function knobCommonUp(event) {
   if (!event.button || (!event.touches && !event.touches.length)) {
     event.preventDefault()
     window.removeEventListener('mouseup', knobCommonUp)
@@ -10,4 +10,4 @@ const knobCommonUp = event => {
   }
 }
 
-export default knobCommonUp
+

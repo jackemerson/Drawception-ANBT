@@ -1,5 +1,5 @@
 // prettier-ignore
-const palettes = {
+export const palettes = {
   "Normal":          ['#000000', '#444444', '#999999', '#ffffff', '#603913', '#c69c6d',
                       '#ffdab9', '#ff0000', '#ffd700', '#ff6600', '#16ff00', '#0fad00',
                       '#00ffff', '#0247fe', '#ec008c', '#8601af', '#fffdc9'],
@@ -27,21 +27,21 @@ const palettes = {
                       '#3e2409', '#a66621', '#a67e21', '#ebbb49', '#ffc0cb', '#ffffff'],
   "Beach":           ['#1ca4d2', '#65bbe2', '#6ab7bf', '#94cbda', '#9cbf80', '#d2e1ab',
                       '#b8a593', '#d7cfb9', '#dc863e', '#f7dca2'],
-  "Tide Pool":       ["#ffe8b9", "#fad489", "#ffb44c", "#d6b1de", "#b197a8", "#e5f2ff",
-                      "#a1ffb8", "#53e6ef", "#3ad3a8", "#1ca4d2", "#2271a2"],
+  "Tide Pool":       ['#ffe8b9', '#fad489', '#ffb44c', '#d6b1de', '#b197a8', '#e5f2ff',
+                      '#a1ffb8', '#53e6ef', '#3ad3a8', '#1ca4d2', '#2271a2'],
   "Colors of 2016":  ['#91a7d0', '#f6cac9', '#eb9587', '#776a5f',
                       '#d1c2ab', '#a39d9d', '#648589'],
-  "Bee":             ["#000000", "#7a5c00", "#b58800", "#eab618", "#f6de97", "#ffffff"],
+  "Bee":             ['#000000', '#7a5c00', '#b58800', '#eab618', '#f6de97', '#ffffff'],
   "Colors of 2017":  ['#86af49', '#44883d', '#1f4478', '#0062a3',
                       '#00939a', '#59c9d5', '#8a9a9a', '#5f7278'],
   "Fire and Ice":    ['#520909', '#b40528', '#fd2119', '#faa611', '#ffe96a',
                       '#ffffff', '#69ddff', '#1c8ae5', '#0a3fa9', '#040526'],
   "Canyon Sunset":   ['#fce3ca', '#feb789', '#f27c8a', '#af5081',
                       '#8e6dae', '#5f4a8b', '#2e1b50'],
-  "Juice":           ["#f3ab54", "#ec5e66", "#ab5871", "#f2a19b", "#f9f4d4", "#fadfb7",
-                      "#869e3c", "#cbdd7e", "#fced95"],
-  "Tropical":        ["#f68357", "#fbc040", "#fefa56", "#fef0f5", "#90fc51", "#07f182",
-                      "#1d6ab2", "#12041b", "#2f0946"],
+  "Juice":           ['#f3ab54', '#ec5e66', '#ab5871', '#f2a19b', '#f9f4d4', '#fadfb7',
+                      '#869e3c', '#cbdd7e', '#fced95'],
+  "Tropical":        ['#f68357', '#fbc040', '#fefa56', '#fef0f5', '#90fc51', '#07f182',
+                      '#1d6ab2', '#12041b', '#2f0946'],
   "Grimby Grays":    ['#000000', '#ffffff', '#2f3032', '#252422', '#545758', '#4b4a46', '#797d80',
                       '#71706c', '#9ea1a4', '#979692', '#c4c8cb', '#d7d6d2', '#dee1e4', '#f0efeb'],
   "DawnBringer 16":  ['#140c1c', '#442434', '#30346d', '#4e4a4e', '#854c30', '#346524',
@@ -75,5 +75,3 @@ const palettes = {
   "Wilting Rose":    ['#311e31', '#284b41', '#369486', '#70cbbd', '#f5ebd2',
                       '#643241', '#b4556e', '#c8aac8', '#e6c3c3']
 }
-
-export default palettes

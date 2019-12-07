@@ -1,9 +1,9 @@
-import anbt from '../../anbt'
-import buildSmoothPath from '../buildSmoothPath'
-import simplifyDouglasPeucker from '../simplifyDouglasPeucker'
-import addToSvg from './addToSvg'
+import { anbt } from '../../anbt'
+import { buildSmoothPath } from '../buildSmoothPath'
+import { simplifyDouglasPeucker } from '../simplifyDouglasPeucker'
+import { addToSvg } from './addToSvg'
 
-const strokeEnd = () => {
+export function strokeEnd() {
   if (anbt.locked) return
   anbt.unsaved = true
   const points =
@@ -14,5 +14,3 @@ const strokeEnd = () => {
   anbt.contextDisplay && anbt.contextDisplay.clearRect(0, 0, 600, 500)
   anbt.isStroking = false
 }
-
-export default strokeEnd
