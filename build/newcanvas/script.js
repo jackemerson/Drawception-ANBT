@@ -2556,7 +2556,6 @@
       error: (element => (element ? element.src : false))(getElement('.error')),
       gameId: drawapp.getAttribute('game_token'),
       blitz: drawapp.getAttribute(':blitz_mode') === 'true',
-      nsfw: drawapp.getAttribute(':nsfw') === 'true',
       friend: drawapp.getAttribute(':game_public') !== 'true',
       drawFirst: drawapp.getAttribute(':draw_first') === 'true',
       timeLeft: parseInt(drawapp.getAttribute(':seconds'), 10),
@@ -2676,9 +2675,9 @@
     }
     ID('gamemode').innerHTML = inContest
       ? 'Contest'
-      : `${(gameInfo.friend ? 'Friend ' : 'Public ') +
-          (gameInfo.nsfw ? 'Not Safe For Work (18+) ' : 'safe for work ') +
-          (gameInfo.blitz ? 'BLITZ ' : '')}Game`;
+      : `${gameInfo.friend ? 'Friend ' : 'Public '} safe for work ${
+          gameInfo.blitz ? 'BLITZ ' : ''
+        }Game`;
     ID('drawthis').innerHTML =
       gameInfo.caption || (gameInfo.drawFirst && '(Start your game!)') || '';
     ID('tocaption').src = '';
@@ -2686,7 +2685,6 @@
     newCanvas.className = 'play';
     if (gameInfo.friend) newCanvas.classList.add('friend');
     ID('palettechooser').className = gameInfo.friend ? '' : 'onlysandbox';
-    if (gameInfo.nsfw) newCanvas.classList.add('nsfw');
     if (gameInfo.blitz) newCanvas.classList.add('blitz');
     newCanvas.classList.add(gameInfo.image ? 'captioning' : 'drawing');
     if (anbt.isStroking) strokeEnd();

@@ -41,9 +41,9 @@ export function handlePlayParameters() {
   }
   ID('gamemode').innerHTML = inContest
     ? 'Contest'
-    : `${(gameInfo.friend ? 'Friend ' : 'Public ') +
-        (gameInfo.nsfw ? 'Not Safe For Work (18+) ' : 'safe for work ') +
-        (gameInfo.blitz ? 'BLITZ ' : '')}Game`
+    : `${gameInfo.friend ? 'Friend ' : 'Public '} safe for work ${
+        gameInfo.blitz ? 'BLITZ ' : ''
+      }Game`
   ID('drawthis').innerHTML =
     gameInfo.caption || (gameInfo.drawFirst && '(Start your game!)') || ''
   ID('tocaption').src = ''
@@ -51,7 +51,6 @@ export function handlePlayParameters() {
   newCanvas.className = 'play'
   if (gameInfo.friend) newCanvas.classList.add('friend')
   ID('palettechooser').className = gameInfo.friend ? '' : 'onlysandbox'
-  if (gameInfo.nsfw) newCanvas.classList.add('nsfw')
   if (gameInfo.blitz) newCanvas.classList.add('blitz')
   newCanvas.classList.add(gameInfo.image ? 'captioning' : 'drawing')
   // Clear

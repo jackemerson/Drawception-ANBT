@@ -10,7 +10,6 @@ export function extractInfoFromHTML(html) {
     error: (element => (element ? element.src : false))(getElement('.error')),
     gameId: drawapp.getAttribute('game_token'),
     blitz: drawapp.getAttribute(':blitz_mode') === 'true',
-    nsfw: drawapp.getAttribute(':nsfw') === 'true',
     friend: drawapp.getAttribute(':game_public') !== 'true',
     drawFirst: drawapp.getAttribute(':draw_first') === 'true',
     timeLeft: parseInt(drawapp.getAttribute(':seconds'), 10),

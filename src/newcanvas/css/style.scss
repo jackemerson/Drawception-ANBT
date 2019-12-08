@@ -138,7 +138,6 @@ body {
   &.play .onlysandbox,
   &.play .onlyfriend,
   &.friend .no-friend,
-  &.nsfw .no-nsfw,
   &.sandbox .onlycaption,
   &.drawing .onlycaption,
   &.captioning .onlydraw,
@@ -628,16 +627,6 @@ button:disabled {
   color: #aaa;
   width: 176px;
   float: left;
-}
-.nsfw {
-  #gamemode {
-    border-color: #faa;
-    color: #faa;
-    background: #744;
-  }
-  #drawthis {
-    background: #744;
-  }
 }
 #gamebuttons {
   font-size: 13pt;
