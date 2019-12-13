@@ -73,5 +73,7 @@ export const palettes = {
   "Witches Brew":    ['#e9eeae', '#bbd9bf', '#6c8e8f', '#516374',
                       '#373a55', '#271d3a', '#100b16'],
   "Wilting Rose":    ['#311e31', '#284b41', '#369486', '#70cbbd', '#f5ebd2',
-                      '#643241', '#b4556e', '#c8aac8', '#e6c3c3']
+                      '#643241', '#b4556e', '#c8aac8', '#e6c3c3'],
+  "Frosty":          ['#aedee3', '#fec083', '#ff6013', '#9a594b', '#9f747f',
+                      '#4f352f', '#426277', '#7d849b', '#f2f3f7']
 }
