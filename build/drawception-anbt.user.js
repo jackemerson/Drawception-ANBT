@@ -2269,15 +2269,15 @@
         '.avatar {box-sizing: content-box}' +
         '.pagination {margin: 0px}' +
         '#nav-drag {position: fixed; width: 100%; z-index: 2000}' +
-        '#header-bar-container {position: relative; width: 100%; top: 6rem}' +
-        '.wrapper {position: relative; top: 6rem}' +
-        'footer {position: relative; top: 6rem}' +
+        '#header-bar-container {position: relative; width: 100%; top: 6.4rem}' +
+        '.wrapper {position: relative; top: 6.4rem}' +
+        'footer {position: relative; top: 6.4rem}' +
         '.option span:first-child {display: flex; flex-direction: row; justify-content: space-between}' +
         '.grid-settings div[class^="grid-"] label {display: inline-flex}' +
         'input[type="checkbox"], input[type="radio"] {margin:4px 4px 0 0}' +
         '@-moz-document url-prefix() {input[type="checkbox"], input[type="radio"] {margin:0 4px 0 0}}' +
         '.tooltip {z-index: 3000;}' +
-        '.bg-color {position: relative; width: 100%; top: 6rem}' +
+        '.bg-color {position: relative; width: 100%; top: 6.4rem}' +
         '.text-right > a[href*="store"] {margin-top: 1rem}'
     );
     if (options.maxCommentHeight) {
