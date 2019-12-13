@@ -1,3 +1,8 @@
+2.8.2019.12
+- Add feed button on navigation bar
+- Fix floating navigation bar with Christmas D logo
+- Add support for the new palette: Frosty
+
 2.7.2019.12
 - Update dependencies
 - Remove NSFW support in game
