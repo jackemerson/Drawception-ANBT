@@ -2355,10 +2355,17 @@
         '<a href="/forums/" title="Forums" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item" style="background:#55A"><span class="fas fa-comments" style="color:#BBF" /></a>',
         '<a href="/search/" title="Search" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item"><span class="fas fa-search" /></a>',
         '<a href="/dashboard/" title="Dashboard" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item"><span class="fas fa-bell" /></a>',
+        `${
+          $('a[href^="/secretus/"]')
+            ? '<a href="/secretus/" title="Feed" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item"><span class="fas fa-mask" /></a>'
+            : ''
+        }`,
         '<a href="/settings/" id="menusettings" title="Settings" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item"><span class="fas fa-cog" /></a>',
         '<a href="/logout" title="Log Out" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item" style="background:#A55"><span class="fas fa-sign-out-alt" style="color:#FBB" /></a>'
       ];
-      navbarButtonsList.forEach(button => navbarToggle.appendChild($(button)));
+      navbarButtonsList.forEach(button =>
+        button.length > 0 ? navbarToggle.appendChild($(button)) : button
+      );
       $('#main-menu').insertAdjacentHTML(
         'afterbegin',
         '<a href="#" class="list-group-item toggle-light"><span class="fas fa-eye"></span> Toggle light</a>'
