@@ -1578,6 +1578,18 @@
       '#426277',
       '#7d849b',
       '#f2f3f7'
+    ],
+    'Clown Town': [
+      '#ec4848',
+      '#f07da6',
+      '#f5b8f5',
+      '#feca50',
+      '#101d1c',
+      '#403c42',
+      '#546d83',
+      '#4450db',
+      '#51ceb1',
+      '#e1f1f2'
     ]
   };
 
@@ -2070,7 +2082,8 @@
     theme_treasure: ['Treasure', '#412a23'],
     theme_witches_brew: ['Witches Brew', '#100b16'],
     theme_wilting_rose: ['Wilting Rose', '#e6c3c3'],
-    theme_frosty: ['Frosty', '#f2f3f7']
+    theme_frosty: ['Frosty', '#f2f3f7'],
+    theme_clown_town: ['Clown Town', '#e1f1f2']
   };
 
   function setPaletteByName(name, customColors) {
