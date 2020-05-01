@@ -1,3 +1,7 @@
+2.9.2020.05
+- Add support for the new palette: Clown Town
+- Remove link to old leaderboard
+
 2.8.2019.12
 - Add feed button on navigation bar
 - Fix floating navigation bar with Christmas D logo
