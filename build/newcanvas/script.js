@@ -1857,17 +1857,20 @@
       }
     }
     let regex = /^\d$/;
-    if (event.key.search(regex) === 0) {
+    if (event.key.search(regex) === 0 && options.colorNumberShortcuts) {
       const digit = Number(event.key);
       keyMatch = true;
       if ((0 < digit) & (digit <= 4) && (event.ctrlKey || event.metaKey)) {
         ID('brush' + digit).click();
-      } else if (
-        event.shiftKey ||
-        (options.colorDoublePress && anbt.previousColorKey === digit)
-      ) {
-        let index = digit + 8;
-        anbt.previousColorKey = index;
+      } else {
+        let index = digit;
+        if (
+          event.shiftKey ||
+          (options.colorDoublePress && anbt.previousColorKey === index)
+        ) {
+          index += 8;
+          anbt.previousColorKey = index;
+        }
         if (options.colorDoublePress) {
           if (anbt.previousColorKeyTimer)
             clearTimeout(anbt.previousColorKeyTimer);
@@ -1895,8 +1898,6 @@
           const lastPoint = anbt.points[anbt.points.length - 1];
           strokeBegin(lastPoint.x, lastPoint.y);
         }
-      } else {
-        keyMatch = false;
       }
     }
     if (codeMatch || keyMatch) event.preventDefault();

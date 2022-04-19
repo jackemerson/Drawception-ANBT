@@ -134,7 +134,7 @@ export function keyDown(event) {
   // Handle Digit Inputs
   let regex = /^\d$/; // detects a singular digit, else won't match
 
-  if (event.key.search(regex) === 0) { // returns index match, or -1 on no match
+  if (event.key.search(regex) === 0 && options.colorNumberShortcuts) { // returns index match, or -1 on no match
 
     const digit = Number(event.key);
     keyMatch = true;
@@ -144,12 +144,15 @@ export function keyDown(event) {
     // Ctrl+1,2,3,4
     if ( 0 < digit & digit <= 4 && (event.ctrlKey || event.metaKey) ) {
       ID('brush' + (digit)).click();
-    } 
-    else if (event.shiftKey ||
-       (options.colorDoublePress && anbt.previousColorKey === digit )) {
+    } else {
+      let index = digit;
+      // shift modifier
+      if (event.shiftKey ||
+         (options.colorDoublePress && anbt.previousColorKey === index )) {
       
-      let index = digit + 8; // ???
-      anbt.previousColorKey = index;
+        index += 8; // ??? (oh shift modifier, to access colours beyond 9?)
+        anbt.previousColorKey = index;
+      }
 
       if (options.colorDoublePress) {
         if (anbt.previousColorKeyTimer) clearTimeout(anbt.previousColorKeyTimer);
@@ -173,14 +176,13 @@ export function keyDown(event) {
           updateColorIndicators()
         }
       }
+
       if (anbt.isStroking) {
         strokeEnd()
         const lastPoint = anbt.points[anbt.points.length - 1]
         strokeBegin(lastPoint.x, lastPoint.y)
       }
 
-    } else {
-      keyMatch = false;
     }
 
 
