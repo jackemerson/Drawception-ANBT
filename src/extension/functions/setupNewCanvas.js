@@ -13,7 +13,7 @@ export function setupNewCanvas(inSandbox, url) {
     const request = new XMLHttpRequest()
     request.open(
       'GET',
-      'https://api.github.com/repos/EnderDragonneau/Drawception-ANBT/contents/build/index.html'
+      'https://api.github.com/repos/jackemerson/Drawception-ANBT/contents/build/index.html'
     )
     request.setRequestHeader('Accept', 'application/vnd.github.3.raw')
     request.onload = () => {

@@ -279,7 +279,7 @@
       const request = new XMLHttpRequest();
       request.open(
         'GET',
-        'https://api.github.com/repos/EnderDragonneau/Drawception-ANBT/contents/build/index.html'
+        'https://api.github.com/repos/jackemerson/Drawception-ANBT/contents/build/index.html'
       );
       request.setRequestHeader('Accept', 'application/vnd.github.3.raw');
       request.onload = () => {
@@ -1409,7 +1409,7 @@
         [
           'newCanvasCSS',
           'longstr',
-          'Custom CSS for new canvas (experimental, <a href="https://github.com/EnderDragonneau/Drawception-ANBT/tree/master/newcanvas_styles">get styles here</a>)'
+          'Custom CSS for new canvas (experimental, <a href="https://github.com/jackemerson/Drawception-ANBT/tree/master/newcanvas_styles">get styles here</a>)'
         ],
         [
           'forumHiddenUsers',

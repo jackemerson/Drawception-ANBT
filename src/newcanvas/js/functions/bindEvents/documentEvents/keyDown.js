@@ -144,7 +144,8 @@ export function keyDown(event) {
     // Ctrl+1,2,3,4
     if ( 0 < digit & digit <= 4 && (event.ctrlKey || event.metaKey) ) {
       ID('brush' + (digit)).click();
-    } else if (event.shiftKey ||
+    } 
+    else if (event.shiftKey ||
        (options.colorDoublePress && anbt.previousColorKey === digit )) {
       
       let index = digit + 8; // ???
