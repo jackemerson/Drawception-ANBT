@@ -1,10 +1,10 @@
 import fs from 'fs'
 import cleanup from 'rollup-plugin-cleanup'
 import clear from 'rollup-plugin-clear'
-import commonjs from 'rollup-plugin-commonjs'
+import commonjs from '@rollup/plugin-commonjs'
 import copy from 'rollup-plugin-copy'
-import { eslint } from 'rollup-plugin-eslint'
-import resolve from 'rollup-plugin-node-resolve'
+import eslint from '@rollup/plugin-eslint';
+import resolve from '@rollup/plugin-node-resolve'
 import prettier from 'rollup-plugin-prettier'
 import replaceHtmlVars from 'rollup-plugin-replace-html-vars'
 import scss from 'rollup-plugin-scss'
