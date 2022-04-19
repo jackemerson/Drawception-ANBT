@@ -86,4 +86,4 @@ Forum:
 
 ## CHANGELOG
 
-See ./CHANGELOG.txt?raw=1
+See [changelog.txt](./CHANGELOG.txt?raw=1)
