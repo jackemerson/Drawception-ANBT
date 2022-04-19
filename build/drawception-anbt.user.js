@@ -4,7 +4,7 @@
 // @contributor  B Derouet https://github.com/B-Derouet
 // @contributor  J Emerson https://github.com/jackemerson
 // @namespace    http://grompe.org.ru/
-// @version      2.10.2022.04
+// @version      2.11.2022.04
 // @description  Enhancement script for Drawception.com - Artists Need Better Tools
 // @downloadURL  https://raw.github.com/jackemerson/Drawception-ANBT/main/build/drawception-anbt.user.js
 // @match        http://drawception.com/*
@@ -263,7 +263,7 @@
     );
   }
 
-  const scriptVersion = '2.10.2022.04';
+  const scriptVersion = '2.11.2022.04';
   const newCanvasVersion = 62;
   const siteVersion = '4aa2b913';
   const runtimeVersion = '1ba6bf05';
