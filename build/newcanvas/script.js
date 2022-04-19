@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   function drawSvgElement(element, context) {
@@ -460,9 +460,9 @@
       } else {
         if (x < 0) {
           if (x === -1 || x === -2) {
-            last.color = `rgba(${bytes[i]}, ${bytes[i + 1]}, ${
-              bytes[i + 2]
-            }, ${bytes[i + 3] / 255}`;
+            last.color = `rgba(${bytes[i]}, ${bytes[i + 1]}, ${bytes[i + 2]}, ${
+              bytes[i + 3] / 255
+            }`;
             if (last.color === 'rgba(255,255,255,0)') last.color = 'eraser';
             i += 4;
             if (x === -1) {
@@ -1782,128 +1782,125 @@
   function keyDown(event) {
     const { options } = window;
     if (document.activeElement instanceof HTMLInputElement) return true;
-    if (event.keyCode === 18) {
-      if (!navigator.userAgent.match(/\bPresto\b/))
-        ID('svgContainer').classList.add('hidecursor');
-      showEyedropperCursor(true);
-      ID('svgContainer').addEventListener('mousemove', removeEyedropper);
-    } else if (event.keyCode === 'Q'.charCodeAt(0)) {
-      event.preventDefault();
-      options.colorDoublePress = !options.colorDoublePress;
-    } else if (
-      event.keyCode === 'Z'.charCodeAt(0) ||
-      (event.keyCode === 8 && anbt.unsaved)
-    ) {
-      event.preventDefault();
-      ID('play').classList.remove('pause');
-      undo();
-    } else if (event.keyCode === 'Y'.charCodeAt(0)) {
-      event.preventDefault();
-      ID('play').classList.remove('pause');
-      redo();
-    } else if (event.keyCode === 'X'.charCodeAt(0)) {
-      event.preventDefault();
-      const [color0, color1] = anbt.color;
-      setColor(0, color1);
-      setColor(1, color0);
-      updateColorIndicators();
-    } else if (event.keyCode === 'B'.charCodeAt(0)) {
-      if (ID('setbackground').hidden) return;
-      event.preventDefault();
-      updateChooseBackground(!globals.chooseBackground);
-    } else if (
-      event.keyCode === 'E'.charCodeAt(0) &&
-      !event.ctrlKey &&
-      !event.metaKey
-    ) {
-      event.preventDefault();
-      setColor(0, 'eraser');
-      updateColorIndicators();
-    } else if (
-      event.keyCode >= 48 &&
-      event.keyCode <= 57 &&
-      !event.ctrlKey &&
-      !event.metaKey &&
-      options.colorNumberShortcuts
-    ) {
-      event.preventDefault();
-      let index = event.keyCode === 48 ? 9 : event.keyCode - 49;
-      if (
-        event.shiftKey ||
-        (options.colorDoublePress && anbt.previousColorKey === index)
-      )
-        index += 8;
-      anbt.previousColorKey = index;
-      if (options.colorDoublePress) {
-        if (anbt.previousColorKeyTimer)
-          clearTimeout(anbt.previousColorKeyTimer);
-        anbt.previousColorKeyTimer = setTimeout(
-          () => (anbt.previousColorKey = -1),
-          500
-        );
-      }
-      const elements = ID('colors').querySelectorAll('b');
-      if (index < elements.length) {
-        const color =
-          elements[index].id === 'eraser'
-            ? 'eraser'
-            : elements[index].style.backgroundColor;
-        if (globals.chooseBackground) {
-          if (color !== 'eraser') setBackground(color);
-          updateChooseBackground(false);
-        } else {
-          setColor(0, color);
-          updateColorIndicators();
+    let codeMatch, keyMatch;
+    codeMatch = keyMatch = false;
+    codeMatch = true;
+    switch (event.code) {
+      case 'AltLeft':
+      case 'AltRight':
+        if (!navigator.userAgent.match(/\bPresto\b/)) {
+          ID('svgContainer').classList.add('hidecursor');
+          showEyedropperCursor(true);
+          ID('svgContainer').addEventListener('mousemove', removeEyedropper);
         }
-      }
-      if (anbt.isStroking) {
-        strokeEnd();
-        const lastPoint = anbt.points[anbt.points.length - 1];
-        strokeBegin(lastPoint.x, lastPoint.y);
-      }
-    } else if (
-      (event.keyCode === 189 ||
-        event.keyCode === 219 ||
-        event.keyCode === 188) &&
-      !event.ctrlKey &&
-      !event.metaKey
-    ) {
-      event.preventDefault();
-      for (let i = 1; i < globals.brushSizes.length; i++) {
-        if (anbt.size - globals.brushSizes[i] < 0.01) {
-          ID('brush' + (i - 1)).click();
-          break;
+        break;
+      case 'KeyQ':
+        options.colorDoublePress = !options.colorDoublePress;
+        break;
+      case 'Backspace':
+        if (!anbt.unsaved) return;
+      case 'KeyZ':
+        ID('play').classList.remove('pause');
+        undo();
+        break;
+      case 'KeyY':
+        ID('play').classList.remove('pause');
+        redo();
+        break;
+      case 'KeyX':
+        const [color0, color1] = anbt.color;
+        setColor(0, color1);
+        setColor(1, color0);
+        updateColorIndicators();
+        break;
+      case 'KeyB':
+        if (ID('setbackground').hidden) return;
+        updateChooseBackground(!globals.chooseBackground);
+        break;
+      case 'E':
+        if (event.ctrlKey || event.metaKey) return;
+        setColor(0, 'eraser');
+        updateColorIndicators();
+        break;
+      case 'BracketLeft':
+      case 'NumpadSubtract':
+      case 'Minus':
+      case 'Comma':
+        if (event.ctrlKey || event.metaKey) return;
+        for (let i = 1; i < globals.brushSizes.length; i++) {
+          if (anbt.size - globals.brushSizes[i] < 0.01) {
+            ID('brush' + (i - 1)).click();
+            break;
+          }
         }
-      }
-    } else if (
-      (event.keyCode === 187 ||
-        event.keyCode === 221 ||
-        event.keyCode === 190) &&
-      !event.ctrlKey &&
-      !event.metaKey
-    ) {
-      event.preventDefault();
-      for (let i = 0; i < globals.brushSizes.length - 1; i++) {
-        if (anbt.size - globals.brushSizes[i] < 0.01) {
-          ID('brush' + (i + 1)).click();
-          break;
+        break;
+      case 'BracketRight':
+      case 'NumpadAdd':
+      case 'Equal':
+      case 'Period':
+        if (event.ctrlKey || event.metaKey) return;
+        for (let i = 0; i < globals.brushSizes.length - 1; i++) {
+          if (anbt.size - globals.brushSizes[i] < 0.01) {
+            ID('brush' + (i + 1)).click();
+            break;
+          }
         }
+        break;
+      case 'space':
+        if (event.altKey || event.shiftKey) return;
+        if (!event.ctrlKey && !event.metaKey) return;
+        playCommonDown(event);
+        break;
+      default: {
+        codeMatch = false;
+        break;
       }
-    } else if (
-      event.keyCode >= 49 &&
-      event.keyCode <= 52 &&
-      (event.ctrlKey || event.metaKey)
-    ) {
-      event.preventDefault();
-      ID('brush' + (event.keyCode - 49)).click();
-    } else if (
-      event.keyCode === 32 &&
-      (event.ctrlKey || event.metaKey) &&
-      !event.altKey &&
-      !event.shiftKey
-    ) {
-      playCommonDown(event);
     }
+    let regex = /^\d$/;
+    if (event.key.search(regex) === 0) {
+      const digit = Number(event.key);
+      keyMatch = true;
+      if ((0 < digit) & (digit <= 4) && (event.ctrlKey || event.metaKey)) {
+        ID('brush' + digit).click();
+      } else if (
+        event.shiftKey ||
+        (options.colorDoublePress && anbt.previousColorKey === digit)
+      ) {
+        let index = digit + 8;
+        anbt.previousColorKey = index;
+        if (options.colorDoublePress) {
+          if (anbt.previousColorKeyTimer)
+            clearTimeout(anbt.previousColorKeyTimer);
+          anbt.previousColorKeyTimer = setTimeout(
+            () => (anbt.previousColorKey = -1),
+            500
+          );
+        }
+        const elements = ID('colors').querySelectorAll('b');
+        if (index < elements.length) {
+          const color =
+            elements[index].id === 'eraser'
+              ? 'eraser'
+              : elements[index].style.backgroundColor;
+          if (globals.chooseBackground) {
+            if (color !== 'eraser') setBackground(color);
+            updateChooseBackground(false);
+          } else {
+            setColor(0, color);
+            updateColorIndicators();
+          }
+        }
+        if (anbt.isStroking) {
+          strokeEnd();
+          const lastPoint = anbt.points[anbt.points.length - 1];
+          strokeBegin(lastPoint.x, lastPoint.y);
+        }
+      } else {
+        keyMatch = false;
+      }
+    }
+    if (codeMatch || keyMatch) event.preventDefault();
+    return;
   }
 
   function keyUp(event) {

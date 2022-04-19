@@ -1,17 +1,19 @@
 // ==UserScript==
 // @name         Drawception ANBT
 // @author       Grom PE
+// @contributor  B Derouet https://github.com/B-Derouet
+// @contributor  J Emerson https://github.com/jackemerson
 // @namespace    http://grompe.org.ru/
-// @version      2.9.2020.05
+// @version      2.10.2022.04
 // @description  Enhancement script for Drawception.com - Artists Need Better Tools
-// @downloadURL  https://raw.github.com/EnderDragonneau/Drawception-ANBT/master/build/drawception-anbt.user.js
+// @downloadURL  https://raw.github.com/jackemerson/Drawception-ANBT/master/build/drawception-anbt.user.js
 // @match        http://drawception.com/*
 // @match        https://drawception.com/*
 // @grant        none
 // @run-at       document-start
 // @license      Public domain
 // ==/UserScript==
-(function() {
+(function () {
   'use strict';
 
   function addDarkCSS() {
@@ -261,7 +263,7 @@
     );
   }
 
-  const scriptVersion = '2.9.2020.05';
+  const scriptVersion = '2.10.2022.04';
   const newCanvasVersion = 62;
   const siteVersion = '4aa2b913';
   const runtimeVersion = '1ba6bf05';
@@ -1699,10 +1701,7 @@
       let link = '';
       if (!selection.match(/\[(.*)\]\((\S*)( ".*")?\)/)) {
         link = selection.match(/https?:\/\/\S*/) || '';
-        selection = selection
-          .replace(link[0], '')
-          .replace(/ +/g, ' ')
-          .trim();
+        selection = selection.replace(link[0], '').replace(/ +/g, ' ').trim();
       } else {
         selection = '';
       }
@@ -1753,7 +1752,8 @@
         ''
       )})((?:\\*\\*|\\\\[\\s\\S]|\\s+(?:\\\\[\\s\\S]|[^\\s\\*\\\\]|\\*\\*)|[^\\s\\*\\\\])+?)\\*(?!\\*)`
     );
-    const italicRegex = /\*(?=\S)((?:\*\*|\\[\s\S]|\s+(?:\\[\s\S]|[^\s\*\\]|\*\*)|[^\s\*\\])+?)\*(?!\*)/g;
+    const italicRegex =
+      /\*(?=\S)((?:\*\*|\\[\s\S]|\s+(?:\\[\s\S]|[^\s\*\\]|\*\*)|[^\s\*\\])+?)\*(?!\*)/g;
     if (selection.match(selRegex)) {
       selection = selection.replace(selRegex, '$1');
     } else if (selectionStart > 0 && selectionEnd < length) {
@@ -2283,8 +2283,9 @@
     if (options.maxCommentHeight) {
       const maxHeight = options.maxCommentHeight;
       addStyle(
-        `.comment-holder[id]:not(:target) .comment-body {overflow-y: hidden; max-height: ${maxHeight}px; position:relative}.comment-holder[id]:not(:target) .comment-body:before{content: 'Click to read more'; position:absolute; width:100%; height:50px; left:0; top:${maxHeight -
-          50}px;text-align: center; font-weight: bold; color: #fff; text-shadow: 0 0 2px #000; padding-top: 20px; background:linear-gradient(transparent, rgba(0,0,0,0.4))}`
+        `.comment-holder[id]:not(:target) .comment-body {overflow-y: hidden; max-height: ${maxHeight}px; position:relative}.comment-holder[id]:not(:target) .comment-body:before{content: 'Click to read more'; position:absolute; width:100%; height:50px; left:0; top:${
+          maxHeight - 50
+        }px;text-align: center; font-weight: bold; color: #fff; text-shadow: 0 0 2px #000; padding-top: 20px; background:linear-gradient(transparent, rgba(0,0,0,0.4))}`
       );
       $('.comment-body', true).forEach(comment =>
         comment.addEventListener('click', () => {
