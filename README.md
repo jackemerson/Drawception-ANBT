@@ -3,7 +3,7 @@ Drawception ANBT [![Public domain](http://i.creativecommons.org/p/zero/1.0/88x31
 
 A userscript to make Drawception.com better: more drawing tools, tablet support, sandbox with palettes and uploading to imgur, like all, quick menu buttons with old browser support, and other enhancements.
 
-[**Direct script link**](https://raw.github.com/EnderDragonneau/Drawception-ANBT/master/build/drawception-anbt.user.js) (use to install/update manually, or "save as...")
+[**Direct script link**](https://raw.github.com/jackemerson/Drawception-ANBT/main/build/drawception-anbt.user.js) (use to install/update manually, or "save as...")
 
 [New canvas with recording and playback, standalone version](http://grompe.org.ru/drawit/)
 
@@ -24,11 +24,11 @@ A userscript to make Drawception.com better: more drawing tools, tablet support,
 - Mobile browsers / other / single use:
   - create a bookmark with the following URL (be careful, the "javascript:" at the beginning may not be copied with the rest in some browsers, don’t forget to check before executing the code):
 
-    `javascript:(()=>(x=new XMLHttpRequest,x.open('GET','https://raw.githubusercontent.com/EnderDragonneau/Drawception-ANBT/master/build/drawception-anbt.user.js'),x.onload=()=>eval(x.responseText),x.send()))()`
+    `javascript:(()=>(x=new XMLHttpRequest,x.open('GET','https://raw.githubusercontent.com/jackemerson/Drawception-ANBT/main/build/drawception-anbt.user.js'),x.onload=()=>eval(x.responseText),x.send()))()`
     
     and follow it while being on drawception.com site; if that doesn't work, try pasting it in the address bar.
 
-After installing script management add-on, just click on the [**Direct script link**](https://raw.github.com/EnderDragonneau/Drawception-ANBT/master/build/drawception-anbt.user.js).
+After installing script management add-on, just click on the [**Direct script link**](./build/drawception-anbt.user.js).
 
 
 ## FEATURES
@@ -86,4 +86,4 @@ Forum:
 
 ## CHANGELOG
 
-See https://raw.github.com/EnderDragonneau/Drawception-ANBT/master/CHANGELOG.txt
+See https://raw.github.com/jackemerson/Drawception-ANBT/master/CHANGELOG.txt

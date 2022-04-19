@@ -1,3 +1,6 @@
+2.10.2022.04
+- Restructure input handling to accommodate Number Pad inputs.
+
 2.9.2020.05
 - Add support for the new palette: Clown Town
 - Remove link to old leaderboard
