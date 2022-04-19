@@ -1,3 +1,7 @@
+2.12.2022.04
+- Development branch
+- Automatically generate repository details in banner
+
 2.11.2022.04
 - Amended links to match current repository
 

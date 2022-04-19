@@ -24,10 +24,10 @@ export function keyDown(event) {
   codeMatch = keyMatch = false;
 
   
-  codeMatch = true;
-
+  console.log(event);
   
    
+  codeMatch = true; // set to false if no match
   switch (event.code) {
 
     /* EYEDROPPER */
@@ -68,12 +68,14 @@ export function keyDown(event) {
       break;
     
     /* SWITCH COLOURS */
-    case 'KeyX':
+    case 'KeyX': {
       const [color0, color1] = anbt.color;
       setColor(0, color1);
       setColor(1, color0);
       updateColorIndicators();
       break;
+    }
+
     
     /* Toggle Background Choice option? */
     case 'KeyB':
@@ -141,8 +143,8 @@ export function keyDown(event) {
 
     // if ( ctrlKey || metaKey || !options.colorNumberShortcuts) return;
 
-    // Ctrl+1,2,3,4
-    if ( 0 < digit & digit <= 4 && (event.ctrlKey || event.metaKey) ) {
+    // Ctrl+1,2,3,4 - change brush size
+    if ( (0 < digit & digit <= 4) && (event.ctrlKey || event.metaKey) ) {
       ID('brush' + (digit)).click();
     } else {
       let index = digit;
@@ -150,7 +152,7 @@ export function keyDown(event) {
       if (event.shiftKey ||
          (options.colorDoublePress && anbt.previousColorKey === index )) {
       
-        index += 8; // ??? (oh shift modifier, to access colours beyond 9?)
+        index += 8; // ??? (oh shift modifier, to access colours beyond ~9?)
         anbt.previousColorKey = index;
       }
 
@@ -162,7 +164,7 @@ export function keyDown(event) {
         );
       }
 
-      const elements = ID('colors').querySelectorAll('b')
+      const elements = ID('colors').querySelectorAll('b');
       if (index < elements.length) {
         const color =
           elements[index].id === 'eraser'
@@ -184,7 +186,7 @@ export function keyDown(event) {
       }
 
     }
-
+    
 
   }
 

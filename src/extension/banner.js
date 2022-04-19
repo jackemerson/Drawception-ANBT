@@ -1,4 +1,7 @@
-import { scriptVersion } from './versions'
+import { scriptVersion, gitInfo } from './versions'
+const user = gitInfo.getUsername();
+const repository = gitInfo.getName();
+const branch = gitInfo.getBranchName();
 
 export const banner = `// ==UserScript==
 // @name         Drawception ANBT
@@ -8,8 +11,8 @@ export const banner = `// ==UserScript==
 // @namespace    http://grompe.org.ru/
 // @version      ${scriptVersion}
 // @description  Enhancement script for Drawception.com - Artists Need Better Tools
-// @downloadURL  https://raw.github.com/jackemerson/Drawception-ANBT/main/build/drawception-anbt.user.js
-// @updateURL    https://raw.github.com/jackemerson/Drawception-ANBT/main/build/drawception-anbt.user.js
+// @downloadURL  https://raw.github.com/${user}/${repository}/${branch}/build/drawception-anbt.user.js
+// @updateURL    https://raw.github.com/${user}/${repository}/${branch}/build/drawception-anbt.user.js
 // @match        http://drawception.com/*
 // @match        https://drawception.com/*
 // @match        http://stage.drawception.com/*
