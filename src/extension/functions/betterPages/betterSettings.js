@@ -124,7 +124,7 @@ export function betterSettings() {
       [
         'newCanvasCSS',
         'longstr',
-        'Custom CSS for new canvas (experimental, <a href="https://github.com/jackemerson/Drawception-ANBT/tree/master/newcanvas_styles">get styles here</a>)'
+        'Custom CSS for new canvas (experimental, <a href="https://github.com/jackemerson/Drawception-ANBT/tree/main/newcanvas_styles">get styles here</a>)'
       ],
       [
         'forumHiddenUsers',
