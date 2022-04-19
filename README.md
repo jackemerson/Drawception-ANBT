@@ -86,4 +86,4 @@ Forum:
 
 ## CHANGELOG
 
-See https://raw.github.com/jackemerson/Drawception-ANBT/master/CHANGELOG.txt
+See ./CHANGELOG.txt?raw=1

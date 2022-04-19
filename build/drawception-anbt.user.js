@@ -6,7 +6,7 @@
 // @namespace    http://grompe.org.ru/
 // @version      2.10.2022.04
 // @description  Enhancement script for Drawception.com - Artists Need Better Tools
-// @downloadURL  https://raw.github.com/jackemerson/Drawception-ANBT/master/build/drawception-anbt.user.js
+// @downloadURL  https://raw.github.com/jackemerson/Drawception-ANBT/main/build/drawception-anbt.user.js
 // @match        http://drawception.com/*
 // @match        https://drawception.com/*
 // @grant        none
@@ -1409,7 +1409,7 @@
         [
           'newCanvasCSS',
           'longstr',
-          'Custom CSS for new canvas (experimental, <a href="https://github.com/jackemerson/Drawception-ANBT/tree/master/newcanvas_styles">get styles here</a>)'
+          'Custom CSS for new canvas (experimental, <a href="https://github.com/jackemerson/Drawception-ANBT/tree/main/newcanvas_styles">get styles here</a>)'
         ],
         [
           'forumHiddenUsers',

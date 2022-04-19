@@ -1,6 +1,6 @@
 import re,subprocess
 
-gitcommand = 'git log origin..master --format="- %s"'
+gitcommand = 'git log origin..main --format="- %s"'
 
 news = subprocess.check_output(gitcommand, shell=True).decode('utf-8')
 if len(news)<2:
