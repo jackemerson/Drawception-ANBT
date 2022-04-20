@@ -1,6 +1,8 @@
 import { $ } from '../selector'
 import { addGroup } from '../settings/addGroup'
 import { updateScriptSettings } from '../settings/updateScriptSettings'
+import { git } from '../../../versioninfo';
+const { user, repository, branch } = git;
 
 export function betterSettings() {
   const theForm = $(
@@ -124,7 +126,7 @@ export function betterSettings() {
       [
         'newCanvasCSS',
         'longstr',
-        'Custom CSS for new canvas (experimental, <a href="https://github.com/jackemerson/Drawception-ANBT/tree/main/newcanvas_styles">get styles here</a>)'
+        `Custom CSS for new canvas (experimental, <a href="https://github.com/${user}/${repository}/tree/${branch}/newcanvas_styles">get styles here</a>)`
       ],
       [
         'forumHiddenUsers',

@@ -12,7 +12,7 @@
 // @match        https://drawception.com/*
 // @match        http://stage.drawception.com/*
 // @match        https://stage.drawception.com/*
-// @grant        none
+// @grant        GM_log
 // @run-at       document-start
 // @license      Public domain
 // ==/UserScript==
@@ -266,11 +266,44 @@
     );
   }
 
+  const consts_environment = 'development';
+  Object.freeze({
+    __proto__: null,
+    default: consts_environment
+  });
+  const consts_git = {
+    user: 'jackemerson',
+    repository: 'Drawception-ANBT',
+    branch: 'development'
+  };
+  const consts_git$1 = Object.freeze({
+    __proto__: null,
+    default: consts_git
+  });
   const scriptVersion = '2.12.2022.04-dev';
   const newCanvasVersion = 62;
   const siteVersion = '4aa2b913';
   const runtimeVersion = '1ba6bf05';
+  const versions = {
+    scriptVersion,
+    newCanvasVersion,
+    siteVersion,
+    runtimeVersion
+  };
+  Object.freeze({
+    __proto__: null,
+    scriptVersion: scriptVersion,
+    newCanvasVersion: newCanvasVersion,
+    siteVersion: siteVersion,
+    runtimeVersion: runtimeVersion,
+    default: versions
+  });
 
+  const {
+    user: user$1,
+    repository: repository$1,
+    branch: branch$1
+  } = consts_git$1;
   function setupNewCanvas(inSandbox, url) {
     const canvasHTML = localStorage.getItem('anbt_canvasHTML');
     const canvasHTMLVersion = localStorage.getItem('anbt_canvasHTMLver');
@@ -282,7 +315,7 @@
       const request = new XMLHttpRequest();
       request.open(
         'GET',
-        'https://api.github.com/repos/jackemerson/Drawception-ANBT/contents/build/index.html'
+        `https://api.github.com/repos/${user$1}/${repository$1}/contents/build/index.html?ref=${branch$1}`
       );
       request.setRequestHeader('Accept', 'application/vnd.github.3.raw');
       request.onload = () => {
@@ -1291,6 +1324,7 @@
     }, 800);
   }
 
+  const { user, repository, branch } = consts_git$1;
   function betterSettings() {
     const theForm = $(
       '<form class="regForm form-horizontal settingsForm" action="#"></form>'
@@ -1412,7 +1446,7 @@
         [
           'newCanvasCSS',
           'longstr',
-          'Custom CSS for new canvas (experimental, <a href="https://github.com/jackemerson/Drawception-ANBT/tree/main/newcanvas_styles">get styles here</a>)'
+          `Custom CSS for new canvas (experimental, <a href="https://github.com/${user}/${repository}/tree/${branch}/newcanvas_styles">get styles here</a>)`
         ],
         [
           'forumHiddenUsers',

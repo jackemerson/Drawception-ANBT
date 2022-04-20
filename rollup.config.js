@@ -1,3 +1,8 @@
+import consts from 'rollup-plugin-consts'
+import { banner } from './src/extension/banner';
+import { scriptVersion } from './src/extension/versions';
+import createGitInfo from 'gitinfo'
+
 import fs from 'fs'
 import cleanup from 'rollup-plugin-cleanup'
 import clear from 'rollup-plugin-clear'
@@ -9,7 +14,22 @@ import prettier from 'rollup-plugin-prettier'
 import replaceHtmlVars from 'rollup-plugin-replace-html-vars'
 import scss from 'rollup-plugin-scss'
 import { terser } from 'rollup-plugin-terser'
-import { banner } from './src/extension/banner'
+
+
+const gitInfo = createGitInfo();
+const CONSTANTS = {
+  version: scriptVersion,
+  environment: 'production',
+  git: {user: null, repository: null, branch: null}
+};
+
+CONSTANTS.git.user       = gitInfo.getUsername();
+CONSTANTS.git.repository = gitInfo.getName();
+CONSTANTS.git.branch     = gitInfo.getBranchName();
+
+if (CONSTANTS.git.branch === 'development') { // if working in dev
+   CONSTANTS.environment = 'development';
+}
 
 const waitFile = path => {
   return new Promise(resolve => {
@@ -18,15 +38,35 @@ const waitFile = path => {
       clearInterval(interval)
       resolve(path)
     }, 100)
-  })
+  });
 }
 
 clear({
   targets: ['build/'],
   watch: true
 })
+// rollup.config.js
+/**
+ * @type {import('rollup').RollupOptions}
+ */
 
 export default [
+  
+    {
+    input: 'src/extension/build-info/versioning.js',
+    /**
+     * @type {import('rollup').OutputOptions}
+     */
+    output: {
+      format: 'es',
+      file: 'src/versioninfo.js',
+      name: 'versioninfo',
+      preferConst: true,
+    },
+    plugins: [
+      consts( CONSTANTS )
+    ],
+  },
   {
     input: 'src/newcanvas/js/pako.js',
     output: {
@@ -37,9 +77,7 @@ export default [
       commonjs(),
       resolve(),
       cleanup(),
-      eslint({
-        exclude: ['/build/*.js']
-      }),
+      eslint({ exclude: ['/build/*.js'] }),
       terser()
     ]
   },
@@ -53,9 +91,7 @@ export default [
       commonjs(),
       resolve(),
       cleanup(),
-      eslint({
-        exclude: ['/build/*.js']
-      }),
+      eslint({ exclude: ['/build/*.js'] }),
       terser()
     ]
   },
@@ -92,15 +128,13 @@ export default [
     output: {
       format: 'iife',
       file: 'build/drawception-anbt.user.js',
-      banner
+      banner: banner(CONSTANTS),
     },
     plugins: [
       commonjs(),
       resolve(),
       cleanup(),
-      eslint({
-        exclude: ['/build/*.js']
-      }),
+      eslint({ exclude: ['/build/*.js'] }),
       prettier({
         cwd: __dirname,
         semi: true

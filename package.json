@@ -4,7 +4,9 @@
   "description": "ANBT is a script that will improve the comfort in drawing.",
   "main": "index.js",
   "scripts": {
-    "build": "rollup -c"
+    "prebuild": "del-cli ./src/versioning.js",
+    "build":     "rollup -c",
+    "postbuild": "del-cli ./src/versioninfo.js"
   },
   "author": "GromPE",
   "license": "ISC",
@@ -15,10 +17,12 @@
     "@rollup/plugin-eslint": "^8.0.2",
     "@rollup/plugin-node-resolve": "^13.2.1",
     "@rollup/pluginutils": "^4.2.1",
+    "gitinfo": "^2.4.0",
     "node-sass": "^7.0.1",
     "rollup": "^1.20.0||^2.0.0",
     "rollup-plugin-cleanup": "^3.2.1",
     "rollup-plugin-clear": "^2.0.7",
+    "rollup-plugin-consts": "^1.0.2",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-prettier": "^2.2.2",
     "rollup-plugin-replace-html-vars": "^1.0.3",
