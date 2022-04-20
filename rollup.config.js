@@ -61,7 +61,6 @@ export default [
       format: 'es',
       file: 'src/versioninfo.js',
       name: 'versioninfo',
-      preferConst: true,
     },
     plugins: [
       consts( CONSTANTS )

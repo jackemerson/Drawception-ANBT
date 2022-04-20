@@ -266,25 +266,25 @@
     );
   }
 
-  const consts_environment = 'development';
+  var consts_environment = 'development';
   Object.freeze({
     __proto__: null,
     default: consts_environment
   });
-  const consts_git = {
+  var consts_git = {
     user: 'jackemerson',
     repository: 'Drawception-ANBT',
     branch: 'development'
   };
-  const consts_git$1 = Object.freeze({
+  var consts_git$1 = Object.freeze({
     __proto__: null,
     default: consts_git
   });
   const scriptVersion$2 = '2.12.2022.05-dev';
-  const newCanvasVersion$1 = 63;
+  const newCanvasVersion$1 = 64;
   const siteVersion$1 = '4aa2b913';
   const runtimeVersion$1 = '1ba6bf05';
-  const versions = Object.freeze({
+  var versions = Object.freeze({
     __proto__: null,
     scriptVersion: scriptVersion$2,
     newCanvasVersion: newCanvasVersion$1,
