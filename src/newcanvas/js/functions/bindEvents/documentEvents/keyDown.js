@@ -17,7 +17,6 @@ import { updateColorIndicators } from '../updateColorIndicators'
 
 export function keyDown(event) {
   const { options } = window
-  
   if (document.activeElement instanceof HTMLInputElement) return true;
   
   let codeMatch, keyMatch;
@@ -69,7 +68,7 @@ export function keyDown(event) {
     
     /* SWITCH COLOURS */
     case 'KeyX': {
-      const [color0, color1] = anbt.color;
+      const [color0, color1] = anbt.colors;
       setColor(0, color1);
       setColor(1, color0);
       updateColorIndicators();

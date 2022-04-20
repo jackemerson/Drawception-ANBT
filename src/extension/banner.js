@@ -11,7 +11,7 @@ const {
 
 let dev = null;
 
-if (environment === 'development') { dev = 'GM_log'; }
+// if (environment === 'development') { dev = 'GM_log'; }
 
 const permissions = dev ?? 'none';
 return `// ==UserScript==

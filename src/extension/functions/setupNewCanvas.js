@@ -13,9 +13,12 @@ export function setupNewCanvas(inSandbox, url) {
     canvasHTML.length < 10000
   ) {
     const request = new XMLHttpRequest()
+    const address = 
+    `https://api.github.com/repos/${user}/${repository}/contents/build/index.html?ref=${branch}`;
+    console.log(address);
     request.open(
       'GET',
-      `https://api.github.com/repos/${user}/${repository}/contents/build/index.html?ref=${branch}`
+      address
     )
     request.setRequestHeader('Accept', 'application/vnd.github.3.raw')
     request.onload = () => {

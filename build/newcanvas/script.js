@@ -1809,7 +1809,7 @@
         redo();
         break;
       case 'KeyX': {
-        const [color0, color1] = anbt.color;
+        const [color0, color1] = anbt.colors;
         setColor(0, color1);
         setColor(1, color0);
         updateColorIndicators();

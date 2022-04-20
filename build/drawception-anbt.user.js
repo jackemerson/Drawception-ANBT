@@ -12,7 +12,7 @@
 // @match        https://drawception.com/*
 // @match        http://stage.drawception.com/*
 // @match        https://stage.drawception.com/*
-// @grant        GM_log
+// @grant        none
 // @run-at       document-start
 // @license      Public domain
 // ==/UserScript==
@@ -307,10 +307,9 @@
       canvasHTML.length < 10000
     ) {
       const request = new XMLHttpRequest();
-      request.open(
-        'GET',
-        `https://api.github.com/repos/${user$1}/${repository$1}/contents/build/index.html?ref=${branch$1}`
-      );
+      const address = `https://api.github.com/repos/${user$1}/${repository$1}/contents/build/index.html?ref=${branch$1}`;
+      console.log(address);
+      request.open('GET', address);
       request.setRequestHeader('Accept', 'application/vnd.github.3.raw');
       request.onload = () => {
         if (request.responseText.length < 10000) {
