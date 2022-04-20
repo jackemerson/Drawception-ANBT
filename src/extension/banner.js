@@ -1,7 +1,8 @@
-import { scriptVersion, gitInfo } from './versions'
-const user = gitInfo.getUsername();
-const repository = gitInfo.getName();
-const branch = gitInfo.getBranchName();
+import { scriptVersion,
+         gitUser   as user,
+         gitRepo   as repository,
+         gitBranch as branch,
+        } from './versions'
 
 export const banner = `// ==UserScript==
 // @name         Drawception ANBT

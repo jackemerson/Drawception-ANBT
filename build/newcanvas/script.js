@@ -1784,6 +1784,7 @@
     if (document.activeElement instanceof HTMLInputElement) return true;
     let codeMatch, keyMatch;
     codeMatch = keyMatch = false;
+    console.log(event);
     codeMatch = true;
     switch (event.code) {
       case 'AltLeft':
@@ -1807,12 +1808,13 @@
         ID('play').classList.remove('pause');
         redo();
         break;
-      case 'KeyX':
+      case 'KeyX': {
         const [color0, color1] = anbt.color;
         setColor(0, color1);
         setColor(1, color0);
         updateColorIndicators();
         break;
+      }
       case 'KeyB':
         if (ID('setbackground').hidden) return;
         updateChooseBackground(!globals.chooseBackground);
