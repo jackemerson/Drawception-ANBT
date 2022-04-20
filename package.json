@@ -4,7 +4,7 @@
   "description": "ANBT is a script that will improve the comfort in drawing.",
   "main": "index.js",
   "scripts": {
-    "prebuild": "del-cli ./src/versioning.js",
+    "prebuild": "del-cli ./src/versioninfo.js",
     "build":     "rollup -c",
     "postbuild": "del-cli ./src/versioninfo.js"
   },

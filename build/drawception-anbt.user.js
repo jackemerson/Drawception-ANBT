@@ -280,23 +280,16 @@
     __proto__: null,
     default: consts_git
   });
-  const scriptVersion = '2.12.2022.04-dev';
-  const newCanvasVersion = 62;
-  const siteVersion = '4aa2b913';
-  const runtimeVersion = '1ba6bf05';
-  const versions = {
-    scriptVersion,
-    newCanvasVersion,
-    siteVersion,
-    runtimeVersion
-  };
-  Object.freeze({
+  const scriptVersion$2 = '2.12.2022.04-dev';
+  const newCanvasVersion$1 = 62;
+  const siteVersion$1 = '4aa2b913';
+  const runtimeVersion$1 = '1ba6bf05';
+  const versions = Object.freeze({
     __proto__: null,
-    scriptVersion: scriptVersion,
-    newCanvasVersion: newCanvasVersion,
-    siteVersion: siteVersion,
-    runtimeVersion: runtimeVersion,
-    default: versions
+    scriptVersion: scriptVersion$2,
+    newCanvasVersion: newCanvasVersion$1,
+    siteVersion: siteVersion$1,
+    runtimeVersion: runtimeVersion$1
   });
 
   const {
@@ -304,6 +297,7 @@
     repository: repository$1,
     branch: branch$1
   } = consts_git$1;
+  const { scriptVersion: scriptVersion$1, newCanvasVersion } = versions;
   function setupNewCanvas(inSandbox, url) {
     const canvasHTML = localStorage.getItem('anbt_canvasHTML');
     const canvasHTMLVersion = localStorage.getItem('anbt_canvasHTMLver');
@@ -344,7 +338,7 @@
     const panelId = url.match(/sandbox\/(?!\?palette=)#?([^/]+)\/?/);
     const inContest =
       url.match(/contests\/play\//) && document.getElementById('canvas-holder');
-    const versionTitle = `ANBT v${scriptVersion}`;
+    const versionTitle = `ANBT v${scriptVersion$1}`;
     if (inContest) window.onbeforeunload = () => {};
     const normalUrl =
       inSandbox && !inForum
@@ -2260,6 +2254,7 @@
     };
   }
 
+  const { runtimeVersion, scriptVersion, siteVersion } = versions;
   function pageEnhancements() {
     loadScriptSettings();
     if (typeof DrawceptionPlay === 'undefined') return;

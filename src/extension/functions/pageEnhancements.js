@@ -1,6 +1,6 @@
 import { betterPages } from '../betterPages'
 import { options } from '../options'
-import { runtimeVersion, scriptVersion, siteVersion } from '../../versioninfo';
+import { versions } from '../../versioninfo';
 import { addMarkdownTools } from './addMarkdownTools'
 import { addStyle } from './addStyle'
 import { setCookie } from './cookie/setCookie'
@@ -9,6 +9,8 @@ import { getNotifications } from './getNotifications'
 import { $ } from './selector'
 import { loadScriptSettings } from './settings/loadScriptSettings'
 import { setupNewCanvas } from './setupNewCanvas'
+
+const { runtimeVersion, scriptVersion, siteVersion } = versions;
 
 export function pageEnhancements() {
   loadScriptSettings()
