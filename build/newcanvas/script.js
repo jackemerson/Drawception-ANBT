@@ -1703,8 +1703,7 @@
     const MIN = 0,
       MAX = globals.brushSizes.length - 1;
     const size = globals.brushSizes.indexOf(anbt.size);
-    const newSize = Math.min(Math.max(MIN, size - modifier), MAX);
-    console.log(`Stepped`);
+    const newSize = Math.min(Math.max(MIN, size + modifier), MAX);
     setSize(globals.brushSizes[newSize]);
     resetIncrement();
     if (!anbt.isStroking) return;
@@ -1715,9 +1714,10 @@
   function softModifyBrushSize(step) {
     let index = globals.brushSizes.indexOf(anbt.size);
     if (
-      (index === 0 && step < 0) ||
-      (index === globals.brushSizes.length - 1 && step > 0)
+      (index === 0 && step === -1) ||
+      (index === globals.brushSizes.length - 1 && step === 1)
     ) {
+      console.log(`No further steps: ${step}`);
       return;
     }
     let currentSize = anbt.size;

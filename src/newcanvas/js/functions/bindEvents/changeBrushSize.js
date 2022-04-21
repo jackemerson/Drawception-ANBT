@@ -32,9 +32,8 @@ export function modifyBrushSize(modifier) {
   
   const MIN = 0, MAX = globals.brushSizes.length - 1;
   const size = globals.brushSizes.indexOf(anbt.size);
-  const newSize = Math.min(Math.max(MIN, size - modifier), MAX); // clamp value
+  const newSize = Math.min(Math.max(MIN, size + modifier), MAX); // clamp value
 
-  console.log(`Stepped`);
   setSize(globals.brushSizes[newSize]);
   resetIncrement();
   
@@ -50,8 +49,9 @@ export function modifyBrushSize(modifier) {
 export function softModifyBrushSize(step) {
   let index = globals.brushSizes.indexOf(anbt.size);
   
-  if ( (index === 0 && step < 0) ||
-       (index === (globals.brushSizes.length-1) && step > 0) ) { 
+  if ( (index === 0 && step === -1) ||
+       (index === (globals.brushSizes.length-1) && step === 1) ) { 
+         console.log(`No further steps: ${step}`);
     return;
   } // can't step further in that direction
   let currentSize = anbt.size;
