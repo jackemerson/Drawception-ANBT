@@ -22,14 +22,17 @@ export function keyDown(event) {
   
   if (environment === 'development') {
 
-    switch (event.code && !event.ctrlKey) {
+    switch (event.code) {
       case 'KeyP': // debug print out
         console.log(anbt);
         return;
       case 'KeyR': // reload
-        localStorage.removeItem('anbt_canvasHTML_last_cached');
-        location.reload();
-        return;
+        if (!event.ctrlKey) {
+          localStorage.removeItem('anbt_canvasHTML_last_cached');
+          location.reload();
+          return;
+        }
+        break;
     }
 
   } 

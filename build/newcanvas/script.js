@@ -1786,14 +1786,17 @@
     const { options } = window;
     if (document.activeElement instanceof HTMLInputElement) return true;
     {
-      switch (event.code && !event.ctrlKey) {
+      switch (event.code) {
         case 'KeyP':
           console.log(anbt);
           return;
         case 'KeyR':
-          localStorage.removeItem('anbt_canvasHTML_last_cached');
-          location.reload();
-          return;
+          if (!event.ctrlKey) {
+            localStorage.removeItem('anbt_canvasHTML_last_cached');
+            location.reload();
+            return;
+          }
+          break;
       }
     }
     let codeMatch, keyMatch;
@@ -2256,6 +2259,9 @@
         let primary = event.button === MOUSE.LEFT ? 0 : 1;
         setColor(primary, eyedropper(x, y));
         updateColorIndicators();
+        anbt.eyedropperActive = false;
+        ID('svgContainer').classList.remove('hidecursor');
+        showEyedropperCursor(false);
       } else {
         const left = event.button === MOUSE.LEFT && getPointerType() !== 3;
         if (options.hideCross) ID('svgContainer').classList.add('hidecursor');
