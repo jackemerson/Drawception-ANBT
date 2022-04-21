@@ -1962,7 +1962,7 @@
     const { options } = window;
     if (document.activeElement instanceof HTMLInputElement) return true;
     {
-      switch (event.code) {
+      switch (event.code && !event.ctrlKey) {
         case 'KeyP':
           console.log(anbt);
           return;

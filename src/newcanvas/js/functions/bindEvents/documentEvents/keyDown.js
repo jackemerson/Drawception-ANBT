@@ -22,7 +22,7 @@ export function keyDown(event) {
   
   if (environment === 'development') {
 
-    switch (event.code) {
+    switch (event.code && !event.ctrlKey) {
       case 'KeyP': // debug print out
         console.log(anbt);
         return;

@@ -3,6 +3,7 @@ import { globals } from '../../../globals'
 import { eyedropper } from '../../anbt/eyedropper'
 import { setColor } from '../../anbt/setColor'
 import { strokeBegin } from '../../anbt/strokeBegin'
+import { showEyedropperCursor } from '../../anbt/showEyedropperCursor'
 import { ID } from '../../idSelector'
 import { checkPlayingAndStop } from '../checkPlayingAndStop'
 import { getPointerType } from '../getPointerType'
@@ -26,6 +27,11 @@ export function mouseDown(event) {
       let primary = event.button === MOUSE.LEFT ? 0 : 1;
       setColor(primary, eyedropper(x, y))
       updateColorIndicators()
+
+      anbt.eyedropperActive = false;
+      ID('svgContainer').classList.remove('hidecursor');
+      showEyedropperCursor(false);
+
     } else {
       // PointerType == 3 is pen tablet eraser
       const left = event.button === MOUSE.LEFT && getPointerType() !== 3
