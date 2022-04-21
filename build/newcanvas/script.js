@@ -1789,10 +1789,11 @@
       switch (event.code) {
         case 'KeyP':
           console.log(anbt);
-          break;
+          return;
         case 'KeyR':
-          localStorage.setItem('anbt_canvasHTML_last_cached');
+          localStorage.removeItem('anbt_canvasHTML_last_cached');
           location.reload();
+          return;
       }
     }
     let codeMatch, keyMatch;

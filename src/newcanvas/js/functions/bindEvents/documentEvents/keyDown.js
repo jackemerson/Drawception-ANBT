@@ -27,11 +27,11 @@ export function keyDown(event) {
         console.log(anbt);
         return;
       case 'KeyR': // reload
-        localStorage.setItem('anbt_canvasHTML_last_cached');
+        localStorage.removeItem('anbt_canvasHTML_last_cached');
         location.reload();
         return;
     }
-    
+
   } 
   let codeMatch, keyMatch;
   codeMatch = keyMatch = false;
