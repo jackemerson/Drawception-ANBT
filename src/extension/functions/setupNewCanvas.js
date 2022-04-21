@@ -32,7 +32,7 @@ export function setupNewCanvas(inSandbox, url) {
     const request = new XMLHttpRequest()
     const address = 
     `https://api.github.com/repos/${git.user}/${git.repository}/contents/build/index.html?ref=${git.branch}`;
-    console.log(address);
+    console.log(`Reloaded ANBT: ${address}`);
     request.open(
       'GET',
       address

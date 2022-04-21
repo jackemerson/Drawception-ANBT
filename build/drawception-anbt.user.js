@@ -307,7 +307,7 @@
     ) {
       const request = new XMLHttpRequest();
       const address = `https://api.github.com/repos/${consts_git.user}/${consts_git.repository}/contents/build/index.html?ref=${consts_git.branch}`;
-      console.log(address);
+      console.log(`Reloaded ANBT: ${address}`);
       request.open('GET', address);
       request.setRequestHeader('Accept', 'application/vnd.github.3.raw');
       request.onload = () => {

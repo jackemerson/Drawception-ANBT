@@ -1910,7 +1910,6 @@
 
   function trackFocus(event) {
     const target = document.elementFromPoint(event.clientX, event.clientY);
-    console.log(target);
     if (anbt.container !== null) {
       if (
         target.isEqualNode(anbt.container) ||
@@ -1927,10 +1926,11 @@
   }
 
   function keyUp(event) {
-    if (!(event.altKey || event.code === 'KeyI')) return;
+    if (!(event.key === 'Alt' || event.code === 'KeyI')) return;
     ID('svgContainer').classList.remove('hidecursor');
     showEyedropperCursor(false);
-    if (playerIsDrawing() && event.altKey) {
+    if (playerIsDrawing() && event.key === 'Alt') {
+      console.log('Attempted to prevent default.');
       event.preventDefault();
     }
   }
