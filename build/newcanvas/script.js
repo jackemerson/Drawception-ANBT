@@ -1910,9 +1910,15 @@
 
   function trackFocus(event) {
     const target = document.elementFromPoint(event.clientX, event.clientY);
-    if (target.isEqualNode(anbt.container) || anbt.container.contains(target)) {
-      anbt.isFocused = true;
-      return;
+    console.log(target);
+    if (anbt.container !== null) {
+      if (
+        target.isEqualNode(anbt.container) ||
+        anbt.container.contains(target)
+      ) {
+        anbt.isFocused = true;
+        return;
+      }
     }
     anbt.isFocused = false;
   }

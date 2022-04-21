@@ -41,7 +41,8 @@ import { createSvgElement } from './functions/createSvgElement'
 import { palettes } from './palettes'
 
 export const anbt = {
-  container: null,
+  /** @property {?HTMLElement} */
+  container: null, 
   svg: createSvgElement('svg', {
     // Even though Opera complains to have failed to set xmlns attribute:
     // > Failed attribute on svg element: xmlns="http://www.w3.org/2000/svg".
