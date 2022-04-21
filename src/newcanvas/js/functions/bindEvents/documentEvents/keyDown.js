@@ -40,16 +40,16 @@ export function keyDown(event) {
         ID('svgContainer').addEventListener('mousemove', removeEyedropper);
       }
     // eslint-disable-next-line no-fallthrough
-    case 'KeyI': {      
-      const active = 
-        anbt.eyedropperCursor.getAttribute('visibility') === 'visible' 
-        ? true : false; // get eyedropper state
+    case 'KeyI': {
 
-      const activate = (!active || event.altKey); // should we activate?
-      // do activate if not active or alt key
-      ID('svgContainer').classList.toggle('hidecursor', activate);
-      showEyedropperCursor(activate)
-    
+        const active = anbt.eyedropperActive; // get eyedropper state
+
+        const activate = (!active || event.altKey); // should we activate?
+        anbt.eyedropperActive = activate;
+        // do activate if not active or alt key
+        ID('svgContainer').classList.toggle('hidecursor', activate);
+        showEyedropperCursor(activate);
+      
       break;
     }
     /* Toggle colour double press? */  

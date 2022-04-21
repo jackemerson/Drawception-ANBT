@@ -10,9 +10,11 @@ import { updateColorIndicators } from '../updateColorIndicators'
 import { windowMouseMove } from '../windowEvents/mouseMove'
 import { mouseUp } from './mouseUp'
 
+const MOUSE = {LEFT: 0, MIDDLE: 1, RIGHT: 2};
+
 export function mouseDown(event) {
   const { options } = window
-  if (event.button === 0 || event.button === 2) {
+  if (event.button === MOUSE.LEFT || event.button === MOUSE.RIGHT) {
     if (anbt.isStroking) return mouseUp(event)
     if (checkPlayingAndStop()) return
     event.preventDefault()
@@ -20,12 +22,13 @@ export function mouseDown(event) {
     const x = event.pageX - globals.rectangle.left - pageXOffset
     const y = event.pageY - globals.rectangle.top - pageYOffset
 
-    if (event.altKey) {
-      setColor(event.button ? 1 : 0, eyedropper(x, y))
+    if (anbt.eyedropperActive) {
+      let primary = event.button === MOUSE.LEFT ? 0 : 1;
+      setColor(primary, eyedropper(x, y))
       updateColorIndicators()
     } else {
       // PointerType == 3 is pen tablet eraser
-      const left = event.button === 0 && getPointerType() !== 3
+      const left = event.button === MOUSE.LEFT && getPointerType() !== 3
       if (options.hideCross) ID('svgContainer').classList.add('hidecursor')
       strokeBegin(x, y, left)
       window.addEventListener('mouseup', mouseUp)

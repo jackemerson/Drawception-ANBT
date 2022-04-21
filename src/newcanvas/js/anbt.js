@@ -79,6 +79,7 @@ export const anbt = {
   background: '#fffdc9',
   transparent: false,
   colors: ['#000000', 'eraser'],
+  eyedropperActive: false,
   fastUndoLevels: 10,
   rewindCache: [],
   bindContainer,
