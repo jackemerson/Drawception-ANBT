@@ -21,7 +21,6 @@ export function strokeBegin(x, y, left=null, forceEraser=false) {
 
   const cls = color === 'eraser' ? color : null
   color = color === 'eraser' ? anbt.background : color
-  console.log(color);
   anbt.path = createSvgElement('path', {
     class: cls,
     stroke: color,

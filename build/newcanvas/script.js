@@ -1040,7 +1040,6 @@
     anbt.lastColourChoice = color;
     const cls = color === 'eraser' ? color : null;
     color = color === 'eraser' ? anbt.background : color;
-    console.log(color);
     anbt.path = createSvgElement('path', {
       class: cls,
       stroke: color,
@@ -2401,13 +2400,13 @@
       shift = shift ?? scale;
       scale += event.deltaY * -0.01;
       let step = Math.min(Math.max(shift - scale, -1), 1);
-      console.log(scale, shift);
+      console.log(scale, shift, step, event);
       if (Math.abs(step) === 1) {
+        console.log(`Stepped: scale:${scale}, shift:${shift}, step: ${step}`);
         scale = 1;
         shift = null;
         modifyBrushSize(step);
       }
-      console.log(scale, shift, event);
     }
   }
 
