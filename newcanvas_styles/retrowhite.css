@@ -46,7 +46,7 @@ a.prominent:hover {
   opacity: 0;
 }
 #colors #eraser {
-  background: #fff url(http://drawception.com/img/draw_eraser.png) center no-repeat;
+  background: #fff url(https://drawception.com/img/draw_eraser.png) center no-repeat;
   background-size: 50%;
 }
 #timer, #drawthis {
