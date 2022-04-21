@@ -9,17 +9,18 @@ export function mouseWheel(event) {
     if (anbt.isFocused) { // change brush size on scroll
         event.preventDefault();
         
-        shift ??= scale;
+        shift = shift ?? scale;
 
         scale += event.deltaY * -0.01;
 
         let step = Math.min(Math.max(shift - scale, -1), 1);
 
+        console.log(scale, shift);
         if (Math.abs(step) === 1) {
             scale = 1; shift = null;
             modifyBrushSize(step);
         }
 
-        console.log(scale, shift);
+        console.log(scale, shift, event);
     }
 }
