@@ -22,7 +22,7 @@ export function changeBrushSize(event) {
   if (!anbt.isStroking) return
   strokeEnd()
   const lastPoint = anbt.points[anbt.points.length - 1]
-  strokeBegin(lastPoint.x, lastPoint.y, anbt.lastColourChoice)
+  strokeBegin(lastPoint.x, lastPoint.y)
 }
 
 /**
@@ -34,13 +34,14 @@ export function modifyBrushSize(modifier) {
   const size = globals.brushSizes.indexOf(anbt.size);
   const newSize = Math.min(Math.max(MIN, size - modifier), MAX); // clamp value
 
+  console.log(`Stepped`);
   setSize(globals.brushSizes[newSize]);
   resetIncrement();
-
+  
   if (!anbt.isStroking) return
   strokeEnd();
   const lastPoint = anbt.points[anbt.points.length - 1];
-  strokeBegin(lastPoint.x, lastPoint.y, anbt.lastColourChoice);
+  strokeBegin(lastPoint.x, lastPoint.y);
 }
 
 /**
@@ -58,7 +59,7 @@ export function softModifyBrushSize(step) {
 
 
   incrementalSize += step;
-
+  console.log(`Increment: ${incrementalSize}, Current: ${anbt.size}`);
   let currentDiff = Math.abs(currentSize - incrementalSize);
   let nextDiff = Math.abs(nextSize - incrementalSize);
 

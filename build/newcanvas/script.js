@@ -1035,7 +1035,8 @@
       anbt.lastPalette = left;
       color = left ? anbt.colors[0] : anbt.colors[1];
     } else {
-      color = anbt.colors[(anbt.lastPalette ? 1 : 0) ?? 0];
+      anbt.lastPalette = anbt.lastPalette ?? 1;
+      color = anbt.lastPalette ? anbt.colors[0] : anbt.colors[1];
     }
     const cls = color === 'eraser' ? color : null;
     color = color === 'eraser' ? anbt.background : color;
@@ -1696,19 +1697,20 @@
     if (!anbt.isStroking) return;
     strokeEnd();
     const lastPoint = anbt.points[anbt.points.length - 1];
-    strokeBegin(lastPoint.x, lastPoint.y, anbt.lastColourChoice);
+    strokeBegin(lastPoint.x, lastPoint.y);
   }
   function modifyBrushSize(modifier) {
     const MIN = 0,
       MAX = globals.brushSizes.length - 1;
     const size = globals.brushSizes.indexOf(anbt.size);
     const newSize = Math.min(Math.max(MIN, size - modifier), MAX);
+    console.log(`Stepped`);
     setSize(globals.brushSizes[newSize]);
     resetIncrement();
     if (!anbt.isStroking) return;
     strokeEnd();
     const lastPoint = anbt.points[anbt.points.length - 1];
-    strokeBegin(lastPoint.x, lastPoint.y, anbt.lastColourChoice);
+    strokeBegin(lastPoint.x, lastPoint.y);
   }
   function softModifyBrushSize(step) {
     let index = globals.brushSizes.indexOf(anbt.size);
@@ -1721,6 +1723,7 @@
     let currentSize = anbt.size;
     let nextSize = globals.brushSizes[index + step];
     incrementalSize += step;
+    console.log(`Increment: ${incrementalSize}, Current: ${anbt.size}`);
     let currentDiff = Math.abs(currentSize - incrementalSize);
     let nextDiff = Math.abs(nextSize - incrementalSize);
     if (nextDiff < currentDiff) {

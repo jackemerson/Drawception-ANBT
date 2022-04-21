@@ -16,7 +16,8 @@ export function strokeBegin(x, y, left=null, forceEraser=false) {
     color = left ? anbt.colors[0] : anbt.colors[1];
   } else {
     // in case we call strokeBegin without knowledge of original input, e.g., by altering brush stroke
-    color = anbt.colors[(anbt.lastPalette ? 1 : 0) ?? 0];
+    anbt.lastPalette = anbt.lastPalette ?? 1;
+    color = anbt.lastPalette ? anbt.colors[0] : anbt.colors[1];
   }
 
   const cls = color === 'eraser' ? color : null
