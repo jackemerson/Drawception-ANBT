@@ -5,7 +5,7 @@ import { strokeBegin } from '../anbt/strokeBegin'
 import { strokeEnd } from '../anbt/strokeEnd'
 import { ID } from '../idSelector'
 
-let incrementalSize = anbt.size;
+let incrementalSize = Number(anbt.size);
 
 export function changeBrushSize(event) {
   event.preventDefault()
@@ -50,12 +50,12 @@ export function softModifyBrushSize(step) {
   let index = globals.brushSizes.indexOf(anbt.size);
   
   if ( (index === 0 && step === -1) ||
-       (index === (globals.brushSizes.length-1) && step === 1) ) { 
+       (index === (globals.brushSizes.length-1) && step === 1)) { 
          console.log(`No further steps: ${step}`);
     return;
   } // can't step further in that direction
-  let currentSize = anbt.size;
-  let nextSize = globals.brushSizes[index + step];
+  let currentSize = Number(anbt.size);
+  let nextSize = Number(globals.brushSizes[index + step]);
 
 
   incrementalSize += step;
@@ -70,5 +70,5 @@ export function softModifyBrushSize(step) {
 }
 
 export function resetIncrement() {
-  incrementalSize = anbt.size;
+  incrementalSize = Number(anbt.size);
 }

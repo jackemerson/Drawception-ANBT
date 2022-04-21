@@ -13,12 +13,14 @@ export function mouseWheel(event) {
 
         scale += event.deltaY * -0.01;
 
-        let step = Math.min(Math.max(shift + scale, -1), 1);
+        let delta = shift + scale;
+
+        let step = Math.min(Math.max(delta, -1), 1);
 
         console.log(scale, shift, step, event);
         if (Math.abs(step) === 1) {
             console.log(`Stepped: scale:${scale}, shift:${shift}, step: ${step}`);
-            scale = 0; shift = null;
+            scale = 0; shift = scale;
             softModifyBrushSize(step);
         }
 

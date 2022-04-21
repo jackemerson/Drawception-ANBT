@@ -1683,7 +1683,7 @@
     timerStart: 0
   };
 
-  let incrementalSize = anbt.size;
+  let incrementalSize = Number(anbt.size);
   function changeBrushSize(event) {
     event.preventDefault();
     const size = [...event.currentTarget.classList]
@@ -1720,8 +1720,8 @@
       console.log(`No further steps: ${step}`);
       return;
     }
-    let currentSize = anbt.size;
-    let nextSize = globals.brushSizes[index + step];
+    let currentSize = Number(anbt.size);
+    let nextSize = Number(globals.brushSizes[index + step]);
     incrementalSize += step;
     console.log(`Increment: ${incrementalSize}, Current: ${anbt.size}`);
     let currentDiff = Math.abs(currentSize - incrementalSize);
@@ -1731,7 +1731,7 @@
     }
   }
   function resetIncrement() {
-    incrementalSize = anbt.size;
+    incrementalSize = Number(anbt.size);
   }
 
   function clickRedo(event) {
@@ -2424,12 +2424,13 @@
       event.preventDefault();
       shift = shift ?? scale;
       scale += event.deltaY * -0.01;
-      let step = Math.min(Math.max(shift + scale, -1), 1);
+      let delta = shift + scale;
+      let step = Math.min(Math.max(delta, -1), 1);
       console.log(scale, shift, step, event);
       if (Math.abs(step) === 1) {
         console.log(`Stepped: scale:${scale}, shift:${shift}, step: ${step}`);
         scale = 0;
-        shift = null;
+        shift = scale;
         softModifyBrushSize(step);
       }
     }
