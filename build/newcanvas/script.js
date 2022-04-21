@@ -1726,7 +1726,7 @@
     let nextSize = Number(globals.brushSizes[currentBrush + step]);
     const MIN = globals.brushSizes[0];
     const MAX = globals.brushSizes[globals.brushSizes.length - 1];
-    incrementalSize = Math.min(MAX, Math.Max(MIN, incrementalSize + step));
+    incrementalSize = Math.min(MAX, Math.max(MIN, incrementalSize + step));
     console.log(`Increment: ${incrementalSize}, Current: ${anbt.size}`);
     let currentDiff = Math.abs(currentSize - incrementalSize);
     let nextDiff = Math.abs(nextSize - incrementalSize);

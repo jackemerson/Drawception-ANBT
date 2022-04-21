@@ -64,7 +64,7 @@ export function softModifyBrushSize(step) {
   const MAX = globals.brushSizes[globals.brushSizes.length - 1];
 
 
-  incrementalSize = Math.min(MAX, Math.Max(MIN, incrementalSize + step));
+  incrementalSize = Math.min(MAX, Math.max(MIN, incrementalSize + step));
 
   console.log(`Increment: ${incrementalSize}, Current: ${anbt.size}`);
   let currentDiff = Math.abs(currentSize - incrementalSize);
