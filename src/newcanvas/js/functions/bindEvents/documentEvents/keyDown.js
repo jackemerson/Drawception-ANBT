@@ -21,33 +21,37 @@ export function keyDown(event) {
   
   let codeMatch, keyMatch;
   codeMatch = keyMatch = false;
-
-  
-  console.log(event);
   
    
   codeMatch = true; // set to false if no match
   switch (event.code) {
 
     /* EYEDROPPER - Alt keys, I*/
+
     case 'AltLeft':
     case 'AltRight':
-    case 'KeyI':
      /********************************
       * consider using modifiers, e.g.
       * `event.getModifierState('alt')` ...
       * or `event.altKey`
       ********************************/
-     
       if (!navigator.userAgent.match(/\bPresto\b/)) {
-        ID('svgContainer').classList.add('hidecursor');
-        showEyedropperCursor(true);
         // The following is needed in case of Alt+Tab causing eyedropper to be stuck
         ID('svgContainer').addEventListener('mousemove', removeEyedropper);
       }
+    // eslint-disable-next-line no-fallthrough
+    case 'KeyI': {      
+      const active = 
+        anbt.eyedropperCursor.getAttribute('visibility') === 'visible' 
+        ? true : false; // get eyedropper state
 
+      const activate = (!active || event.altKey); // should we activate?
+      // do activate if not active or alt key
+      ID('svgContainer').classList.toggle('hidecursor', activate);
+      showEyedropperCursor(activate)
+    
       break;
-
+    }
     /* Toggle colour double press? */  
     case 'KeyQ':
       options.colorDoublePress = !options.colorDoublePress;
@@ -56,7 +60,7 @@ export function keyDown(event) {
     /* UNDO */
     case 'Backspace':
       if (!anbt.unsaved) return;
-      // falls through
+    // eslint-disable-next-line no-fallthrough
     case 'KeyZ':
       ID('play').classList.remove('pause');
       undo();

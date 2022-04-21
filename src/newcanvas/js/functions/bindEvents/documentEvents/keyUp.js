@@ -9,8 +9,7 @@ export function keyUp(event) {
 
   if (playerIsDrawing() && event.key === 'Alt') {
     
-    console.log('Attempted to prevent default.');
-    event.preventDefault(); // disable alt activating menu on firefox?
+    event.preventDefault(); // Disable alt activating browser menu on firefox
   }
 
 }

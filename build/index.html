@@ -1961,18 +1961,23 @@
     if (document.activeElement instanceof HTMLInputElement) return true;
     let codeMatch, keyMatch;
     codeMatch = keyMatch = false;
-    console.log(event);
     codeMatch = true;
     switch (event.code) {
       case 'AltLeft':
       case 'AltRight':
-      case 'KeyI':
         if (!navigator.userAgent.match(/\bPresto\b/)) {
-          ID('svgContainer').classList.add('hidecursor');
-          showEyedropperCursor(true);
           ID('svgContainer').addEventListener('mousemove', removeEyedropper);
         }
+      case 'KeyI': {
+        const active =
+          anbt.eyedropperCursor.getAttribute('visibility') === 'visible'
+            ? true
+            : false;
+        const activate = !active || event.altKey;
+        ID('svgContainer').classList.toggle('hidecursor', activate);
+        showEyedropperCursor(activate);
         break;
+      }
       case 'KeyQ':
         options.colorDoublePress = !options.colorDoublePress;
         break;
@@ -2106,7 +2111,6 @@
     ID('svgContainer').classList.remove('hidecursor');
     showEyedropperCursor(false);
     if (playerIsDrawing() && event.key === 'Alt') {
-      console.log('Attempted to prevent default.');
       event.preventDefault();
     }
   }
