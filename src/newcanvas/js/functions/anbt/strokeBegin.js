@@ -6,15 +6,11 @@ import { drawDisplayLinePresto } from './drawDisplayLinePresto'
 export function strokeBegin(x, y, left, forceEraser=false) {
   if (anbt.locked) return
 
+  console.log(left);
   let color;
   if (forceEraser) {
     color = 'eraser';
   } else {
-    if (!left) {
-      left = anbt.lastLeft
-    } else {
-      anbt.lastLeft = left
-    }
     color = left ? anbt.colors[0] : anbt.colors[1]
   }
 
