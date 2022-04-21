@@ -19,10 +19,11 @@ export function keyDown(event) {
   const { options } = window
   if (document.activeElement instanceof HTMLInputElement) return true;
   
+  if (event.code === "KeyP") {console.log(anbt); } // debugging print out
   let codeMatch, keyMatch;
   codeMatch = keyMatch = false;
   
-   
+
   codeMatch = true; // set to false if no match
   switch (event.code) {
 

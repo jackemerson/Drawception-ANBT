@@ -1785,6 +1785,9 @@
   function keyDown(event) {
     const { options } = window;
     if (document.activeElement instanceof HTMLInputElement) return true;
+    if (event.code === 'KeyP') {
+      console.log(anbt);
+    }
     let codeMatch, keyMatch;
     codeMatch = keyMatch = false;
     codeMatch = true;
