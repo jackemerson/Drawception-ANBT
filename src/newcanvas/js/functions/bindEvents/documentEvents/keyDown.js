@@ -12,6 +12,7 @@ import { playCommonDown } from '../playCommonDown'
 import { removeEyedropper } from '../removeEyedropper'
 import { updateChooseBackground } from '../updateChooseBackground'
 import { updateColorIndicators } from '../updateColorIndicators'
+import { environment } from '../../../../../versioninfo'
 
 
 
@@ -19,7 +20,19 @@ export function keyDown(event) {
   const { options } = window
   if (document.activeElement instanceof HTMLInputElement) return true;
   
-  if (event.code === "KeyP") {console.log(anbt); } // debugging print out
+  if (environment === 'development') {
+
+    switch (event.code) {
+      case 'KeyP': // debug print out
+        console.log(anbt);
+        return;
+      case 'KeyR': // reload
+        localStorage.setItem('anbt_canvasHTML_last_cached');
+        location.reload();
+        return;
+    }
+    
+  } 
   let codeMatch, keyMatch;
   codeMatch = keyMatch = false;
   

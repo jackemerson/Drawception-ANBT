@@ -1785,8 +1785,15 @@
   function keyDown(event) {
     const { options } = window;
     if (document.activeElement instanceof HTMLInputElement) return true;
-    if (event.code === 'KeyP') {
-      console.log(anbt);
+    {
+      switch (event.code) {
+        case 'KeyP':
+          console.log(anbt);
+          break;
+        case 'KeyR':
+          localStorage.setItem('anbt_canvasHTML_last_cached');
+          location.reload();
+      }
     }
     let codeMatch, keyMatch;
     codeMatch = keyMatch = false;
@@ -1934,10 +1941,10 @@
   }
 
   function keyUp(event) {
-    if (!(event.key === 'Alt' || event.code === 'KeyI')) return;
+    if (event.key !== 'Alt') return;
     ID('svgContainer').classList.remove('hidecursor');
     showEyedropperCursor(false);
-    if (playerIsDrawing() && event.key === 'Alt') {
+    if (playerIsDrawing()) {
       event.preventDefault();
     }
   }
