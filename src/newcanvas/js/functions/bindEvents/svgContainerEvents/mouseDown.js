@@ -37,7 +37,7 @@ export function mouseDown(event) {
     } else {
       // PointerType == 3 is pen tablet eraser
       const left = (event.button === MOUSE.LEFT);
-      const eraser = getPointerType() !== 3;
+      const eraser = !(getPointerType() !== 3);
       if (options.hideCross) ID('svgContainer').classList.add('hidecursor')
       strokeBegin(x, y, left, eraser);
       window.addEventListener('mouseup', mouseUp)

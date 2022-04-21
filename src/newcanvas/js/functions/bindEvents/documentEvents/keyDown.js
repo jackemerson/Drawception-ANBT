@@ -167,7 +167,7 @@ export function keyDown(event) {
 
     // Ctrl+1,2,3,4 - change brush size
     if ( (0 < digit & digit <= 4) && (event.ctrlKey || event.metaKey) ) {
-      ID('brush' + (digit)).click();
+      ID(`brush${digit - 1}`).click();
     } else {
       let index = digit;
       // shift modifier

@@ -1890,7 +1890,7 @@
       const digit = Number(event.key);
       keyMatch = true;
       if ((0 < digit) & (digit <= 4) && (event.ctrlKey || event.metaKey)) {
-        ID('brush' + digit).click();
+        ID(`brush${digit - 1}`).click();
       } else {
         let index = digit;
         if (
@@ -2272,7 +2272,7 @@
         }
       } else {
         const left = event.button === MOUSE.LEFT;
-        const eraser = getPointerType() !== 3;
+        const eraser = !(getPointerType() !== 3);
         if (options.hideCross) ID('svgContainer').classList.add('hidecursor');
         strokeBegin(x, y, left, eraser);
         window.addEventListener('mouseup', mouseUp);
