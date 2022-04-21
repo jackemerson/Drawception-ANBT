@@ -5,7 +5,26 @@ import { versions, git, environment } from '../../versioninfo';
 export function setupNewCanvas(inSandbox, url) {
   const canvasHTML = localStorage.getItem('anbt_canvasHTML')
   const canvasHTMLVersion = localStorage.getItem('anbt_canvasHTMLver')
-  if ( environment === 'development' ||
+
+  const dev = environment === 'development';
+  const cacheLifetime = 300 * 1000; // <seconds> * ms (current: 5 minutes)
+  
+  let reload = false;
+  if (dev) {
+    let lastReloaded = localStorage.getItem('anbt_canvasHTML_last_cached');
+    let currentTime = new Date().now(); // time in ms since unix epoch
+
+    if (lastReloaded !== null) {
+      lastReloaded = new Date(parseInt(lastReloaded, 10));
+    }
+    
+    const timeElapsed = (currentTime - lastReloaded);
+    if ((timeElapsed > cacheLifetime)) {
+      reload = true;
+    }
+  }
+
+  if ( reload ||
     !canvasHTML ||
     canvasHTMLVersion < versions.newCanvasVersion ||
     canvasHTML.length < 10000
@@ -28,6 +47,7 @@ export function setupNewCanvas(inSandbox, url) {
       } else {
         localStorage.setItem('anbt_canvasHTML', request.responseText)
         localStorage.setItem('anbt_canvasHTMLver', versions.newCanvasVersion)
+        localStorage.setItem('anbt_canvasHTML_last_cached', new Date().now());
         setupNewCanvas(inSandbox, url)
       }
     }
