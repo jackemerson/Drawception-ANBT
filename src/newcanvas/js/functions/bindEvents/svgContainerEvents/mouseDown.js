@@ -28,15 +28,18 @@ export function mouseDown(event) {
       setColor(primary, eyedropper(x, y))
       updateColorIndicators()
 
-      anbt.eyedropperActive = false;
-      ID('svgContainer').classList.remove('hidecursor');
-      showEyedropperCursor(false);
+      if (!event.altKey) {
+        anbt.eyedropperActive = false;
+        ID('svgContainer').classList.remove('hidecursor');
+        showEyedropperCursor(false);
+      }
 
     } else {
       // PointerType == 3 is pen tablet eraser
-      const left = event.button === MOUSE.LEFT && getPointerType() !== 3
+      const left = (event.button === MOUSE.LEFT);
+      const eraser = getPointerType() !== 3;
       if (options.hideCross) ID('svgContainer').classList.add('hidecursor')
-      strokeBegin(x, y, left)
+      strokeBegin(x, y, left, eraser);
       window.addEventListener('mouseup', mouseUp)
       window.addEventListener('mousemove', windowMouseMove)
     }

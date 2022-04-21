@@ -1202,16 +1202,22 @@
     anbt.points.push({ x, y });
   }
 
-  function strokeBegin(x, y, left) {
+  function strokeBegin(x, y, left, forceEraser = false) {
     if (anbt.locked) return;
-    if (!left) {
-      left = anbt.lastLeft;
+    let color;
+    if (forceEraser) {
+      color = 'eraser';
     } else {
-      anbt.lastLeft = left;
+      if (!left) {
+        left = anbt.lastLeft;
+      } else {
+        anbt.lastLeft = left;
+      }
+      color = left ? anbt.colors[0] : anbt.colors[1];
     }
-    let color = left ? anbt.colors[0] : anbt.colors[1];
     const cls = color === 'eraser' ? color : null;
     color = color === 'eraser' ? anbt.background : color;
+    console.log(color);
     anbt.path = createSvgElement('path', {
       class: cls,
       stroke: color,
@@ -2435,13 +2441,16 @@
         let primary = event.button === MOUSE.LEFT ? 0 : 1;
         setColor(primary, eyedropper(x, y));
         updateColorIndicators();
-        anbt.eyedropperActive = false;
-        ID('svgContainer').classList.remove('hidecursor');
-        showEyedropperCursor(false);
+        if (!event.altKey) {
+          anbt.eyedropperActive = false;
+          ID('svgContainer').classList.remove('hidecursor');
+          showEyedropperCursor(false);
+        }
       } else {
-        const left = event.button === MOUSE.LEFT && getPointerType() !== 3;
+        const left = event.button === MOUSE.LEFT;
+        const eraser = getPointerType() !== 3;
         if (options.hideCross) ID('svgContainer').classList.add('hidecursor');
-        strokeBegin(x, y, left);
+        strokeBegin(x, y, left, eraser);
         window.addEventListener('mouseup', mouseUp);
         window.addEventListener('mousemove', windowMouseMove);
       }

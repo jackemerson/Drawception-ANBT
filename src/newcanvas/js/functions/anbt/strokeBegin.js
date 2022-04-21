@@ -3,16 +3,24 @@ import { createSvgElement } from '../createSvgElement'
 import { drawDisplayLine } from './drawDisplayLine'
 import { drawDisplayLinePresto } from './drawDisplayLinePresto'
 
-export function strokeBegin(x, y, left) {
+export function strokeBegin(x, y, left, forceEraser=false) {
   if (anbt.locked) return
-  if (!left) {
-    left = anbt.lastLeft
+
+  let color;
+  if (forceEraser) {
+    color = 'eraser';
   } else {
-    anbt.lastLeft = left
+    if (!left) {
+      left = anbt.lastLeft
+    } else {
+      anbt.lastLeft = left
+    }
+    color = left ? anbt.colors[0] : anbt.colors[1]
   }
-  let color = left ? anbt.colors[0] : anbt.colors[1]
+
   const cls = color === 'eraser' ? color : null
   color = color === 'eraser' ? anbt.background : color
+  console.log(color);
   anbt.path = createSvgElement('path', {
     class: cls,
     stroke: color,
