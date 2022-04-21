@@ -15,12 +15,12 @@ export function mouseWheel(event) {
 
         let step = Math.min(Math.max(shift - scale, -1), 1);
 
-        console.log(scale, shift);
+        console.log(scale, shift, step);
         if (Math.abs(step) === 1) {
+            console.log(scale, shift, event);
             scale = 1; shift = null;
             modifyBrushSize(step);
         }
 
-        console.log(scale, shift, event);
     }
 }
