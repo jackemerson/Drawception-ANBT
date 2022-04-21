@@ -44,7 +44,8 @@ export function keyDown(event) {
   switch (event.code) {
 
     /* EYEDROPPER - Alt keys, I*/
-
+    
+    // eslint-disable-next-line no-fallthrough
     case 'AltLeft':
     case 'AltRight':
      /********************************

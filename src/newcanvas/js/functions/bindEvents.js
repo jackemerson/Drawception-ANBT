@@ -28,12 +28,15 @@ import { beforeUnload } from './bindEvents/windowEvents/beforeUnload'
 import { windowContextMenu } from './bindEvents/windowEvents/contextMenu'
 import { error } from './bindEvents/windowEvents/error'
 import { ID } from './idSelector'
+import { mouseWheel } from './bindEvents/svgContainerEvents/mouseWheel'
 
 export function bindEvents() {
   
   document.addEventListener('mousemove', trackFocus);
-
+  document.addEventListener('wheel', mouseWheel);
+  
   ID('svgContainer').addEventListener('mousedown', mouseDown)
+  
   ID('svgContainer').addEventListener('mousemove', svgMouseMove)
   ID('svgContainer').addEventListener('touchstart', touchStart)
   ID('svgContainer').addEventListener('mouseleave', mouseLeave)

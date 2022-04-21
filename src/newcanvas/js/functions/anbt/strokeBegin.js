@@ -3,16 +3,21 @@ import { createSvgElement } from '../createSvgElement'
 import { drawDisplayLine } from './drawDisplayLine'
 import { drawDisplayLinePresto } from './drawDisplayLinePresto'
 
-export function strokeBegin(x, y, left, forceEraser=false) {
+export function strokeBegin(x, y, left=null, forceEraser=false) {
   if (anbt.locked) return
 
+  
   console.log(left);
   let color;
   if (forceEraser) {
     color = 'eraser';
+  } else if (left !== null) {
+    color = left ? anbt.colors[0] : anbt.colors[1];
   } else {
-    color = left ? anbt.colors[0] : anbt.colors[1]
+    color = anbt.lastColourChoice ?? anbt.colors[0];
   }
+
+  anbt.lastColourChoice = color // in case we call strokeBegin without knowledge of original input, e.g., by altering brush stroke
 
   const cls = color === 'eraser' ? color : null
   color = color === 'eraser' ? anbt.background : color

@@ -1202,15 +1202,18 @@
     anbt.points.push({ x, y });
   }
 
-  function strokeBegin(x, y, left, forceEraser = false) {
+  function strokeBegin(x, y, left = null, forceEraser = false) {
     if (anbt.locked) return;
     console.log(left);
     let color;
     if (forceEraser) {
       color = 'eraser';
-    } else {
+    } else if (left !== null) {
       color = left ? anbt.colors[0] : anbt.colors[1];
+    } else {
+      color = anbt.lastColourChoice ?? anbt.colors[0];
     }
+    anbt.lastColourChoice = color;
     const cls = color === 'eraser' ? color : null;
     color = color === 'eraser' ? anbt.background : color;
     console.log(color);
@@ -1869,7 +1872,18 @@
     if (!anbt.isStroking) return;
     strokeEnd();
     const lastPoint = anbt.points[anbt.points.length - 1];
-    strokeBegin(lastPoint.x, lastPoint.y);
+    strokeBegin(lastPoint.x, lastPoint.y, anbt.lastColourChoice);
+  }
+  function modifyBrushSize(modifier) {
+    const MIN = 0,
+      MAX = globals.brushSizes.length;
+    const size = globals.brushSizes.indexOf(anbt.size);
+    const newSize = Math.min(Math.max(MIN, size - modifier), MAX);
+    setSize(globals.brushSizes[newSize]);
+    if (!anbt.isStroking) return;
+    strokeEnd();
+    const lastPoint = anbt.points[anbt.points.length - 1];
+    strokeBegin(lastPoint.x, lastPoint.y, anbt.lastColourChoice);
   }
 
   function clickRedo(event) {
@@ -2555,8 +2569,26 @@
     alert(event);
   }
 
+  let scale = 1;
+  let shift = null;
+  function mouseWheel(event) {
+    if (anbt.isFocused) {
+      event.preventDefault();
+      shift ??= scale;
+      scale += event.deltaY * -0.01;
+      let step = Math.min(Math.max(shift - scale, -1), 1);
+      if (Math.abs(step) === 1) {
+        scale = 1;
+        shift = null;
+        modifyBrushSize(step);
+      }
+      console.log(scale, shift);
+    }
+  }
+
   function bindEvents() {
     document.addEventListener('mousemove', trackFocus);
+    document.addEventListener('wheel', mouseWheel);
     ID('svgContainer').addEventListener('mousedown', mouseDown);
     ID('svgContainer').addEventListener('mousemove', svgMouseMove);
     ID('svgContainer').addEventListener('touchstart', touchStart);

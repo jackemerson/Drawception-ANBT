@@ -1,0 +1,25 @@
+import { anbt } from "../../../anbt";
+import { modifyBrushSize } from "../changeBrushSize";
+
+
+let scale = 1;
+let shift = null;
+// https://developer.mozilla.org/en-US/docs/Web/API/Element/wheel_event
+export function mouseWheel(event) {
+    if (anbt.isFocused) { // change brush size on scroll
+        event.preventDefault();
+        
+        shift ??= scale;
+
+        scale += event.deltaY * -0.01;
+
+        let step = Math.min(Math.max(shift - scale, -1), 1);
+
+        if (Math.abs(step) === 1) {
+            scale = 1; shift = null;
+            modifyBrushSize(step);
+        }
+
+        console.log(scale, shift);
+    }
+}
