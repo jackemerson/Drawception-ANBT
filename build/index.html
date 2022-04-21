@@ -1170,104 +1170,8 @@
     anbt.seekbarMove = func;
   }
 
-  const globals = {
-    rectangle: {},
-    touchSingle: false,
-    lastTouch: {},
-    lastSeenColorToHighlight: anbt.background,
-    brushSizes: [2, 6, 14, 42],
-    timerStart: 0
-  };
-
-  function strokeBegin(x, y, left = null, forceEraser = false) {
-    if (anbt.locked) return;
-    console.log(left);
-    let color;
-    if (forceEraser) {
-      color = 'eraser';
-    } else if (left !== null) {
-      color = left ? anbt.colors[0] : anbt.colors[1];
-    } else {
-      color = anbt.lastColourChoice ?? anbt.colors[0];
-    }
-    anbt.lastColourChoice = color;
-    const cls = color === 'eraser' ? color : null;
-    color = color === 'eraser' ? anbt.background : color;
-    anbt.path = createSvgElement('path', {
-      class: cls,
-      stroke: color,
-      'stroke-width': anbt.size,
-      'stroke-linejoin': 'round',
-      'stroke-linecap': 'round',
-      fill: 'none'
-    });
-    anbt.lastColor = color;
-    anbt.path.pattern = anbt.pattern;
-    anbt.path.pathSegList.appendItem(anbt.path.createSVGPathSegMovetoAbs(x, y));
-    anbt.path.pathSegList.appendItem(
-      anbt.path.createSVGPathSegLinetoAbs(x, y + 0.001)
-    );
-    if (navigator.userAgent.match(/\bPresto\b/)) {
-      drawDisplayLinePresto(true);
-    } else {
-      drawDisplayLine(x, y, x, y + 0.001);
-    }
-    anbt.points = [];
-    anbt.points.push({ x, y });
-    anbt.blot = true;
-    anbt.isStroking = true;
-  }
-
-  let incrementalSize = anbt.size;
-  function changeBrushSize(event) {
-    event.preventDefault();
-    const size = [...event.currentTarget.classList]
-      .filter(htmlClass => htmlClass.startsWith('size-'))[0]
-      .match(/\d+/)[0];
-    setSize(size);
-    const element = ID('tools').querySelector('.sel');
-    if (element) element.classList.remove('sel');
-    event.currentTarget.classList.add('sel');
-    if (!anbt.isStroking) return;
-    strokeEnd();
-    const lastPoint = anbt.points[anbt.points.length - 1];
-    strokeBegin(lastPoint.x, lastPoint.y, anbt.lastColourChoice);
-  }
-  function modifyBrushSize(modifier) {
-    const MIN = 0,
-      MAX = globals.brushSizes.length - 1;
-    const size = globals.brushSizes.indexOf(anbt.size);
-    const newSize = Math.min(Math.max(MIN, size - modifier), MAX);
-    setSize(globals.brushSizes[newSize]);
-    if (!anbt.isStroking) return;
-    strokeEnd();
-    const lastPoint = anbt.points[anbt.points.length - 1];
-    strokeBegin(lastPoint.x, lastPoint.y, anbt.lastColourChoice);
-  }
-  function softModifyBrushSize(step) {
-    let index = globals.brushSizes.indexOf(anbt.size);
-    if (
-      (index === 0 && step < 0) ||
-      (index === globals.brushSizes.length - 1 && step > 0)
-    ) {
-      return;
-    }
-    let currentSize = anbt.size;
-    let nextSize = globals.brushSize[index + step];
-    incrementalSize += step;
-    let currentDiff = Math.abs(currentSize - incrementalSize);
-    let nextDiff = Math.abs(nextSize - incrementalSize);
-    if (nextDiff < currentDiff) {
-      modifyBrushSize(step);
-    }
-  }
-  function resetIncrement() {
-    incrementalSize = anbt.size;
-  }
-
   function setSize(size) {
     anbt.size = size;
-    resetIncrement();
     moveCursor();
   }
 
@@ -1296,6 +1200,44 @@
       drawDisplayLine(point.x, point.y, x, y);
     }
     anbt.points.push({ x, y });
+  }
+
+  function strokeBegin(x, y, left = null, forceEraser = false) {
+    if (anbt.locked) return;
+    let color;
+    if (forceEraser) {
+      color = 'eraser';
+    } else if (left !== null) {
+      anbt.lastPalette = left;
+      color = left ? anbt.colors[0] : anbt.colors[1];
+    } else {
+      color = anbt.colors[(anbt.lastPalette ? 1 : 0) ?? 0];
+    }
+    const cls = color === 'eraser' ? color : null;
+    color = color === 'eraser' ? anbt.background : color;
+    anbt.path = createSvgElement('path', {
+      class: cls,
+      stroke: color,
+      'stroke-width': anbt.size,
+      'stroke-linejoin': 'round',
+      'stroke-linecap': 'round',
+      fill: 'none'
+    });
+    anbt.lastColor = color;
+    anbt.path.pattern = anbt.pattern;
+    anbt.path.pathSegList.appendItem(anbt.path.createSVGPathSegMovetoAbs(x, y));
+    anbt.path.pathSegList.appendItem(
+      anbt.path.createSVGPathSegLinetoAbs(x, y + 0.001)
+    );
+    if (navigator.userAgent.match(/\bPresto\b/)) {
+      drawDisplayLinePresto(true);
+    } else {
+      drawDisplayLine(x, y, x, y + 0.001);
+    }
+    anbt.points = [];
+    anbt.points.push({ x, y });
+    anbt.blot = true;
+    anbt.isStroking = true;
   }
 
   function undo() {
@@ -1906,6 +1848,64 @@
     formatDrawingData,
     uploadToDrawception
   };
+
+  const globals = {
+    rectangle: {},
+    touchSingle: false,
+    lastTouch: {},
+    lastSeenColorToHighlight: anbt.background,
+    brushSizes: [2, 6, 14, 42],
+    timerStart: 0
+  };
+
+  let incrementalSize = anbt.size;
+  function changeBrushSize(event) {
+    event.preventDefault();
+    const size = [...event.currentTarget.classList]
+      .filter(htmlClass => htmlClass.startsWith('size-'))[0]
+      .match(/\d+/)[0];
+    setSize(size);
+    resetIncrement();
+    const element = ID('tools').querySelector('.sel');
+    if (element) element.classList.remove('sel');
+    event.currentTarget.classList.add('sel');
+    if (!anbt.isStroking) return;
+    strokeEnd();
+    const lastPoint = anbt.points[anbt.points.length - 1];
+    strokeBegin(lastPoint.x, lastPoint.y, anbt.lastColourChoice);
+  }
+  function modifyBrushSize(modifier) {
+    const MIN = 0,
+      MAX = globals.brushSizes.length - 1;
+    const size = globals.brushSizes.indexOf(anbt.size);
+    const newSize = Math.min(Math.max(MIN, size - modifier), MAX);
+    setSize(globals.brushSizes[newSize]);
+    resetIncrement();
+    if (!anbt.isStroking) return;
+    strokeEnd();
+    const lastPoint = anbt.points[anbt.points.length - 1];
+    strokeBegin(lastPoint.x, lastPoint.y, anbt.lastColourChoice);
+  }
+  function softModifyBrushSize(step) {
+    let index = globals.brushSizes.indexOf(anbt.size);
+    if (
+      (index === 0 && step < 0) ||
+      (index === globals.brushSizes.length - 1 && step > 0)
+    ) {
+      return;
+    }
+    let currentSize = anbt.size;
+    let nextSize = globals.brushSize[index + step];
+    incrementalSize += step;
+    let currentDiff = Math.abs(currentSize - incrementalSize);
+    let nextDiff = Math.abs(nextSize - incrementalSize);
+    if (nextDiff < currentDiff) {
+      modifyBrushSize(step);
+    }
+  }
+  function resetIncrement() {
+    incrementalSize = anbt.size;
+  }
 
   function clickRedo(event) {
     event.preventDefault();

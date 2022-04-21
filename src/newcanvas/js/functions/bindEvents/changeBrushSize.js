@@ -12,7 +12,10 @@ export function changeBrushSize(event) {
   const size = [...event.currentTarget.classList]
     .filter(htmlClass => htmlClass.startsWith('size-'))[0]
     .match(/\d+/)[0]
+
   setSize(size)
+  resetIncrement();
+
   const element = ID('tools').querySelector('.sel')
   if (element) element.classList.remove('sel')
   event.currentTarget.classList.add('sel')
@@ -32,6 +35,7 @@ export function modifyBrushSize(modifier) {
   const newSize = Math.min(Math.max(MIN, size - modifier), MAX); // clamp value
 
   setSize(globals.brushSizes[newSize]);
+  resetIncrement();
 
   if (!anbt.isStroking) return
   strokeEnd();

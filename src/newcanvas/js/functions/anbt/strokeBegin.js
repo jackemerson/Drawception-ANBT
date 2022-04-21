@@ -7,17 +7,17 @@ export function strokeBegin(x, y, left=null, forceEraser=false) {
   if (anbt.locked) return
 
   
-  console.log(left);
+  
   let color;
   if (forceEraser) {
     color = 'eraser';
   } else if (left !== null) {
+    anbt.lastPalette = left;
     color = left ? anbt.colors[0] : anbt.colors[1];
   } else {
-    color = anbt.lastColourChoice ?? anbt.colors[0];
+    // in case we call strokeBegin without knowledge of original input, e.g., by altering brush stroke
+    color = anbt.colors[(anbt.lastPalette ? 1 : 0) ?? 0];
   }
-
-  anbt.lastColourChoice = color // in case we call strokeBegin without knowledge of original input, e.g., by altering brush stroke
 
   const cls = color === 'eraser' ? color : null
   color = color === 'eraser' ? anbt.background : color
