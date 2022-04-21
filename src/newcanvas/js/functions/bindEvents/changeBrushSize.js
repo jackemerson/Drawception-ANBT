@@ -14,9 +14,9 @@ export function changeBrushSize(event) {
     .filter(htmlClass => htmlClass.startsWith('size-'))[0]
     .match(/\d+/)[0]
 
-  setSize(size)
+  setSize(Number(size))
   resetIncrement()
-  console.log(`Size reset: ${incrementalSize}`);
+  console.log(`Size reset: ${incrementalSize}, size ${anbt.size}`);
 
   const element = ID('tools').querySelector('.sel')
   if (element) element.classList.remove('sel')
@@ -33,7 +33,7 @@ export function changeBrushSize(event) {
 export function modifyBrushSize(modifier) {
   
   const MIN = 0, MAX = globals.brushSizes.length - 1;
-  const size = globals.brushSizes.indexOf(anbt.size);
+  const size = globals.brushSizes.indexOf(Number(anbt.size));
   const newSize = Math.min(Math.max(MIN, size + modifier), MAX); // clamp value
 
   setSize(globals.brushSizes[newSize]);
@@ -49,19 +49,23 @@ export function modifyBrushSize(modifier) {
  * 
  */
 export function softModifyBrushSize(step) {
-  let index = globals.brushSizes.indexOf(anbt.size);
+  let currentBrush = globals.brushSizes.indexOf(Number(anbt.size));
   
-  if ( (index === 0 && step === -1) ||
-       (index === (globals.brushSizes.length-1) && step === 1)) { 
+  if ( (currentBrush === 0 && step === -1) ||
+       (currentBrush === (globals.brushSizes.length-1) && step === 1)) { 
          console.log(`No further steps: ${step}`);
     return;
   } // can't step further in that direction
   
   let currentSize = Number(anbt.size);
-  let nextSize = Number(globals.brushSizes[index + step]);
+  let nextSize = Number(globals.brushSizes[currentBrush + step]);
+
+  const MIN = globals.brushSizes[0];
+  const MAX = globals.brushSizes[globals.brushSizes.length - 1];
 
 
-  incrementalSize += step;
+  incrementalSize = Math.min(MAX, Math.Max(MIN, incrementalSize + step));
+
   console.log(`Increment: ${incrementalSize}, Current: ${anbt.size}`);
   let currentDiff = Math.abs(currentSize - incrementalSize);
   let nextDiff = Math.abs(nextSize - incrementalSize);
