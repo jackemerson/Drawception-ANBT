@@ -1,20 +1,18 @@
 import { options } from '../options'
 import { getLocalStorageItem } from './getLocalStorageItem'
 import { versions, git, environment } from '../../versioninfo';
-const { user, repository, branch } = git;
-const { scriptVersion, newCanvasVersion } = versions;
 
 export function setupNewCanvas(inSandbox, url) {
   const canvasHTML = localStorage.getItem('anbt_canvasHTML')
   const canvasHTMLVersion = localStorage.getItem('anbt_canvasHTMLver')
   if ( environment === 'development' ||
     !canvasHTML ||
-    canvasHTMLVersion < newCanvasVersion ||
+    canvasHTMLVersion < versions.newCanvasVersion ||
     canvasHTML.length < 10000
   ) {
     const request = new XMLHttpRequest()
     const address = 
-    `https://api.github.com/repos/${user}/${repository}/contents/build/index.html?ref=${branch}`;
+    `https://api.github.com/repos/${git.user}/${git.repository}/contents/build/index.html?ref=${git.branch}`;
     console.log(address);
     request.open(
       'GET',
@@ -29,7 +27,7 @@ export function setupNewCanvas(inSandbox, url) {
         location.pathname = '/'
       } else {
         localStorage.setItem('anbt_canvasHTML', request.responseText)
-        localStorage.setItem('anbt_canvasHTMLver', newCanvasVersion)
+        localStorage.setItem('anbt_canvasHTMLver', versions.newCanvasVersion)
         setupNewCanvas(inSandbox, url)
       }
     }
@@ -47,7 +45,7 @@ export function setupNewCanvas(inSandbox, url) {
   const panelId = url.match(/sandbox\/(?!\?palette=)#?([^/]+)\/?/)
   const inContest =
     url.match(/contests\/play\//) && document.getElementById('canvas-holder') // Handle drawing contests only
-  const versionTitle = `ANBT v${scriptVersion}`
+  const versionTitle = `ANBT v${versions.scriptVersion}`
 
   // Disable built-in safety warning
   if (inContest) window.onbeforeunload = () => {}

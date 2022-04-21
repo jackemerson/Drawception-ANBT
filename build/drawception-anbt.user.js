@@ -271,30 +271,24 @@
     repository: 'Drawception-ANBT',
     branch: 'development'
   };
-  const scriptVersion$2 = '2.12.2022.05-dev';
-  const newCanvasVersion$1 = 64;
-  const siteVersion$1 = '4aa2b913';
-  const runtimeVersion$1 = '1ba6bf05';
+  const scriptVersion = '2.12.2022.05-dev';
+  const newCanvasVersion = 64;
+  const siteVersion = '4aa2b913';
+  const runtimeVersion = '1ba6bf05';
   const versions = {
     __proto__: null,
-    scriptVersion: scriptVersion$2,
-    newCanvasVersion: newCanvasVersion$1,
-    siteVersion: siteVersion$1,
-    runtimeVersion: runtimeVersion$1
+    scriptVersion: scriptVersion,
+    newCanvasVersion: newCanvasVersion,
+    siteVersion: siteVersion,
+    runtimeVersion: runtimeVersion
   };
 
-  const {
-    user: user$1,
-    repository: repository$1,
-    branch: branch$1
-  } = consts_git;
-  const { scriptVersion: scriptVersion$1, newCanvasVersion } = versions;
   function setupNewCanvas(inSandbox, url) {
     localStorage.getItem('anbt_canvasHTML');
     localStorage.getItem('anbt_canvasHTMLver');
     {
       const request = new XMLHttpRequest();
-      const address = `https://api.github.com/repos/${user$1}/${repository$1}/contents/build/index.html?ref=${branch$1}`;
+      const address = `https://api.github.com/repos/${consts_git.user}/${consts_git.repository}/contents/build/index.html?ref=${consts_git.branch}`;
       console.log(address);
       request.open('GET', address);
       request.setRequestHeader('Accept', 'application/vnd.github.3.raw');
@@ -306,7 +300,7 @@
           location.pathname = '/';
         } else {
           localStorage.setItem('anbt_canvasHTML', request.responseText);
-          localStorage.setItem('anbt_canvasHTMLver', newCanvasVersion);
+          localStorage.setItem('anbt_canvasHTMLver', versions.newCanvasVersion);
           setupNewCanvas();
         }
       };
@@ -2164,7 +2158,6 @@
     };
   }
 
-  const { runtimeVersion, scriptVersion, siteVersion } = versions;
   function pageEnhancements() {
     loadScriptSettings();
     if (typeof DrawceptionPlay === 'undefined') return;
@@ -2333,7 +2326,7 @@
       `#user-notify-list .list-group .list-group-item .fas {color: #888}#user-notify-list .list-group .list-group-item:nth-child(-n+${number}) .fas {color: #2F5}a.wrong-order {color: #F99} div.comment-holder:target {background-color: #DFD}.comment-new a.text-muted:last-child:after {content: 'New'; color: #2F5; font-weight: bold; background-color: #183; border-radius: 9px; display: inline-block; padding: 0px 6px; margin-left: 10px;}`
     );
     window.getNotifications = getNotifications;
-    let versionDisplay = `ANBT v${scriptVersion}`;
+    let versionDisplay = `ANBT v${versions.scriptVersion}`;
     try {
       const appVersion = $('script[src^="/build/app"]').src.match(
         /(\w+)\.js$/
@@ -2342,9 +2335,9 @@
         /(\w+)\.js$/
       )[1];
       versionDisplay += ` | app ${appVersion}`;
-      if (appVersion !== siteVersion) versionDisplay += '*';
+      if (appVersion !== versions.siteVersion) versionDisplay += '*';
       versionDisplay += ` | runtime ${runtimeVer}`;
-      if (runtimeVer !== runtimeVersion) versionDisplay += '*!!!';
+      if (runtimeVer !== versions.runtimeVersion) versionDisplay += '*!!!';
     } catch (e) {}
     const wrapperSection = $('.wrapper');
     if (wrapperSection)

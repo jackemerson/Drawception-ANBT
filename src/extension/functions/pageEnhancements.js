@@ -10,8 +10,6 @@ import { $ } from './selector'
 import { loadScriptSettings } from './settings/loadScriptSettings'
 import { setupNewCanvas } from './setupNewCanvas'
 
-const { runtimeVersion, scriptVersion, siteVersion } = versions;
-
 export function pageEnhancements() {
   loadScriptSettings()
   if (typeof DrawceptionPlay === 'undefined') return // Firefox Greasemonkey seems to call pageEnhancements() after document.write...
@@ -184,16 +182,16 @@ export function pageEnhancements() {
   // Show an error if it occurs instead of "loading forever"
   window.getNotifications = getNotifications
 
-  let versionDisplay = `ANBT v${scriptVersion}`
+  let versionDisplay = `ANBT v${versions.scriptVersion}`
   try {
     const appVersion = $('script[src^="/build/app"]').src.match(/(\w+)\.js$/)[1]
     const runtimeVer = $('script[src^="/build/runtime"]').src.match(
       /(\w+)\.js$/
     )[1]
     versionDisplay += ` | app ${appVersion}`
-    if (appVersion !== siteVersion) versionDisplay += '*'
+    if (appVersion !== versions.siteVersion) versionDisplay += '*'
     versionDisplay += ` | runtime ${runtimeVer}`
-    if (runtimeVer !== runtimeVersion) versionDisplay += '*!!!' // didn't break with one update, hurray
+    if (runtimeVer !== versions.runtimeVersion) versionDisplay += '*!!!' // didn't break with one update, hurray
   } catch (e) {}
   const wrapperSection = $('.wrapper')
   if (wrapperSection)

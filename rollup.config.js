@@ -62,7 +62,6 @@ export default [
       file: 'src/versioninfo.js',
       name: 'versioninfo',
       freeze: false,
-      // exports: 'named',
       generatedCode: {constBindings: true},
     },
     plugins: [
