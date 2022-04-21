@@ -290,7 +290,7 @@
     let reload = false;
     {
       let lastReloaded = localStorage.getItem('anbt_canvasHTML_last_cached');
-      let currentTime = new Date().now();
+      let currentTime = Date.now();
       if (lastReloaded !== null) {
         lastReloaded = new Date(parseInt(lastReloaded, 10));
       }
@@ -319,7 +319,10 @@
         } else {
           localStorage.setItem('anbt_canvasHTML', request.responseText);
           localStorage.setItem('anbt_canvasHTMLver', versions.newCanvasVersion);
-          localStorage.setItem('anbt_canvasHTML_last_cached', new Date().now());
+          localStorage.setItem(
+            'anbt_canvasHTML_last_cached',
+            new Date().getTime()
+          );
           setupNewCanvas(inSandbox, url);
         }
       };
