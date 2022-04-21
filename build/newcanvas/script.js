@@ -1874,6 +1874,11 @@
         setColor(0, color1);
         setColor(1, color0);
         updateColorIndicators();
+        if (anbt.isStroking) {
+          strokeEnd();
+          const lastPoint = anbt.points[anbt.points.length - 1];
+          strokeBegin(lastPoint.x, lastPoint.y);
+        }
         break;
       }
       case 'KeyB':
@@ -1952,7 +1957,7 @@
             if (color !== 'eraser') setBackground(color);
             updateChooseBackground(false);
           } else {
-            setColor(0, color);
+            setColor(anbt.lastPalette ?? 0, color);
             updateColorIndicators();
           }
         }
@@ -2281,11 +2286,12 @@
       if (anbt.isStroking) strokeEnd();
       if (event.buttons & 3) {
         const lastPoint = anbt.points[anbt.points.length - 1];
-        let button = event.buttons & 1;
+        let button = event.button === 0;
         strokeBegin(lastPoint.x, lastPoint.y, button);
       } else {
-        if (options.hideCross)
+        if (options.hideCross) {
           ID('svgContainer').classList.remove('hidecursor');
+        }
         window.removeEventListener('mouseup', mouseUp);
         window.removeEventListener('mousemove', windowMouseMove);
       }

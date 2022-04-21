@@ -96,6 +96,13 @@ export function keyDown(event) {
       setColor(0, color1);
       setColor(1, color0);
       updateColorIndicators();
+
+      if (anbt.isStroking) {
+        strokeEnd()
+        const lastPoint = anbt.points[anbt.points.length - 1];
+        strokeBegin(lastPoint.x, lastPoint.y)
+      }
+
       break;
     }
 
@@ -197,7 +204,7 @@ export function keyDown(event) {
           if (color !== 'eraser') setBackground(color)
           updateChooseBackground(false)
         } else {
-          setColor(0, color)
+          setColor(anbt.lastPalette ?? 0, color)
           updateColorIndicators()
         }
       }

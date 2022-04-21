@@ -15,12 +15,12 @@ export function mouseUp(event) {
     event.preventDefault()
     if (anbt.isStroking) strokeEnd()
 
-    if (event.buttons & 3) { // bitwise check for left and right mouse button states
-      const lastPoint = anbt.points[anbt.points.length - 1]
-      let button = event.buttons & 1; // true if left button
+    if (event.buttons & 3) { // bitwise check for left or right mouse button still in use
+      const lastPoint = anbt.points[anbt.points.length - 1];
+      let button = event.button === 0; // true if left button
       strokeBegin(lastPoint.x, lastPoint.y, button);
     } else {
-      if (options.hideCross) ID('svgContainer').classList.remove('hidecursor')
+      if (options.hideCross) { ID('svgContainer').classList.remove('hidecursor'); }
       window.removeEventListener('mouseup', mouseUp)
       window.removeEventListener('mousemove', windowMouseMove)
     }
