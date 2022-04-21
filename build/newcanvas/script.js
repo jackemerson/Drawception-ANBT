@@ -1719,7 +1719,7 @@
       return;
     }
     let currentSize = anbt.size;
-    let nextSize = globals.brushSize[index + step];
+    let nextSize = globals.brushSizes[index + step];
     incrementalSize += step;
     let currentDiff = Math.abs(currentSize - incrementalSize);
     let nextDiff = Math.abs(nextSize - incrementalSize);

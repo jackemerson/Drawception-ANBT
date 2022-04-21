@@ -54,7 +54,7 @@ export function softModifyBrushSize(step) {
     return;
   } // can't step further in that direction
   let currentSize = anbt.size;
-  let nextSize = globals.brushSize[index + step];
+  let nextSize = globals.brushSizes[index + step];
 
 
   incrementalSize += step;
