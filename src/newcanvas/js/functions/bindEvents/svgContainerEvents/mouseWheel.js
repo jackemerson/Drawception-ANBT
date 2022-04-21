@@ -11,7 +11,7 @@ export function mouseWheel(event) {
         
         shift = shift ?? scale;
 
-        scale += event.deltaY * -0.01;
+        scale += event.deltaY * -0.02;
 
         let delta = shift + scale;
 
@@ -19,7 +19,7 @@ export function mouseWheel(event) {
 
         console.log(scale, shift, step, event);
         if (Math.abs(step) === 1) {
-            console.log(`Stepped: scale:${scale}, shift:${shift}, step: ${step}`);
+            // console.log(`Stepped: scale:${scale}, shift:${shift}, step: ${step}`);
             scale = 0; shift = scale;
             softModifyBrushSize(step);
         }
