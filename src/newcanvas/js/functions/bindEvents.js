@@ -23,12 +23,16 @@ import { mouseDown } from './bindEvents/svgContainerEvents/mouseDown'
 import { mouseLeave } from './bindEvents/svgContainerEvents/mouseLeave'
 import { svgMouseMove } from './bindEvents/svgContainerEvents/mouseMove'
 import { touchStart } from './bindEvents/svgContainerEvents/touchStart'
+import { trackFocus } from './bindEvents/documentEvents/trackFocus'
 import { beforeUnload } from './bindEvents/windowEvents/beforeUnload'
 import { windowContextMenu } from './bindEvents/windowEvents/contextMenu'
 import { error } from './bindEvents/windowEvents/error'
 import { ID } from './idSelector'
 
 export function bindEvents() {
+  
+  document.addEventListener('mousemove', trackFocus);
+
   ID('svgContainer').addEventListener('mousedown', mouseDown)
   ID('svgContainer').addEventListener('mousemove', svgMouseMove)
   ID('svgContainer').addEventListener('touchstart', touchStart)

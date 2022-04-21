@@ -1616,6 +1616,7 @@
     position: 0,
     isStroking: false,
     isPlaying: false,
+    isFocused: false,
     size: 14,
     smoothening: 1,
     palette: palettes.Normal,
@@ -1789,6 +1790,7 @@
     switch (event.code) {
       case 'AltLeft':
       case 'AltRight':
+      case 'KeyI':
         if (!navigator.userAgent.match(/\bPresto\b/)) {
           ID('svgContainer').classList.add('hidecursor');
           showEyedropperCursor(true);
@@ -1906,10 +1908,25 @@
     return;
   }
 
+  function trackFocus(event) {
+    const target = document.elementFromPoint(event.clientX, event.clientY);
+    if (target.isEqualNode(anbt.container) || anbt.container.contains(target)) {
+      anbt.isFocused = true;
+      return;
+    }
+    anbt.isFocused = false;
+  }
+  function playerIsDrawing() {
+    return anbt.isFocused || anbt.isStroking;
+  }
+
   function keyUp(event) {
-    if (event.keyCode !== 18) return;
+    if (!(event.altKey || event.code === 'KeyI')) return;
     ID('svgContainer').classList.remove('hidecursor');
     showEyedropperCursor(false);
+    if (playerIsDrawing() && event.altKey) {
+      event.preventDefault();
+    }
   }
 
   function warnStrokesAfterPosition() {
@@ -2329,6 +2346,7 @@
   }
 
   function bindEvents() {
+    document.addEventListener('mousemove', trackFocus);
     ID('svgContainer').addEventListener('mousedown', mouseDown);
     ID('svgContainer').addEventListener('mousemove', svgMouseMove);
     ID('svgContainer').addEventListener('touchstart', touchStart);

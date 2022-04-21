@@ -68,6 +68,7 @@ export const anbt = {
   position: 0,
   isStroking: false,
   isPlaying: false,
+  isFocused: false,
   size: 14,
   smoothening: 1,
   palette: palettes.Normal,

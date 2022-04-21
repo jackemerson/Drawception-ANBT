@@ -29,14 +29,16 @@ export function keyDown(event) {
   codeMatch = true; // set to false if no match
   switch (event.code) {
 
-    /* EYEDROPPER */
+    /* EYEDROPPER - Alt keys, I*/
     case 'AltLeft':
     case 'AltRight':
+    case 'KeyI':
      /********************************
       * consider using modifiers, e.g.
       * `event.getModifierState('alt')` ...
       * or `event.altKey`
       ********************************/
+     
       if (!navigator.userAgent.match(/\bPresto\b/)) {
         ID('svgContainer').classList.add('hidecursor');
         showEyedropperCursor(true);
