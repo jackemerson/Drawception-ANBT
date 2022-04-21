@@ -1,5 +1,5 @@
 import { anbt } from "../../../anbt";
-import { modifyBrushSize } from "../changeBrushSize";
+import { softModifyBrushSize } from "../changeBrushSize";
 
 
 let scale = 1;
@@ -19,7 +19,7 @@ export function mouseWheel(event) {
         if (Math.abs(step) === 1) {
             console.log(`Stepped: scale:${scale}, shift:${shift}, step: ${step}`);
             scale = 1; shift = null;
-            modifyBrushSize(step);
+            softModifyBrushSize(step);
         }
 
     }

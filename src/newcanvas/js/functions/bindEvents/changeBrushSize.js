@@ -5,6 +5,8 @@ import { strokeBegin } from '../anbt/strokeBegin'
 import { strokeEnd } from '../anbt/strokeEnd'
 import { ID } from '../idSelector'
 
+let incrementalSize = anbt.size;
+
 export function changeBrushSize(event) {
   event.preventDefault()
   const size = [...event.currentTarget.classList]
@@ -24,9 +26,8 @@ export function changeBrushSize(event) {
  * @param {Number} modifier - step down or up
  */
 export function modifyBrushSize(modifier) {
-
   
-  const MIN = 0, MAX = globals.brushSizes.length;
+  const MIN = 0, MAX = globals.brushSizes.length - 1;
   const size = globals.brushSizes.indexOf(anbt.size);
   const newSize = Math.min(Math.max(MIN, size - modifier), MAX); // clamp value
 
@@ -36,4 +37,33 @@ export function modifyBrushSize(modifier) {
   strokeEnd();
   const lastPoint = anbt.points[anbt.points.length - 1];
   strokeBegin(lastPoint.x, lastPoint.y, anbt.lastColourChoice);
+}
+
+/**
+ * 
+ */
+export function softModifyBrushSize(step) {
+  let index = globals.brushSizes.indexOf(anbt.size);
+  
+  if ( (index === 0 && step < 0) ||
+       (index === (globals.brushSizes.length-1) && step > 0) ) { 
+    return;
+  } // can't step further in that direction
+  let currentSize = anbt.size;
+  let nextSize = globals.brushSize[index + step];
+
+
+  incrementalSize += step;
+
+  let currentDiff = Math.abs(currentSize - incrementalSize);
+  let nextDiff = Math.abs(nextSize - incrementalSize);
+
+  if (nextDiff < currentDiff) { // if the difference to the next step is smaller
+    modifyBrushSize(step);
+  }
+
+}
+
+export function resetIncrement() {
+  incrementalSize = anbt.size;
 }
