@@ -8,13 +8,15 @@ import { ID } from '../idSelector'
 let incrementalSize = Number(anbt.size);
 
 export function changeBrushSize(event) {
+  
   event.preventDefault()
   const size = [...event.currentTarget.classList]
     .filter(htmlClass => htmlClass.startsWith('size-'))[0]
     .match(/\d+/)[0]
 
   setSize(size)
-  resetIncrement();
+  resetIncrement()
+  console.log(`Size reset: ${incrementalSize}`);
 
   const element = ID('tools').querySelector('.sel')
   if (element) element.classList.remove('sel')
@@ -54,6 +56,7 @@ export function softModifyBrushSize(step) {
          console.log(`No further steps: ${step}`);
     return;
   } // can't step further in that direction
+  
   let currentSize = Number(anbt.size);
   let nextSize = Number(globals.brushSizes[index + step]);
 

@@ -1867,6 +1867,7 @@
       .match(/\d+/)[0];
     setSize(size);
     resetIncrement();
+    console.log(`Size reset: ${incrementalSize}`);
     const element = ID('tools').querySelector('.sel');
     if (element) element.classList.remove('sel');
     event.currentTarget.classList.add('sel');
