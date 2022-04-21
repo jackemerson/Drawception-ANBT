@@ -1,13 +1,13 @@
 import { options } from '../options'
 import { getLocalStorageItem } from './getLocalStorageItem'
-import { versions, git } from '../../versioninfo';
+import { versions, git, environment } from '../../versioninfo';
 const { user, repository, branch } = git;
 const { scriptVersion, newCanvasVersion } = versions;
 
 export function setupNewCanvas(inSandbox, url) {
   const canvasHTML = localStorage.getItem('anbt_canvasHTML')
   const canvasHTMLVersion = localStorage.getItem('anbt_canvasHTMLver')
-  if (
+  if ( environment === 'development' ||
     !canvasHTML ||
     canvasHTMLVersion < newCanvasVersion ||
     canvasHTML.length < 10000

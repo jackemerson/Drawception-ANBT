@@ -31,6 +31,7 @@ if (CONSTANTS.git.branch === 'development') { // if working in dev
    CONSTANTS.environment = 'development';
 }
 
+
 const waitFile = path => {
   return new Promise(resolve => {
     const interval = setInterval(() => {
@@ -49,9 +50,8 @@ clear({
 /**
  * @type {import('rollup').RollupOptions}
  */
-
 export default [
-  
+
     {
     input: 'src/extension/build-info/versioning.js',
     /**
@@ -61,6 +61,9 @@ export default [
       format: 'es',
       file: 'src/versioninfo.js',
       name: 'versioninfo',
+      freeze: false,
+      // exports: 'named',
+      generatedCode: {constBindings: true},
     },
     plugins: [
       consts( CONSTANTS )

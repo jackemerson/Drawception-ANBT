@@ -1,4 +1,6 @@
 
-export * as environment from 'consts:environment';
-export * as git from 'consts:git';
-export * as versions from '../versions';
+import environment from 'consts:environment';
+import git from 'consts:git';
+import * as versions from '../versions';
+
+export {git, environment, versions};
