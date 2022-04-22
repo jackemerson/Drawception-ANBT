@@ -24,15 +24,15 @@ export function mouseDown(event) {
     const x = event.pageX - globals.rectangle.left - pageXOffset
     const y = event.pageY - globals.rectangle.top - pageYOffset
 
-    if (!anbt.eyedropperActive && anbt.isStroking && event.buttons & 3) { // if already drawing and both buttons pressed
+    if (!anbt.eyedropperActive && anbt.isStroking && (event.buttons & 3)) { // if already drawing and both buttons pressed
       
       event.preventDefault()
-      const left = (event.button === MOUSE.LEFT);
+      const isLeft = (event.button === MOUSE.LEFT);
       const eraser = !(getPointerType() !== 3);
 
-      if (anbt.lastPalette !== left) {
+      if (anbt.lastPalette !== isLeft) {
         strokeEnd();
-        strokeBegin(x, y, event.button, eraser);     
+        strokeBegin(x, y, isLeft, eraser);     
         if (options.hideCross) ID('svgContainer').classList.add('hidecursor')
       }
       // return mouseUp(event)
