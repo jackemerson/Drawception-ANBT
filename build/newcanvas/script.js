@@ -1966,7 +1966,7 @@
           return;
         }
       } else {
-        let index = digit;
+        let index = digit - 1;
         if (
           event.shiftKey ||
           (options.colorDoublePress && anbt.previousColorKey === index)
