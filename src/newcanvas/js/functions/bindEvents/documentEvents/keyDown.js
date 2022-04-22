@@ -168,16 +168,16 @@ export function keyDown(event) {
 
   // Handle Digit Inputs
   let keyRegex = /^\d$/; // detects a singular digit, else won't match
-  let codeRegex = /^(Numpad|Digit)[\d]$/; // Numpad or Digit
+  let codeRegex = /^(Numpad|Digit)([\d])$/; // Numpad or Digit
   let capture;
   let digit = -1;
 
   if (event.shiftKey) { // the modifier will change the key value, fall back to code
     capture = event.code.search(codeRegex);
-    if (capture !== -1) { digit = event.code[capture]; }
+    if (capture !== -1) { digit = event.code[event.code.length - 1]; }
   } else {
     capture = event.key.search(keyRegex);
-    digit = Number(event.key);
+    if (capture !== -1) { digit = Number(event.key); }
   }
 
   if (digit !== -1 && options.colorNumberShortcuts) { // returns index match, or -1 on no match
