@@ -17,7 +17,7 @@ export function mouseWheel(event) {
 
         let step = Math.min(Math.max(delta, -1), 1);
 
-        console.log(scale, shift, step, event);
+        // console.log(scale, shift, step, event);
         if (Math.abs(step) === 1) {
             // console.log(`Stepped: scale:${scale}, shift:${shift}, step: ${step}`);
             scale = 0; shift = scale;

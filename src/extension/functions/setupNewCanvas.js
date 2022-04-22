@@ -1,6 +1,6 @@
 import { options } from '../options'
 import { getLocalStorageItem } from './getLocalStorageItem'
-import { versions, git, environment } from '../../versioninfo';
+import { versions, git, environment } from '../../versionInfo';
 
 export function setupNewCanvas(inSandbox, url) {
   const canvasHTML = localStorage.getItem('anbt_canvasHTML')

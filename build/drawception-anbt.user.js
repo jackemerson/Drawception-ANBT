@@ -127,14 +127,14 @@
     useOldFont: true,
     useOldFontSize: true,
     markdownTools: 1,
-    anbtDarkMode: 1
+    anbtDarkMode: 1,
   };
 
   function $(selector, array = false) {
     const elements = selector.startsWith('<')
       ? [
           ...new DOMParser().parseFromString(selector, 'text/html').body
-            .children
+            .children,
         ]
       : [...document.querySelectorAll(selector)];
     return elements.length > 1 || array ? elements : elements[0];
@@ -179,7 +179,7 @@
       'Sep',
       'Oct',
       'Nov',
-      'Dec'
+      'Dec',
     ],
     alphabet: '36QtfkmuFds0UjlvCGIXZ125bEMhz48JSYgipwKn7OVHRBPoy9DLWaceqxANTr',
     greetings: [
@@ -201,8 +201,8 @@
       "Qba'g sbetrg gb rng.",
       "V xabj jung lbh'ir qbar.",
       'Fpvrapr!',
-      'Gbqnl vf n tbbq qnl.'
-    ]
+      'Gbqnl vf n tbbq qnl.',
+    ],
   };
 
   function decimalToBase62(number) {
@@ -266,21 +266,21 @@
     );
   }
 
-  const consts_git = {
+  const consts_git$1 = {
     user: 'jackemerson',
     repository: 'Drawception-ANBT',
-    branch: 'development'
+    branch: 'development',
   };
-  const scriptVersion = '2.13.2022.04-dev';
-  const newCanvasVersion = 64;
-  const siteVersion = '4aa2b913';
-  const runtimeVersion = '1ba6bf05';
-  const versions = {
+  const scriptVersion$1 = '2.13.2022.04-dev';
+  const newCanvasVersion$1 = 64;
+  const siteVersion$1 = '4aa2b913';
+  const runtimeVersion$1 = '1ba6bf05';
+  const versions$1 = {
     __proto__: null,
-    scriptVersion: scriptVersion,
-    newCanvasVersion: newCanvasVersion,
-    siteVersion: siteVersion,
-    runtimeVersion: runtimeVersion
+    scriptVersion: scriptVersion$1,
+    newCanvasVersion: newCanvasVersion$1,
+    siteVersion: siteVersion$1,
+    runtimeVersion: runtimeVersion$1,
   };
 
   function setupNewCanvas(inSandbox, url) {
@@ -302,11 +302,11 @@
     if (
       reload ||
       !canvasHTML ||
-      canvasHTMLVersion < versions.newCanvasVersion ||
+      canvasHTMLVersion < versions$1.newCanvasVersion ||
       canvasHTML.length < 10000
     ) {
       const request = new XMLHttpRequest();
-      const address = `https://api.github.com/repos/${consts_git.user}/${consts_git.repository}/contents/build/index.html?ref=${consts_git.branch}`;
+      const address = `https://api.github.com/repos/${consts_git$1.user}/${consts_git$1.repository}/contents/build/index.html?ref=${consts_git$1.branch}`;
       console.log(`Reloaded ANBT: ${address}`);
       request.open('GET', address);
       request.setRequestHeader('Accept', 'application/vnd.github.3.raw');
@@ -318,7 +318,10 @@
           location.pathname = '/';
         } else {
           localStorage.setItem('anbt_canvasHTML', request.responseText);
-          localStorage.setItem('anbt_canvasHTMLver', versions.newCanvasVersion);
+          localStorage.setItem(
+            'anbt_canvasHTMLver',
+            versions$1.newCanvasVersion
+          );
           localStorage.setItem(
             'anbt_canvasHTML_last_cached',
             new Date().getTime()
@@ -340,7 +343,7 @@
     const panelId = url.match(/sandbox\/(?!\?palette=)#?([^/]+)\/?/);
     const inContest =
       url.match(/contests\/play\//) && document.getElementById('canvas-holder');
-    const versionTitle = `ANBT v${versions.scriptVersion}`;
+    const versionTitle = `ANBT v${versions$1.scriptVersion}`;
     if (inContest) window.onbeforeunload = () => {};
     const normalUrl =
       inSandbox && !inForum
@@ -571,7 +574,7 @@
         player_anchor: playerLink,
         panel_id: panel.id,
         drew: panel.querySelector('img') !== null,
-        comments: 0
+        comments: 0,
       };
       gamePlayers.push(id);
     });
@@ -630,7 +633,7 @@
       if (maxSeenId) {
         seenComments[gameId] = {
           h: hour,
-          id: maxSeenId
+          id: maxSeenId,
         };
       }
       localStorage.setItem('gpe_seenComments', JSON.stringify(seenComments));
@@ -777,7 +780,7 @@
         const panels = getLocalStorageItem('gpe_panelFavorites', {});
         const panel = {
           time: Date.now(),
-          by: parentNode.querySelector('.panel-user a').textContent
+          by: parentNode.querySelector('.panel-user a').textContent,
         };
         panel.userLink = parentNode
           .querySelector('.panel-user a')
@@ -866,7 +869,7 @@
           by: $('.lead a', true)[0].textContent,
           userLink: $('.lead a', true)[0].href.match(
             /\/player\/[^/]+\/[^/]+\//
-          )[0]
+          )[0],
         };
         const id = location.href.match(/\/panel\/[^/]+\/([^/]+)\//)[1];
         const img = $('.gamepanel img');
@@ -1051,7 +1054,7 @@
             delete games[id];
             games[gameId] = {
               title,
-              url
+              url,
             };
             $(`#${id}`).id = gameId;
             const spanId = $(`#${gameId}`).querySelector('span');
@@ -1320,6 +1323,23 @@
     }, 800);
   }
 
+  const consts_git = {
+    user: 'jackemerson',
+    repository: 'Drawception-ANBT',
+    branch: 'development',
+  };
+  const scriptVersion = '2.13.2022.04-dev';
+  const newCanvasVersion = 64;
+  const siteVersion = '4aa2b913';
+  const runtimeVersion = '1ba6bf05';
+  const versions = {
+    __proto__: null,
+    scriptVersion: scriptVersion,
+    newCanvasVersion: newCanvasVersion,
+    siteVersion: siteVersion,
+    runtimeVersion: runtimeVersion,
+  };
+
   const { user, repository, branch } = consts_git;
   function betterSettings() {
     const theForm = $(
@@ -1331,13 +1351,13 @@
         [
           'enableWacom',
           'boolean',
-          'Enable Wacom plugin / pressure sensitivity support'
+          'Enable Wacom plugin / pressure sensitivity support',
         ],
         [
           'fixTabletPluginGoingAWOL',
           'boolean',
-          'Try to prevent Wacom plugin from disappearing'
-        ]
+          'Try to prevent Wacom plugin from disappearing',
+        ],
       ])
     );
     theForm.appendChild(
@@ -1345,57 +1365,57 @@
         [
           'newCanvas',
           'boolean',
-          'New drawing canvas (also allows <a href="http://grompe.org.ru/replayable-drawception/">watching playback</a>)'
+          'New drawing canvas (also allows <a href="http://grompe.org.ru/replayable-drawception/">watching playback</a>)',
         ],
         [
           'submitConfirm',
           'boolean',
-          'Confirm submitting if more than a minute is left'
+          'Confirm submitting if more than a minute is left',
         ],
         ['smoothening', 'boolean', 'Smoothing of strokes'],
         ['hideCross', 'boolean', 'Hide the cross when drawing'],
         [
           'enterToCaption',
           'boolean',
-          'Submit captions (and start games) by pressing Enter'
+          'Submit captions (and start games) by pressing Enter',
         ],
         [
           'backup',
           'boolean',
-          'Save the drawing in case of error and restore it in sandbox'
+          'Save the drawing in case of error and restore it in sandbox',
         ],
         [
           'timeOutSound',
           'boolean',
-          'Warning sound when only a minute is left (normal games)'
+          'Warning sound when only a minute is left (normal games)',
         ],
         [
           'timeOutSoundBlitz',
           'boolean',
-          'Warning sound when only 5 seconds left (blitz)'
+          'Warning sound when only 5 seconds left (blitz)',
         ],
         ['timeOutSoundVolume', 'number', 'Volume of the warning sound, in %'],
         [
           'rememberPosition',
           'boolean',
-          'Show your panel position and track changes in unfinished games list'
+          'Show your panel position and track changes in unfinished games list',
         ],
         ['colorNumberShortcuts', 'boolean', 'Use 0-9 keys to select the color'],
         [
           'colorUnderCursorHint',
           'boolean',
-          'Show the color under the cursor in the palette'
+          'Show the color under the cursor in the palette',
         ],
         [
           'colorDoublePress',
           'boolean',
-          'Double press 0-9 keys to select color without pressing shift'
+          'Double press 0-9 keys to select color without pressing shift',
         ],
         [
           'bookmarkOwnCaptions',
           'boolean',
-          'Automatically bookmark your own captions in case of dustcatchers'
-        ]
+          'Automatically bookmark your own captions in case of dustcatchers',
+        ],
       ])
     );
     theForm.appendChild(
@@ -1403,38 +1423,38 @@
         [
           'localeTimestamp',
           'boolean',
-          `Format timestamps as your system locale (${new Date().toLocaleString()})`
+          `Format timestamps as your system locale (${new Date().toLocaleString()})`,
         ],
         [
           'proxyImgur',
           'boolean',
-          'Replace imgur.com links to filmot.com to load, in case your ISP blocks them'
+          'Replace imgur.com links to filmot.com to load, in case your ISP blocks them',
         ],
         ['ajaxRetry', 'boolean', 'Retry failed AJAX requests'],
         [
           'autoPlay',
           'boolean',
-          'Automatically start replay when watching playback'
+          'Automatically start replay when watching playback',
         ],
         ['autoBypassNSFW', 'boolean', 'Automatically bypass NSFW game warning'],
         ['markStalePosts', 'boolean', 'Mark stale forum posts'],
         [
           'maxCommentHeight',
           'number',
-          'Maximum comments and posts height until directly linked (px, 0 = no limit)'
+          'Maximum comments and posts height until directly linked (px, 0 = no limit)',
         ],
         [
           'useOldFont',
           'boolean',
-          'Use old Nunito font (which is usually bolder and less wiggly)'
+          'Use old Nunito font (which is usually bolder and less wiggly)',
         ],
         ['useOldFontSize', 'boolean', 'Use old, smaller font size'],
         ['markdownTools', 'boolean', 'Markdown tools for messages'],
         [
           'anbtDarkMode',
           'boolean',
-          "Switch between ANBT's and Drawception's dark mode"
-        ]
+          "Switch between ANBT's and Drawception's dark mode",
+        ],
       ])
     );
     theForm.appendChild(
@@ -1442,13 +1462,13 @@
         [
           'newCanvasCSS',
           'longstr',
-          `Custom CSS for new canvas (experimental, <a href="https://github.com/${user}/${repository}/tree/${branch}/newcanvas_styles">get styles here</a>)`
+          `Custom CSS for new canvas (experimental, <a href="https://github.com/${user}/${repository}/tree/${branch}/newcanvas_styles">get styles here</a>)`,
         ],
         [
           'forumHiddenUsers',
           'longstr',
-          'Comma-separated list of user IDs whose forum posts are hidden'
-        ]
+          'Comma-separated list of user IDs whose forum posts are hidden',
+        ],
       ])
     );
     $(
@@ -1478,7 +1498,7 @@
         tryButton.classList.add('btn', 'btn-buy');
         tryButton.innerHTML = '<i class="fas fa-palette"></i> Test it';
         const colours = [
-          ...buttonGrid.parentElement.querySelector('.colors-holder').children
+          ...buttonGrid.parentElement.querySelector('.colors-holder').children,
         ].map(color =>
           color.style.background
             .match(/\d{1,3}/g)
@@ -1507,7 +1527,7 @@
     betterPanel,
     betterPlayer,
     betterSettings,
-    betterStore
+    betterStore,
   };
 
   function bold(
@@ -2141,48 +2161,48 @@
   const markdown = {
     bold: {
       title: 'bold text',
-      execute: bold
+      execute: bold,
     },
     italic: {
       title: 'italic text',
-      execute: italic
+      execute: italic,
     },
     heading: {
       title: 'enlarges/reduces the text',
-      execute: heading
+      execute: heading,
     },
     strikethrough: {
       title: 'strikethrough text',
-      execute: strikethrough
+      execute: strikethrough,
     },
     highlighter: {
       title: 'highlighted text',
-      execute: highlighter
+      execute: highlighter,
     },
     'list-ul': {
       title: 'unordered list',
-      execute: listUl
+      execute: listUl,
     },
     'list-ol': {
       title: 'ordered list',
-      execute: listOl
+      execute: listOl,
     },
     'quote-right': {
       title: 'quote',
-      execute: quoteRight
+      execute: quoteRight,
     },
     code: {
       title: 'block of code',
-      execute: code
+      execute: code,
     },
     link: {
       title: 'insert link',
-      execute: link
+      execute: link,
     },
     image: {
       title: 'insert image',
-      execute: image
-    }
+      execute: image,
+    },
   };
 
   function getSelectedText(event) {
@@ -2394,7 +2414,7 @@
             : ''
         }`,
         '<a href="/settings/" id="menusettings" title="Settings" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item"><span class="fas fa-cog" /></a>',
-        '<a href="/logout" title="Log Out" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item" style="background:#A55"><span class="fas fa-sign-out-alt" style="color:#FBB" /></a>'
+        '<a href="/logout" title="Log Out" class="gpe-wide gpe-btn btn btn-menu navbar-btn navbar-user-item" style="background:#A55"><span class="fas fa-sign-out-alt" style="color:#FBB" /></a>',
       ];
       navbarButtonsList.forEach(button =>
         button.length > 0 ? navbarToggle.appendChild($(button)) : button
@@ -2445,7 +2465,7 @@
     const linkList = [
       '<li><a href="/forums/-/11830/-/">ANBT script</a></li>',
       '<li><a href="http://drawception.wikia.com/">Wiki</a></li>',
-      '<li><a href="http://chat.grompe.org.ru/#drawception">Chat</a> (<a href="https://discord.gg/CNd5KTJ">Discord</a>)</li>'
+      '<li><a href="http://chat.grompe.org.ru/#drawception">Chat</a> (<a href="https://discord.gg/CNd5KTJ">Discord</a>)</li>',
     ];
     const footerLists = $('.footer-main .list-unstyled');
     if (footerLists)

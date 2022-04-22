@@ -5,11 +5,9 @@ import { drawDisplayLinePresto } from './drawDisplayLinePresto'
 
 export function strokeBegin(x, y, left=null, forceEraser=false) {
   if (anbt.locked) return
-
-  
   
   let color;
-  
+
   if (left !== null) {
     anbt.lastPalette = left;
   } else { // in case we call strokeBegin without knowledge of original input, e.g., by altering brush stroke
@@ -19,12 +17,13 @@ export function strokeBegin(x, y, left=null, forceEraser=false) {
   if (forceEraser) {
     color = 'eraser'
   } else {
-    color = anbt.lastPalette ? anbt.colors[0] : anbt.colors[1];
+    color = anbt.colors[!anbt.lastPalette];
+    // color = anbt.lastPalette ? anbt.colors[0] : anbt.colors[1];
     // we've just set lastPalette (though it's global so uhh)
   }
 
-  const cls = color === 'eraser' ? color : null
-  color = color === 'eraser' ? anbt.background : color
+  const cls = color === 'eraser' ? color : null;
+  color = color === 'eraser' ? anbt.background : color;
   anbt.path = createSvgElement('path', {
     class: cls,
     stroke: color,

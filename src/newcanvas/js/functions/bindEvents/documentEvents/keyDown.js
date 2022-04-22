@@ -12,7 +12,7 @@ import { playCommonDown } from '../playCommonDown'
 import { removeEyedropper } from '../removeEyedropper'
 import { updateChooseBackground } from '../updateChooseBackground'
 import { updateColorIndicators } from '../updateColorIndicators'
-import { environment } from '../../../../../versioninfo'
+import { environment } from '../../../../../versionInfo'
 
 
 
@@ -110,15 +110,18 @@ export function keyDown(event) {
     case 'KeyE': {
       if (event.ctrlKey || event.metaKey) return;
       
-      const whichColor = !(anbt.lastPalette ?? 1); // left == 1, but the equivalent color is index 0
+      const whichColor = !(anbt.lastPalette); // left == 1, but its related color is at index 0
       setColor(whichColor, 'eraser');
       updateColorIndicators();
+
       console.log(`Eraser Key, ${anbt.colors[whichColor]}`);
+
       if (anbt.isStroking) {
         strokeEnd()
         const lastPoint = anbt.points[anbt.points.length - 1];
         strokeBegin(lastPoint.x, lastPoint.y)
       }
+
       break;
     }
    

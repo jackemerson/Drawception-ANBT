@@ -28,7 +28,7 @@ export function mouseDown(event) {
       
       event.preventDefault()
       const isLeft = (event.button === MOUSE.LEFT);
-      const eraser = !(getPointerType() !== 3);
+      const eraser = (getPointerType() === 3); // pen tablet eraser
 
       if (anbt.lastPalette !== isLeft) {
         strokeEnd();

@@ -104,7 +104,7 @@
       y: 0,
       width: 600,
       height: 500,
-      fill: anbt.background
+      fill: anbt.background,
     });
     anbt.svg.appendChild(rect);
   }
@@ -117,7 +117,7 @@
         y: 0,
         width: 600,
         height: 500,
-        fill: anbt.background
+        fill: anbt.background,
       })
     );
     anbt.lastRect = anbt.position;
@@ -197,7 +197,7 @@
     const [x, y, z] = [
       (red * 0.4124 + green * 0.3576 + blue * 0.1805) / 0.95047,
       red * 0.2126 + green * 0.7152 + blue * 0.0722,
-      (red * 0.0193 + green * 0.1192 + blue * 0.9505) / 1.08883
+      (red * 0.0193 + green * 0.1192 + blue * 0.9505) / 1.08883,
     ].map(value =>
       value > 0.008856 ? Math.pow(value, 1 / 3) : 7.787 * value + 16 / 116
     );
@@ -264,7 +264,7 @@
         const data = {
           c: lineColor,
           s: lineWidth,
-          p: linePath
+          p: linePath,
         };
         formattedData.push(data);
       }
@@ -339,11 +339,11 @@
           if (good && dist1 / dist2 >= 0.4 && dist1 / dist2 <= 2.5) {
             const t1 = {
               x: previousPoint.x + Math.cos(previousTangent) * dist1 * 0.4,
-              y: previousPoint.y + Math.sin(previousTangent) * dist1 * 0.4
+              y: previousPoint.y + Math.sin(previousTangent) * dist1 * 0.4,
             };
             const t2 = {
               x: currentPoint.x - Math.cos(tangent) * dist2 * 0.4,
-              y: currentPoint.y - Math.sin(tangent) * dist2 * 0.4
+              y: currentPoint.y - Math.sin(tangent) * dist2 * 0.4,
             };
             path.pathSegList.appendItem(
               path.createSVGPathSegCurvetoCubicAbs(
@@ -399,14 +399,14 @@
       xmlns: 'http://www.w3.org/2000/svg',
       version: '1.1',
       width: 600,
-      height: 500
+      height: 500,
     });
     const last = {
       color: '#000000',
       size: 14,
       x: 0,
       y: 0,
-      pattern: 0
+      pattern: 0,
     };
     let points = [];
     const background = `rgb(${bytes[start]}, ${bytes[start + 1]}, ${
@@ -420,7 +420,7 @@
         y: 0,
         width: 600,
         height: 500,
-        fill: background
+        fill: background,
       })
     );
     for (let i = start + 4; i < bytes.length; ) {
@@ -436,7 +436,7 @@
             'stroke-width': last.size,
             'stroke-linejoin': 'round',
             'stroke-linecap': 'round',
-            fill: 'none'
+            fill: 'none',
           });
           if (points.length === 1) {
             path.pathSegList.appendItem(
@@ -475,7 +475,7 @@
                   y: 0,
                   width: 600,
                   height: 500,
-                  fill: last.color === 'eraser' ? background : last.color
+                  fill: last.color === 'eraser' ? background : last.color,
                 })
               );
             }
@@ -570,19 +570,19 @@
       anbt.brushCursor = createSvgElement('circle', {
         'stroke-width': '1',
         stroke: '#000',
-        fill: 'none'
+        fill: 'none',
       });
       anbt.svgDisplay.appendChild(anbt.brushCursor);
       anbt.brushCursor2 = createSvgElement('circle', {
         'stroke-width': '1',
         stroke: '#fff',
-        fill: 'none'
+        fill: 'none',
       });
       anbt.svgDisplay.appendChild(anbt.brushCursor2);
       anbt.eyedropperCursor = createSvgElement('image', {
         width: 16,
         height: 16,
-        visibility: 'hidden'
+        visibility: 'hidden',
       });
       anbt.eyedropperCursor.setAttributeNS(
         'http://www.w3.org/1999/xlink',
@@ -720,7 +720,7 @@
       size: 14,
       x: -1,
       y: -1,
-      pattern: 0
+      pattern: 0,
     };
     svg.childNodes.forEach(element => {
       if (element.nodeName === 'path') {
@@ -802,7 +802,7 @@
       version,
       svgString,
       packUint32be(crc32(version, svgString)),
-      indexEnd
+      indexEnd,
     ].join('');
     anbt.pngBase64 =
       anbt.pngBase64.substr(0, anbt.pngBase64.length - 20) + btoa(custom);
@@ -977,7 +977,7 @@
         (100 + date.getHours() + '').slice(-2),
         (100 + date.getMinutes() + '').slice(-2),
         (100 + date.getSeconds() + '').slice(-2),
-        extension
+        extension,
       ].join('');
       anbt.saveLink.click();
     } else {
@@ -1037,7 +1037,7 @@
     if (forceEraser) {
       color = 'eraser';
     } else {
-      color = anbt.lastPalette ? anbt.colors[0] : anbt.colors[1];
+      color = anbt.colors[!anbt.lastPalette];
     }
     const cls = color === 'eraser' ? color : null;
     color = color === 'eraser' ? anbt.background : color;
@@ -1047,7 +1047,7 @@
       'stroke-width': anbt.size,
       'stroke-linejoin': 'round',
       'stroke-linecap': 'round',
-      fill: 'none'
+      fill: 'none',
     });
     anbt.lastColor = color;
     anbt.path.pattern = anbt.pattern;
@@ -1091,7 +1091,7 @@
       bg: anbt.background,
       p: 1,
       s: 0.7,
-      actions: formatDrawingData(pathList)
+      actions: formatDrawingData(pathList),
     };
     const drawdata = btoa(
       pako
@@ -1148,7 +1148,7 @@
     formData.append(
       'image',
       new Blob([base64ToBytes(anbt.pngBase64.substr(22)).buffer], {
-        type: 'image/png'
+        type: 'image/png',
       })
     );
     formData.append('type', 'file');
@@ -1175,7 +1175,7 @@
       '#0247fe',
       '#ec008c',
       '#8601af',
-      '#fffdc9'
+      '#fffdc9',
     ],
     Sepia: [
       '#402305',
@@ -1189,7 +1189,7 @@
       '#bfa284',
       '#cfb294',
       '#dfc2a4',
-      '#ffe2c4'
+      '#ffe2c4',
     ],
     Grayscale: [
       '#000000',
@@ -1204,7 +1204,7 @@
       '#aaaaaa',
       '#bfbfbf',
       '#d4d4d4',
-      '#e9e9e9'
+      '#e9e9e9',
     ],
     'Black and white': ['#ffffff', '#000000'],
     CGA: [
@@ -1223,7 +1223,7 @@
       '#aa5500',
       '#ffff55',
       '#aaaaaa',
-      '#ffffff'
+      '#ffffff',
     ],
     Gameboy: ['#8bac0f', '#9bbc0f', '#306230', '#0f380f'],
     Neon: [
@@ -1234,7 +1234,7 @@
       '#feac09',
       '#fe0bab',
       '#ad0bfb',
-      '#00abff'
+      '#00abff',
     ],
     Thanksgiving: [
       '#673718',
@@ -1245,7 +1245,7 @@
       '#77785b',
       '#5e6524',
       '#cfb178',
-      '#f5e9ce'
+      '#f5e9ce',
     ],
     Holiday_old: [
       '#3d9949',
@@ -1255,7 +1255,7 @@
       '#fdd017',
       '#00b7f1',
       '#bababa',
-      '#ffffff'
+      '#ffffff',
     ],
     "Valentine's": [
       '#2d1014',
@@ -1268,7 +1268,7 @@
       '#fd8647',
       '#fed067',
       '#ffe4b7',
-      '#fdc0c6'
+      '#fdc0c6',
     ],
     Halloween: [
       '#444444',
@@ -1287,7 +1287,7 @@
       '#724b97',
       '#bef202',
       '#519548',
-      '#b2bb1e'
+      '#b2bb1e',
     ],
     'the blues': [
       '#b6cbe4',
@@ -1298,7 +1298,7 @@
       '#607884',
       '#c19292',
       '#8c2c2c',
-      '#295c6f'
+      '#295c6f',
     ],
     Spring: [
       '#9ed396',
@@ -1311,7 +1311,7 @@
       '#a67e21',
       '#ebbb49',
       '#ffc0cb',
-      '#ffffff'
+      '#ffffff',
     ],
     Beach: [
       '#1ca4d2',
@@ -1323,7 +1323,7 @@
       '#b8a593',
       '#d7cfb9',
       '#dc863e',
-      '#f7dca2'
+      '#f7dca2',
     ],
     'Tide Pool': [
       '#ffe8b9',
@@ -1336,7 +1336,7 @@
       '#53e6ef',
       '#3ad3a8',
       '#1ca4d2',
-      '#2271a2'
+      '#2271a2',
     ],
     'Colors of 2016': [
       '#91a7d0',
@@ -1345,7 +1345,7 @@
       '#776a5f',
       '#d1c2ab',
       '#a39d9d',
-      '#648589'
+      '#648589',
     ],
     Bee: ['#000000', '#7a5c00', '#b58800', '#eab618', '#f6de97', '#ffffff'],
     'Colors of 2017': [
@@ -1356,7 +1356,7 @@
       '#00939a',
       '#59c9d5',
       '#8a9a9a',
-      '#5f7278'
+      '#5f7278',
     ],
     'Fire and Ice': [
       '#520909',
@@ -1368,7 +1368,7 @@
       '#69ddff',
       '#1c8ae5',
       '#0a3fa9',
-      '#040526'
+      '#040526',
     ],
     'Canyon Sunset': [
       '#fce3ca',
@@ -1377,7 +1377,7 @@
       '#af5081',
       '#8e6dae',
       '#5f4a8b',
-      '#2e1b50'
+      '#2e1b50',
     ],
     Juice: [
       '#f3ab54',
@@ -1388,7 +1388,7 @@
       '#fadfb7',
       '#869e3c',
       '#cbdd7e',
-      '#fced95'
+      '#fced95',
     ],
     Tropical: [
       '#f68357',
@@ -1399,7 +1399,7 @@
       '#07f182',
       '#1d6ab2',
       '#12041b',
-      '#2f0946'
+      '#2f0946',
     ],
     'Grimby Grays': [
       '#000000',
@@ -1415,7 +1415,7 @@
       '#c4c8cb',
       '#d7d6d2',
       '#dee1e4',
-      '#f0efeb'
+      '#f0efeb',
     ],
     'DawnBringer 16': [
       '#140c1c',
@@ -1433,7 +1433,7 @@
       '#d2aa99',
       '#6dc2ca',
       '#dad45e',
-      '#deeed6'
+      '#deeed6',
     ],
     'Fury Road': [
       '#020c16',
@@ -1445,7 +1445,7 @@
       '#e29f30',
       '#b56942',
       '#ad3f16',
-      '#893f1d'
+      '#893f1d',
     ],
     Candy: [
       '#06063c',
@@ -1454,7 +1454,7 @@
       '#fffef9',
       '#ff96f8',
       '#ff44d3',
-      '#793abd'
+      '#793abd',
     ],
     Holiday: [
       '#e91434',
@@ -1468,7 +1468,7 @@
       '#6096d3',
       '#a5c4e6',
       '#f7d9f0',
-      '#f6f6f6'
+      '#f6f6f6',
     ],
     Blues: [
       '#929aa8',
@@ -1478,7 +1478,7 @@
       '#284660',
       '#421f29',
       '#232e3f',
-      '#0f1328'
+      '#0f1328',
     ],
     'Sin City': ['#ffffff', '#ff0000', '#000000'],
     'Lucky Clover': [
@@ -1490,7 +1490,7 @@
       '#9bf23e',
       '#40d910',
       '#34900b',
-      '#0c442c'
+      '#0c442c',
     ],
     "D's Exclusive": [
       '#000000',
@@ -1504,7 +1504,7 @@
       '#09a3ec',
       '#12d1ff',
       '#bcf5ff',
-      '#0ee446'
+      '#0ee446',
     ],
     'Retina Burn': ['#bc0bff', '#ff0b11'],
     Easter: [
@@ -1518,7 +1518,7 @@
       '#f4dc7b',
       '#fdfabd',
       '#a1ef85',
-      '#ddf7a8'
+      '#ddf7a8',
     ],
     Neapolitan: ['#3f3245', '#ff5c98', '#ecb2a4', '#fff7e1'],
     Lemonade: [
@@ -1529,7 +1529,7 @@
       '#ff7d91',
       '#ffaaa5',
       '#ffd2af',
-      '#ffebaa'
+      '#ffebaa',
     ],
     'School Pen': ['#07207a', '#000000', '#d8110c', '#097536', '#fbfcfd'],
     Dimmed: [
@@ -1541,7 +1541,7 @@
       '#221b30',
       '#722c31',
       '#441a23',
-      '#1c0b11'
+      '#1c0b11',
     ],
     Treasure: [
       '#e8c4b5',
@@ -1551,7 +1551,7 @@
       '#c8832a',
       '#b3454d',
       '#7c3035',
-      '#412a23'
+      '#412a23',
     ],
     'Witches Brew': [
       '#e9eeae',
@@ -1560,7 +1560,7 @@
       '#516374',
       '#373a55',
       '#271d3a',
-      '#100b16'
+      '#100b16',
     ],
     'Wilting Rose': [
       '#311e31',
@@ -1571,7 +1571,7 @@
       '#643241',
       '#b4556e',
       '#c8aac8',
-      '#e6c3c3'
+      '#e6c3c3',
     ],
     Frosty: [
       '#aedee3',
@@ -1582,7 +1582,7 @@
       '#4f352f',
       '#426277',
       '#7d849b',
-      '#f2f3f7'
+      '#f2f3f7',
     ],
     'Clown Town': [
       '#ec4848',
@@ -1594,8 +1594,8 @@
       '#546d83',
       '#4450db',
       '#51ceb1',
-      '#e1f1f2'
-    ]
+      '#e1f1f2',
+    ],
   };
 
   const anbt = {
@@ -1604,7 +1604,7 @@
       xmlns: 'http://www.w3.org/2000/svg',
       version: '1.1',
       width: '600',
-      height: '500'
+      height: '500',
     }),
     canvas: document.createElement('canvas'),
     canvasDisplay: document.createElement('canvas'),
@@ -1612,7 +1612,7 @@
       version: '1.1',
       width: '600',
       height: '500',
-      'pointer-events': 'none'
+      'pointer-events': 'none',
     }),
     path: null,
     points: null,
@@ -1624,7 +1624,7 @@
     isFocused: false,
     size: 14,
     smoothening: 1,
-    lastPalette: null,
+    lastPalette: 1,
     palette: palettes.Normal,
     patternCache: {},
     delay: 100,
@@ -1673,7 +1673,7 @@
     lock,
     unlock,
     formatDrawingData,
-    uploadToDrawception
+    uploadToDrawception,
   };
 
   const globals = {
@@ -1682,7 +1682,7 @@
     lastTouch: {},
     lastSeenColorToHighlight: anbt.background,
     brushSizes: [2, 6, 14, 42],
-    timerStart: 0
+    timerStart: 0,
   };
 
   let incrementalSize = Number(anbt.size);
@@ -1890,7 +1890,7 @@
         break;
       case 'KeyE': {
         if (event.ctrlKey || event.metaKey) return;
-        const whichColor = !(anbt.lastPalette ?? 1);
+        const whichColor = !anbt.lastPalette;
         setColor(whichColor, 'eraser');
         updateColorIndicators();
         console.log(`Eraser Key, ${anbt.colors[whichColor]}`);
@@ -2179,7 +2179,7 @@
     theme_witches_brew: ['Witches Brew', '#100b16'],
     theme_wilting_rose: ['Wilting Rose', '#e6c3c3'],
     theme_frosty: ['Frosty', '#f2f3f7'],
-    theme_clown_town: ['Clown Town', '#e1f1f2']
+    theme_clown_town: ['Clown Town', '#e1f1f2'],
   };
 
   function setPaletteByName(name, customColors) {
@@ -2319,7 +2319,7 @@
       if (!anbt.eyedropperActive && anbt.isStroking && event.buttons & 3) {
         event.preventDefault();
         const isLeft = event.button === MOUSE.LEFT;
-        const eraser = !(getPointerType() !== 3);
+        const eraser = getPointerType() === 3;
         if (anbt.lastPalette !== isLeft) {
           strokeEnd();
           strokeBegin(x, y, isLeft, eraser);
@@ -2459,7 +2459,6 @@
       scale += event.deltaY * -0.02;
       let delta = shift + scale;
       let step = Math.min(Math.max(delta, -1), 1);
-      console.log(scale, shift, step, event);
       if (Math.abs(step) === 1) {
         scale = 0;
         shift = scale;
@@ -2599,7 +2598,7 @@
     const caption = window.gameInfo.caption;
     games[window.gameInfo.gameId] = {
       time: Date.now(),
-      caption: caption ? decodeHTML(caption) : ''
+      caption: caption ? decodeHTML(caption) : '',
     };
     localStorage.setItem('gpe_gameBookmarks', JSON.stringify(games));
   }
@@ -2625,20 +2624,20 @@
     const { inContest, gameInfo, drawingAborted, versionTitle } = window;
     if (inContest && !drawingAborted) {
       ajax('POST', '/contests/exit.json', {
-        load: () => alert('You have missed your contest.')
+        load: () => alert('You have missed your contest.'),
       });
     }
     if (gameInfo.drawFirst && !drawingAborted) {
       ajax('POST', '/play/abort-start.json', {
         obj: {
-          game_token: gameInfo.gameId
+          game_token: gameInfo.gameId,
         },
         load: () =>
           alert('You have missed your Draw First game.\nIt has been aborted.'),
         error: () =>
           alert(
             'You have missed your Draw First game.\nI tried aborting it, but an error occured. :('
-          )
+          ),
       });
     }
     globals.timerStart = Date.now();
@@ -2669,7 +2668,7 @@
         error: () => {
           ID('exit').disabled = false;
           alert('Server error. :( Try again?');
-        }
+        },
       });
       return;
     }
@@ -2678,7 +2677,7 @@
       ID('exit').disabled = true;
       ajax('POST', '/play/abort-start.json', {
         obj: {
-          game_token: gameInfo.gameId
+          game_token: gameInfo.gameId,
         },
         load: () => {
           ID('exit').disabled = false;
@@ -2689,7 +2688,7 @@
         error: () => {
           ID('exit').disabled = false;
           alert('Server error. :( Try again?');
-        }
+        },
       });
       return;
     }
@@ -2697,12 +2696,12 @@
     ID('exit').disabled = true;
     ajax('POST', '/play/exit.json', {
       obj: {
-        game_token: gameInfo.gameId
+        game_token: gameInfo.gameId,
       },
       load: () => {
         ID('exit').disabled = false;
         exitToSandbox();
-      }
+      },
     });
   }
 
@@ -2716,7 +2715,7 @@
     doc.body.innerHTML = html;
     const drawapp = doc.querySelector('draw-app-svg') ||
       doc.querySelector('describe') || {
-        getAttribute: () => false
+        getAttribute: () => false,
       };
     const getElement = query => doc.querySelector(query);
     return {
@@ -2748,7 +2747,7 @@
       ),
       notLoggedIn: getElement('form.form-login') !== null,
       limitReached: false,
-      html
+      html,
     };
   }
 
@@ -2922,16 +2921,16 @@
         window.gameInfo = response
           ? extractInfoFromHTML(response)
           : {
-              error: 'Server returned a blank response :('
+              error: 'Server returned a blank response :(',
             };
         handlePlayParameters();
       },
       error: response => {
         window.gameInfo = {
-          error: `Server error: ${response.statusText}`
+          error: `Server error: ${response.statusText}`,
         };
         handlePlayParameters();
-      }
+      },
     });
   }
 
@@ -2939,12 +2938,12 @@
     if (!confirm('Report this panel?')) return;
     ajax('POST', '/play/flag.json', {
       obj: {
-        game_token: window.gameInfo.gameId
+        game_token: window.gameInfo.gameId,
       },
       load: () => {
         ID('report').disabled = false;
         getParametersFromPlay();
-      }
+      },
     });
   }
 
@@ -2957,13 +2956,13 @@
     ID('skip').disabled = true;
     ajax('POST', '/play/skip.json', {
       obj: {
-        game_token: window.gameInfo.gameId
+        game_token: window.gameInfo.gameId,
       },
       load: () => getParametersFromPlay(),
       error: () => {
         ID('skip').disabled = false;
         getParametersFromPlay();
-      }
+      },
     });
   }
 
@@ -2980,7 +2979,7 @@
     games[gameInfo.gameId] = {
       time: Date.now(),
       caption: `"${title}"`,
-      own: true
+      own: true,
     };
     localStorage.setItem('gpe_gameBookmarks', JSON.stringify(games));
   }
@@ -3000,14 +2999,14 @@
     ajax('POST', url, {
       obj: {
         game_token: gameInfo.gameId,
-        title
+        title,
       },
       load: response => {
         try {
           response = JSON.parse(response);
         } catch (e) {
           response = {
-            error: response
+            error: response,
           };
         }
         if (response.error) {
@@ -3033,7 +3032,7 @@
       error: () => {
         ID('submitcaption').disabled = false;
         alert('Server error. :( Try again?');
-      }
+      },
     });
   }
 
@@ -3065,7 +3064,7 @@
       bg: anbt.background,
       p: 1,
       s: 0.7,
-      actions: formatDrawingData(pathList)
+      actions: formatDrawingData(pathList),
     };
     const drawdata = btoa(
       pako
@@ -3075,14 +3074,14 @@
     ajax('POST', url, {
       obj: {
         game_token: gameInfo.gameId,
-        drawdata
+        drawdata,
       },
       load: response => {
         try {
           response = JSON.parse(response);
         } catch (e) {
           response = {
-            error: response
+            error: response,
           };
         }
         if (response.error) {
@@ -3108,7 +3107,7 @@
       error: () => {
         ID('submit').disabled = false;
         alert('Server error. :( Try again?');
-      }
+      },
     });
   }
 
@@ -3118,7 +3117,7 @@
     ID('timeplus').disabled = true;
     ajax('POST', '/play/exit.json', {
       obj: {
-        game_token: gameInfo.gameId
+        game_token: gameInfo.gameId,
       },
       load: () => {
         ajax('GET', `/play/${gameInfo.gameId}/?${Date.now()}`, {
@@ -3127,20 +3126,20 @@
             gameInfo = response
               ? extractInfoFromHTML(response)
               : {
-                  error: 'Server returned a blank response :('
+                  error: 'Server returned a blank response :(',
                 };
             globals.timerStart = Date.now() + 1000 * gameInfo.timeLeft;
           },
           error: () => {
             ID('timeplus').disabled = false;
             alert('Server error. :( Try again?');
-          }
+          },
         });
       },
       error: () => {
         ID('timeplus').disabled = false;
         alert('Server error. :( Try again?');
-      }
+      },
     });
   }
 
@@ -3236,7 +3235,7 @@
           },
           error: () => {
             alert('Error loading the panel page. Please try again.');
-          }
+          },
         });
       } else {
         ajax('GET', '/sandbox/', {
@@ -3244,7 +3243,7 @@
             window.gameInfo = extractInfoFromHTML(response);
             handleSandboxParameters();
           },
-          error: () => {}
+          error: () => {},
         });
         if (options.backup) {
           const pngdata = localStorage.getItem('anbt_drawingbackup_newcanvas');

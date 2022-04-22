@@ -72,7 +72,7 @@ export const anbt = {
   isFocused: false,
   size: 14,
   smoothening: 1,
-  lastPalette: null, // actually left/right colour picker, not palette
+  lastPalette: 1, // actually last mouse button, not palette
   palette: palettes.Normal,
   patternCache: {},
   delay: 100,
