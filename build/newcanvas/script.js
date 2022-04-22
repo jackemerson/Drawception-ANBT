@@ -989,6 +989,12 @@
   function setColor(number, color) {
     anbt.colors[Number(number)] = color;
   }
+  function getColor(number) {
+    const index = Number(number);
+    const color = anbt.colors[index] ?? null;
+    console.error(`No color stored at: ${number}`);
+    return color;
+  }
 
   function setSeekbarMove(func) {
     anbt.seekbarMove = func;
@@ -1037,7 +1043,7 @@
     if (forceEraser) {
       color = 'eraser';
     } else {
-      color = anbt.colors[!anbt.lastPalette];
+      color = getColor(!anbt.lastPalette);
     }
     const cls = color === 'eraser' ? color : null;
     color = color === 'eraser' ? anbt.background : color;
@@ -1893,7 +1899,7 @@
         const whichColor = !anbt.lastPalette;
         setColor(whichColor, 'eraser');
         updateColorIndicators();
-        console.log(`Eraser Key, ${anbt.colors[whichColor]}`);
+        console.log(`Eraser Key, ${getColor(whichColor)}`);
         if (anbt.isStroking) {
           strokeEnd();
           const lastPoint = anbt.points[anbt.points.length - 1];

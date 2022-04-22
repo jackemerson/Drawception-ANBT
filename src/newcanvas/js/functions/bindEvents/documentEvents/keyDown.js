@@ -2,7 +2,7 @@ import { anbt } from '../../../anbt'
 import { globals } from '../../../globals'
 import { redo } from '../../anbt/redo'
 import { setBackground } from '../../anbt/setBackground'
-import { setColor } from '../../anbt/setColor'
+import { getColor, setColor } from '../../anbt/setColor'
 import { showEyedropperCursor } from '../../anbt/showEyedropperCursor'
 import { strokeBegin } from '../../anbt/strokeBegin'
 import { strokeEnd } from '../../anbt/strokeEnd'
@@ -110,11 +110,11 @@ export function keyDown(event) {
     case 'KeyE': {
       if (event.ctrlKey || event.metaKey) return;
       
-      const whichColor = !(anbt.lastPalette); // left == 1, but its related color is at index 0
+      const whichColor = !anbt.lastPalette; // left == 1, but its related color is at index 0
       setColor(whichColor, 'eraser');
       updateColorIndicators();
 
-      console.log(`Eraser Key, ${anbt.colors[whichColor]}`);
+      console.log(`Eraser Key, ${getColor(whichColor)}`);
 
       if (anbt.isStroking) {
         strokeEnd()

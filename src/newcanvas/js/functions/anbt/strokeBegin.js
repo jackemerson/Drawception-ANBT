@@ -2,6 +2,7 @@ import { anbt } from '../../anbt'
 import { createSvgElement } from '../createSvgElement'
 import { drawDisplayLine } from './drawDisplayLine'
 import { drawDisplayLinePresto } from './drawDisplayLinePresto'
+import { getColor } from '../anbt/setColor';
 
 export function strokeBegin(x, y, left=null, forceEraser=false) {
   if (anbt.locked) return
@@ -17,7 +18,7 @@ export function strokeBegin(x, y, left=null, forceEraser=false) {
   if (forceEraser) {
     color = 'eraser'
   } else {
-    color = anbt.colors[!anbt.lastPalette];
+    color = getColor(!anbt.lastPalette);
     // color = anbt.lastPalette ? anbt.colors[0] : anbt.colors[1];
     // we've just set lastPalette (though it's global so uhh)
   }
