@@ -1701,7 +1701,6 @@
       .match(/\d+/)[0];
     setSize(Number(size));
     resetIncrement();
-    console.log(`Size reset: ${incrementalSize}, size ${anbt.size}`);
     const element = ID('tools').querySelector('.sel');
     if (element) element.classList.remove('sel');
     event.currentTarget.classList.add('sel');
@@ -1933,7 +1932,7 @@
           }
         }
         break;
-      case 'space':
+      case 'Space':
         if (event.altKey || event.shiftKey) return;
         if (!event.ctrlKey && !event.metaKey) return;
         playCommonDown(event);
@@ -1954,6 +1953,9 @@
         }
       } else {
         let index = digit;
+        console.log(
+          `Shift modifier: ${event.shiftKey}, ${index - 8} -> ${index}`
+        );
         if (
           event.shiftKey ||
           (options.colorDoublePress && anbt.previousColorKey === index)

@@ -154,7 +154,7 @@ export function keyDown(event) {
       }
       break;
     
-    case 'space':
+    case 'Space':
       if (event.altKey || event.shiftKey) return;
       if (!event.ctrlKey && !event.metaKey) return;
       playCommonDown(event);
@@ -188,6 +188,7 @@ export function keyDown(event) {
     } else {
       let index = digit;
       // shift modifier
+      console.log(`Shift modifier: ${event.shiftKey}, ${index-8} -> ${index}`);
       if (event.shiftKey ||
          (options.colorDoublePress && anbt.previousColorKey === index )) {
         

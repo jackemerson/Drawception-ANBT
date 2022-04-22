@@ -16,7 +16,7 @@ export function changeBrushSize(event) {
 
   setSize(Number(size))
   resetIncrement()
-  console.log(`Size reset: ${incrementalSize}, size ${anbt.size}`);
+  // console.log(`Size reset: ${incrementalSize}, size ${anbt.size}`);
 
   const element = ID('tools').querySelector('.sel')
   if (element) element.classList.remove('sel')
