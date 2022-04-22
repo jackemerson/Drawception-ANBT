@@ -1999,8 +1999,11 @@
             if (color !== 'eraser') setBackground(color);
             updateChooseBackground(false);
           } else {
-            const colorPick = !anbt.lastPalette;
-            setColor(colorPick, color);
+            let colorIndex = 0;
+            if (event.buttons & 3) {
+              colorIndex = !anbt.lastPalette;
+            }
+            setColor(colorIndex, color);
             updateColorIndicators();
           }
         }
