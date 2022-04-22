@@ -10,7 +10,7 @@
     "postbuild": "npm run clean",
     "devbuild": "npm run build -- --environment BUILD:development",
     "devpush": "npm run devbuild && git add . && git commit -m \"Building incoming version.\"",
-    "postdevpush": "npm version prerelease --preid=dev"
+    "postdevpush": "npm version prerelease --preid=dev && git push"
   },
   "author": "GromPE",
   "license": "ISC",
