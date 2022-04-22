@@ -1970,7 +1970,8 @@
           return;
         }
       } else {
-        let index = (digit - 1) % 10;
+        const mod = (a, n) => ((a % n) + n) % n;
+        let index = mod(digit - 1, 10);
         if (
           event.shiftKey ||
           (options.colorDoublePress && anbt.previousColorKey === index)
