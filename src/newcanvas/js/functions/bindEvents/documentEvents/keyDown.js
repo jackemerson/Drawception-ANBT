@@ -174,7 +174,7 @@ export function keyDown(event) {
 
   if (event.shiftKey) { // the modifier will change the key value, fall back to code
     capture = event.code.search(codeRegex);
-    if (capture !== -1) { digit = event.code[event.code.length - 1]; }
+    if (capture !== -1) { digit = Number(event.code[event.code.length - 1]); }
   } else {
     capture = event.key.search(keyRegex);
     if (capture !== -1) { digit = Number(event.key); }
@@ -198,13 +198,12 @@ export function keyDown(event) {
     } else {
       let index = digit;
       // shift modifier
-      console.log(`Shift modifier: ${event.shiftKey}, ${index-8} -> ${index}`);
       if (event.shiftKey ||
          (options.colorDoublePress && anbt.previousColorKey === index )) {
         
         index += 8; // ??? (oh shift modifier, to access colours beyond ~9?)
         anbt.previousColorKey = index;
-        console.log(`Shift modifier: ${event.shiftKey}, ${index-8} -> ${index}`);
+        console.log(`Shift modifier: ${event.code}, ${index-8} -> ${index}`);
       }
 
       if (options.colorDoublePress) {
