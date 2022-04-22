@@ -7,6 +7,8 @@ export function setColor(number, color) {
 export function getColor(number) {
   const index = Number(number);
   const color = anbt.colors[index] ?? null;
-  console.error(`No color stored at: ${number}`);
+  if (color === null) {
+    console.error(`No color stored at: ${number}`);
+  }
   return color;
 }
