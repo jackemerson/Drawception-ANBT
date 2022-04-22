@@ -139,6 +139,7 @@ export default [
   {
     input: 'src/extension.js',
     output: {
+      sourcemap: true,
       format: 'iife',
       file: 'build/drawception-anbt.user.js',
       banner: banner(CONSTANTS),
