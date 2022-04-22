@@ -1,7 +1,7 @@
 import { $ } from '../selector'
 import { addGroup } from '../settings/addGroup'
 import { updateScriptSettings } from '../settings/updateScriptSettings'
-import { git } from '../../../versioninfo';
+import { git } from '../../../versionInfo';
 const { user, repository, branch } = git;
 
 export function betterSettings() {

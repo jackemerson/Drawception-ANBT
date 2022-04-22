@@ -4,9 +4,9 @@
   "description": "ANBT is a script that will improve the comfort in drawing.",
   "main": "index.js",
   "scripts": {
-    "prebuild": "del-cli ./src/versioninfo.js",
+    "prebuild": "del-cli ./src/versionInfo.js",
     "build": "rollup -c",
-    "postbuild": "del-cli ./src/versioninfo.js"
+    "postbuild": "del-cli ./src/versionInfo.js"
   },
   "author": "GromPE",
   "license": "ISC",

@@ -1,6 +1,6 @@
 import { betterPages } from '../betterPages'
 import { options } from '../options'
-import { versions } from '../../versioninfo';
+import { versions } from '../../versionInfo';
 import { addMarkdownTools } from './addMarkdownTools'
 import { addStyle } from './addStyle'
 import { setCookie } from './cookie/setCookie'

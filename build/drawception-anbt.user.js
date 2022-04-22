@@ -266,21 +266,21 @@
     );
   }
 
-  const consts_git$1 = {
+  const consts_git = {
     user: 'jackemerson',
     repository: 'Drawception-ANBT',
     branch: 'development',
   };
-  const scriptVersion$1 = '2.13.2022.04-dev';
-  const newCanvasVersion$1 = 64;
-  const siteVersion$1 = '4aa2b913';
-  const runtimeVersion$1 = '1ba6bf05';
-  const versions$1 = {
+  const scriptVersion = '2.13.2022.04-dev';
+  const newCanvasVersion = 64;
+  const siteVersion = '4aa2b913';
+  const runtimeVersion = '1ba6bf05';
+  const versions = {
     __proto__: null,
-    scriptVersion: scriptVersion$1,
-    newCanvasVersion: newCanvasVersion$1,
-    siteVersion: siteVersion$1,
-    runtimeVersion: runtimeVersion$1,
+    scriptVersion: scriptVersion,
+    newCanvasVersion: newCanvasVersion,
+    siteVersion: siteVersion,
+    runtimeVersion: runtimeVersion,
   };
 
   function setupNewCanvas(inSandbox, url) {
@@ -302,11 +302,11 @@
     if (
       reload ||
       !canvasHTML ||
-      canvasHTMLVersion < versions$1.newCanvasVersion ||
+      canvasHTMLVersion < versions.newCanvasVersion ||
       canvasHTML.length < 10000
     ) {
       const request = new XMLHttpRequest();
-      const address = `https://api.github.com/repos/${consts_git$1.user}/${consts_git$1.repository}/contents/build/index.html?ref=${consts_git$1.branch}`;
+      const address = `https://api.github.com/repos/${consts_git.user}/${consts_git.repository}/contents/build/index.html?ref=${consts_git.branch}`;
       console.log(`Reloaded ANBT: ${address}`);
       request.open('GET', address);
       request.setRequestHeader('Accept', 'application/vnd.github.3.raw');
@@ -318,10 +318,7 @@
           location.pathname = '/';
         } else {
           localStorage.setItem('anbt_canvasHTML', request.responseText);
-          localStorage.setItem(
-            'anbt_canvasHTMLver',
-            versions$1.newCanvasVersion
-          );
+          localStorage.setItem('anbt_canvasHTMLver', versions.newCanvasVersion);
           localStorage.setItem(
             'anbt_canvasHTML_last_cached',
             new Date().getTime()
@@ -343,7 +340,7 @@
     const panelId = url.match(/sandbox\/(?!\?palette=)#?([^/]+)\/?/);
     const inContest =
       url.match(/contests\/play\//) && document.getElementById('canvas-holder');
-    const versionTitle = `ANBT v${versions$1.scriptVersion}`;
+    const versionTitle = `ANBT v${versions.scriptVersion}`;
     if (inContest) window.onbeforeunload = () => {};
     const normalUrl =
       inSandbox && !inForum
@@ -1322,23 +1319,6 @@
       fadeOut($('#anbtSettingsOK'), 'slow');
     }, 800);
   }
-
-  const consts_git = {
-    user: 'jackemerson',
-    repository: 'Drawception-ANBT',
-    branch: 'development',
-  };
-  const scriptVersion = '2.13.2022.04-dev';
-  const newCanvasVersion = 64;
-  const siteVersion = '4aa2b913';
-  const runtimeVersion = '1ba6bf05';
-  const versions = {
-    __proto__: null,
-    scriptVersion: scriptVersion,
-    newCanvasVersion: newCanvasVersion,
-    siteVersion: siteVersion,
-    runtimeVersion: runtimeVersion,
-  };
 
   const { user, repository, branch } = consts_git;
   function betterSettings() {
