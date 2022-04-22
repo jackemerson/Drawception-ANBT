@@ -1889,10 +1889,15 @@
         if (ID('setbackground').hidden) return;
         updateChooseBackground(!globals.chooseBackground);
         break;
-      case 'E':
+      case 'KeyE':
         if (event.ctrlKey || event.metaKey) return;
-        setColor(0, 'eraser');
+        setColor(anbt.lastPalette ?? 0, 'eraser');
         updateColorIndicators();
+        if (anbt.isStroking) {
+          strokeEnd();
+          const lastPoint = anbt.points[anbt.points.length - 1];
+          strokeBegin(lastPoint.x, lastPoint.y);
+        }
         break;
       case 'BracketLeft':
       case 'NumpadSubtract':
@@ -1923,10 +1928,9 @@
         if (!event.ctrlKey && !event.metaKey) return;
         playCommonDown(event);
         break;
-      default: {
+      default:
         codeMatch = false;
         break;
-      }
     }
     let regex = /^\d$/;
     if (event.key.search(regex) === 0 && options.colorNumberShortcuts) {

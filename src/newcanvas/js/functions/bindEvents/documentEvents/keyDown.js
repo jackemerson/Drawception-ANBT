@@ -45,7 +45,6 @@ export function keyDown(event) {
 
     /* EYEDROPPER - Alt keys, I*/
     
-    // eslint-disable-next-line no-fallthrough
     case 'AltLeft':
     case 'AltRight':
      /********************************
@@ -57,7 +56,7 @@ export function keyDown(event) {
         // The following is needed in case of Alt+Tab causing eyedropper to be stuck
         ID('svgContainer').addEventListener('mousemove', removeEyedropper);
       }
-    // eslint-disable-next-line no-fallthrough
+      // falls through
     case 'KeyI': {
 
         const active = anbt.eyedropperActive; // get eyedropper state
@@ -78,7 +77,7 @@ export function keyDown(event) {
     /* UNDO */
     case 'Backspace':
       if (!anbt.unsaved) return;
-    // eslint-disable-next-line no-fallthrough
+      // falls through
     case 'KeyZ':
       ID('play').classList.remove('pause');
       undo();
@@ -114,10 +113,16 @@ export function keyDown(event) {
       break;
 
     /* Eraser */
-    case 'E':
+    case 'KeyE':
       if (event.ctrlKey || event.metaKey) return;
-      setColor(0, 'eraser');
+      setColor(anbt.lastPalette ?? 0, 'eraser');
       updateColorIndicators();
+
+      if (anbt.isStroking) {
+        strokeEnd()
+        const lastPoint = anbt.points[anbt.points.length - 1];
+        strokeBegin(lastPoint.x, lastPoint.y)
+      }
       break;
 
    
@@ -156,10 +161,9 @@ export function keyDown(event) {
       playCommonDown(event);
       break;
 
-    default: {// no match
+    default: // no match
       codeMatch = false;
       break;
-    }
   }
   
 
