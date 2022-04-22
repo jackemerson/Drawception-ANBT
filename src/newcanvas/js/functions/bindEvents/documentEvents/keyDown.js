@@ -167,11 +167,21 @@ export function keyDown(event) {
   
 
   // Handle Digit Inputs
-  let regex = /^\d$/; // detects a singular digit, else won't match
+  let keyRegex = /^\d$/; // detects a singular digit, else won't match
+  let codeRegex = /^(Numpad|Digit)[\d]$/; // Numpad or Digit
+  let capture;
+  let digit = -1;
 
-  if (event.key.search(regex) === 0 && options.colorNumberShortcuts) { // returns index match, or -1 on no match
+  if (event.shiftKey) { // the modifier will change the key value, fall back to code
+    capture = event.code.search(codeRegex);
+    if (capture !== -1) { digit = event.code[capture]; }
+  } else {
+    capture = event.key.search(keyRegex);
+    digit = Number(event.key);
+  }
 
-    const digit = Number(event.key);
+  if (digit !== -1 && options.colorNumberShortcuts) { // returns index match, or -1 on no match
+
     keyMatch = true;
 
     // if ( ctrlKey || metaKey || !options.colorNumberShortcuts) return;
