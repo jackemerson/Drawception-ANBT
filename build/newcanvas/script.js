@@ -2311,12 +2311,22 @@
   function mouseDown(event) {
     const { options } = window;
     if (event.button === MOUSE.LEFT || event.button === MOUSE.RIGHT) {
-      if (anbt.isStroking) return mouseUp(event);
       if (checkPlayingAndStop()) return;
-      event.preventDefault();
       globals.rectangle = event.currentTarget.getBoundingClientRect();
       const x = event.pageX - globals.rectangle.left - pageXOffset;
       const y = event.pageY - globals.rectangle.top - pageYOffset;
+      if (!anbt.eyedropperActive && anbt.isStroking && event.buttons & 3) {
+        event.preventDefault();
+        const left = event.button === MOUSE.LEFT;
+        const eraser = !(getPointerType() !== 3);
+        if (anbt.lastPalette !== left) {
+          strokeEnd();
+          strokeBegin(x, y, event.button, eraser);
+          if (options.hideCross) ID('svgContainer').classList.add('hidecursor');
+        }
+        return;
+      }
+      event.preventDefault();
       if (anbt.eyedropperActive) {
         let primary = event.button === MOUSE.LEFT ? 0 : 1;
         setColor(primary, eyedropper(x, y));
