@@ -1948,7 +1948,7 @@
     if (event.shiftKey) {
       capture = event.code.search(codeRegex);
       if (capture !== -1) {
-        digit = event.code[event.code.length - 1];
+        digit = Number(event.code[event.code.length - 1]);
       }
     } else {
       capture = event.key.search(keyRegex);
@@ -1966,9 +1966,6 @@
         }
       } else {
         let index = digit;
-        console.log(
-          `Shift modifier: ${event.shiftKey}, ${index - 8} -> ${index}`
-        );
         if (
           event.shiftKey ||
           (options.colorDoublePress && anbt.previousColorKey === index)
@@ -1976,7 +1973,7 @@
           index += 8;
           anbt.previousColorKey = index;
           console.log(
-            `Shift modifier: ${event.shiftKey}, ${index - 8} -> ${index}`
+            `Shift modifier: ${event.code}, ${index - 8} -> ${index}`
           );
         }
         if (options.colorDoublePress) {
