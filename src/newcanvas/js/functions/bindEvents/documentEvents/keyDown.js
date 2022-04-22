@@ -224,9 +224,12 @@ export function keyDown(event) {
           if (color !== 'eraser') setBackground(color)
           updateChooseBackground(false)
         } else {
-          const colorPick = !(anbt.lastPalette); // invert as Left click relates to index 0 colour
-          setColor(colorPick, color)
-          updateColorIndicators()
+          let colorIndex = 0; // left
+          // if either button is still pressed
+          if (event.buttons & 3) { colorIndex = !(anbt.lastPalette); } // ! so Left click matches index 0 colour
+          
+          setColor(colorIndex, color);
+          updateColorIndicators();
         }
       }
 
