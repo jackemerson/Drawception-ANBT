@@ -1006,16 +1006,20 @@
     rectangle: {},
     touchSingle: false,
     lastTouch: {},
-    lastSeenColorToHighlight: anbt.background,
+    lastSeenColorToHighlight: null,
     brushSizes: [2, 6, 14, 42],
     timerStart: 0,
   };
+
+  function getBrushIndex(size) {
+    return globals.brushSizes.indexOf(size);
+  }
 
   function setSize(size) {
     anbt.size = size;
     const element = ID('tools').querySelector('.sel');
     if (element) element.classList.remove('sel');
-    const index = globals.brushSizes.indexOf(size);
+    const index = getBrushIndex(size);
     ID(`brush${index}`)?.classList.add('sel');
     moveCursor();
   }
@@ -2389,6 +2393,7 @@
     moveCursor(x, y);
     if (options.colorUnderCursorHint && !anbt.isStroking) {
       const color = eyedropper(x, y);
+      globals.lastSeenColorToHighlight ??= anbt.background;
       if (globals.lastSeenColorToHighlight !== color) {
         const element = ID('colors').querySelector('b.hint');
         if (element) element.classList.remove('hint');

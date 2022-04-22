@@ -1,6 +1,6 @@
 {
   "parserOptions": {
-    "ecmaVersion": 11, // 2020
+    "ecmaVersion": 12, // 2021
     "sourceType": "module",
     "ecmaFeatures": {}
   },
