@@ -115,7 +115,7 @@ export function keyDown(event) {
     /* Eraser */
     case 'KeyE':
       if (event.ctrlKey || event.metaKey) return;
-      setColor(anbt.lastPalette ?? 0, 'eraser');
+      setColor(!(anbt.lastPalette ?? 1), 'eraser');
       updateColorIndicators();
 
       if (anbt.isStroking) {
@@ -208,7 +208,7 @@ export function keyDown(event) {
           if (color !== 'eraser') setBackground(color)
           updateChooseBackground(false)
         } else {
-          setColor(anbt.lastPalette ?? 0, color)
+          setColor(!(anbt.lastPalette ?? 1), color)
           updateColorIndicators()
         }
       }
