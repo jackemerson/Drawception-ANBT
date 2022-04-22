@@ -196,7 +196,9 @@ export function keyDown(event) {
       }
 
     } else {
-      let index = (digit - 1) % 10; // offset and normalise (-1 -> 9)
+      // javascript doesn't treat % as modulo, just remainder
+      const mod = (a, n) => ((a % n ) + n ) % n;
+      let index = mod((digit - 1), 10); // offset and normalise (-1 -> 9)
       // shift modifier
       if (event.shiftKey ||
          (options.colorDoublePress && anbt.previousColorKey === index )) {
