@@ -2118,17 +2118,19 @@
         break;
     }
     let keyRegex = /^\d$/;
-    let codeRegex = /^(Numpad|Digit)[\d]$/;
+    let codeRegex = /^(Numpad|Digit)([\d])$/;
     let capture;
     let digit = -1;
     if (event.shiftKey) {
       capture = event.code.search(codeRegex);
       if (capture !== -1) {
-        digit = event.code[capture];
+        digit = event.code[event.code.length - 1];
       }
     } else {
       capture = event.key.search(keyRegex);
-      digit = Number(event.key);
+      if (capture !== -1) {
+        digit = Number(event.key);
+      }
     }
     if (digit !== -1 && options.colorNumberShortcuts) {
       keyMatch = true;
