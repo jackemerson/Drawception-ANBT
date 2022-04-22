@@ -177,16 +177,23 @@ export function keyDown(event) {
     // if ( ctrlKey || metaKey || !options.colorNumberShortcuts) return;
 
     // Ctrl+1,2,3,4 - change brush size
-    if ( (0 < digit & digit <= 4) && (event.ctrlKey || event.metaKey) ) {
-      ID(`brush${digit - 1}`).click();
+    if ( (event.ctrlKey || event.metaKey) ) {
+
+      if (0 < digit & digit <= 4) {
+        ID(`brush${digit - 1}`).click();
+      } else {
+        return;
+      }
+
     } else {
       let index = digit;
       // shift modifier
       if (event.shiftKey ||
          (options.colorDoublePress && anbt.previousColorKey === index )) {
-      
+        
         index += 8; // ??? (oh shift modifier, to access colours beyond ~9?)
         anbt.previousColorKey = index;
+        console.log(`Shift modifier: ${event.shiftKey}, ${index-8} -> ${index}`);
       }
 
       if (options.colorDoublePress) {
@@ -207,12 +214,13 @@ export function keyDown(event) {
           if (color !== 'eraser') setBackground(color)
           updateChooseBackground(false)
         } else {
-          setColor(!(anbt.lastPalette ?? 1), color)
+          const colorPick = !(anbt.lastPalette); // invert as Left click relates to index 0 colour
+          setColor(colorPick, color)
           updateColorIndicators()
         }
       }
 
-      if (anbt.isStroking) {
+      if (anbt.isStroking) { // refresh colour in use
         strokeEnd()
         const lastPoint = anbt.points[anbt.points.length - 1]
         strokeBegin(lastPoint.x, lastPoint.y)

@@ -1946,8 +1946,12 @@
     if (event.key.search(regex) === 0 && options.colorNumberShortcuts) {
       const digit = Number(event.key);
       keyMatch = true;
-      if ((0 < digit) & (digit <= 4) && (event.ctrlKey || event.metaKey)) {
-        ID(`brush${digit - 1}`).click();
+      if (event.ctrlKey || event.metaKey) {
+        if ((0 < digit) & (digit <= 4)) {
+          ID(`brush${digit - 1}`).click();
+        } else {
+          return;
+        }
       } else {
         let index = digit;
         if (
@@ -1956,6 +1960,9 @@
         ) {
           index += 8;
           anbt.previousColorKey = index;
+          console.log(
+            `Shift modifier: ${event.shiftKey}, ${index - 8} -> ${index}`
+          );
         }
         if (options.colorDoublePress) {
           if (anbt.previousColorKeyTimer)
@@ -1975,7 +1982,8 @@
             if (color !== 'eraser') setBackground(color);
             updateChooseBackground(false);
           } else {
-            setColor(!(anbt.lastPalette ?? 1), color);
+            const colorPick = !anbt.lastPalette;
+            setColor(colorPick, color);
             updateColorIndicators();
           }
         }

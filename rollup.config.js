@@ -1,6 +1,6 @@
 import consts from 'rollup-plugin-consts'
 import { banner } from './src/extension/banner';
-import { scriptVersion } from './src/extension/versions';
+// import { scriptVersion } from './src/extension/versions';
 import createGitInfo from 'gitinfo'
 
 import fs from 'fs'
@@ -14,12 +14,18 @@ import prettier from 'rollup-plugin-prettier'
 import replaceHtmlVars from 'rollup-plugin-replace-html-vars'
 import scss from 'rollup-plugin-scss'
 import { terser } from 'rollup-plugin-terser'
+import { inc } from 'semver';
+import * as pkg from './package.json';
 
+
+
+
+console.log(pkg.version);
 
 const gitInfo = createGitInfo();
 const CONSTANTS = {
-  version: scriptVersion,
-  environment: 'production',
+  version: pkg.version,
+  environment: process.env.BUILD,
   git: {user: null, repository: null, branch: null}
 };
 
@@ -27,8 +33,14 @@ CONSTANTS.git.user       = gitInfo.getUsername();
 CONSTANTS.git.repository = gitInfo.getName();
 CONSTANTS.git.branch     = gitInfo.getBranchName();
 
-if (CONSTANTS.git.branch === 'development') { // if working in dev
-   CONSTANTS.environment = 'development';
+// if (CONSTANTS.git.branch === 'development') { // if working in dev
+//    CONSTANTS.environment = 'development';
+// }
+
+if (process.env.BUILD === 'development') {
+  CONSTANTS.version = inc(pkg.version,'prerelease','dev');
+} else {
+  CONSTANTS.version = inc(pkg.version, 'patch');
 }
 
 
