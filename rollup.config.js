@@ -20,7 +20,6 @@ import * as pkg from './package.json';
 
 
 
-console.log(pkg.version);
 
 const gitInfo = createGitInfo();
 const CONSTANTS = {
@@ -43,6 +42,7 @@ if (process.env.BUILD === 'development') {
   CONSTANTS.version = inc(pkg.version, 'patch');
 }
 
+console.log(`Current -> ${pkg.version}, Upcoming -> ${CONSTANTS.version}, Build -> ${process.env.BUILD}`);
 
 const waitFile = path => {
   return new Promise(resolve => {
