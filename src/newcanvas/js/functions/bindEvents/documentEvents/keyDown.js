@@ -196,12 +196,12 @@ export function keyDown(event) {
       }
 
     } else {
-      let index = digit - 1;
+      let index = (digit - 1) % 10; // offset and normalise (-1 -> 9)
       // shift modifier
       if (event.shiftKey ||
          (options.colorDoublePress && anbt.previousColorKey === index )) {
         
-        index += 8; // ??? (oh shift modifier, to access colours beyond ~9?)
+        index += 8; // ??? (oh shift modifier -> to access colours beyond 1-9 )
         anbt.previousColorKey = index;
         console.log(`Shift modifier: ${event.code}, ${index-8} -> ${index}`);
       }

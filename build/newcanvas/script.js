@@ -1970,7 +1970,7 @@
           return;
         }
       } else {
-        let index = digit - 1;
+        let index = (digit - 1) % 10;
         if (
           event.shiftKey ||
           (options.colorDoublePress && anbt.previousColorKey === index)
@@ -2020,7 +2020,7 @@
 
   function trackFocus(event) {
     const target = document.elementFromPoint(event.clientX, event.clientY);
-    if (anbt.container !== null) {
+    if (anbt.container !== null && target !== null) {
       if (
         target.isEqualNode(anbt.container) ||
         anbt.container.contains(target)
