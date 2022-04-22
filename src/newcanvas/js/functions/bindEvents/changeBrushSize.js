@@ -14,13 +14,10 @@ export function changeBrushSize(event) {
     .filter(htmlClass => htmlClass.startsWith('size-'))[0]
     .match(/\d+/)[0]
 
-  setSize(Number(size))
+  setSize(Number(size));
   resetIncrement()
   // console.log(`Size reset: ${incrementalSize}, size ${anbt.size}`);
 
-  const element = ID('tools').querySelector('.sel')
-  if (element) element.classList.remove('sel')
-  event.currentTarget.classList.add('sel')
   if (!anbt.isStroking) return
   strokeEnd()
   const lastPoint = anbt.points[anbt.points.length - 1]
