@@ -2466,8 +2466,13 @@
       if (anbt.isStroking) strokeEnd();
       if (event.buttons & 3) {
         const lastPoint = anbt.points[anbt.points.length - 1];
-        let button = event.button === 0;
-        strokeBegin(lastPoint.x, lastPoint.y, button);
+        const leftUp = event.button === 0;
+        strokeBegin(lastPoint.x, lastPoint.y, !leftUp);
+        console.log(
+          `Released: ${event.button ? 'right' : 'left'}, Still pressed: ${
+            event.buttons
+          }`
+        );
       } else {
         if (options.hideCross) {
           ID('svgContainer').classList.remove('hidecursor');
