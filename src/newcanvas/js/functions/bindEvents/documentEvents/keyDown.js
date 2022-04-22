@@ -43,22 +43,16 @@ export function keyDown(event) {
   codeMatch = true; // set to false if no match
   switch (event.code) {
 
-    /* EYEDROPPER - Alt keys, I*/
     
+    /* EYEDROPPER - Alt keys, I*/
     case 'AltLeft':
     case 'AltRight':
-     /********************************
-      * consider using modifiers, e.g.
-      * `event.getModifierState('alt')` ...
-      * or `event.altKey`
-      ********************************/
       if (!navigator.userAgent.match(/\bPresto\b/)) {
         // The following is needed in case of Alt+Tab causing eyedropper to be stuck
         ID('svgContainer').addEventListener('mousemove', removeEyedropper);
       }
-      // falls through
+    // falls through
     case 'KeyI': {
-
         const active = anbt.eyedropperActive; // get eyedropper state
 
         const activate = (!active || event.altKey); // should we activate?
@@ -89,8 +83,8 @@ export function keyDown(event) {
       redo()
       break;
     
-    /* SWITCH COLOURS */
-    case 'KeyX': {
+    
+    case 'KeyX': { /* SWITCH COLOURS */
       const [color0, color1] = anbt.colors;
       setColor(0, color1);
       setColor(1, color0);
@@ -113,18 +107,20 @@ export function keyDown(event) {
       break;
 
     /* Eraser */
-    case 'KeyE':
+    case 'KeyE': {
       if (event.ctrlKey || event.metaKey) return;
-      setColor(!(anbt.lastPalette ?? 1), 'eraser');
+      
+      const whichColor = !(anbt.lastPalette ?? 1); // left == 1, but the equivalent color is index 0
+      setColor(whichColor, 'eraser');
       updateColorIndicators();
-
+      console.log(`Eraser Key, ${anbt.colors[whichColor]}`);
       if (anbt.isStroking) {
         strokeEnd()
         const lastPoint = anbt.points[anbt.points.length - 1];
         strokeBegin(lastPoint.x, lastPoint.y)
       }
       break;
-
+    }
    
     
     /* Decrease brush size */
@@ -223,13 +219,8 @@ export function keyDown(event) {
     
 
   }
-
-  // switch (event.key) {
-  //   /* TODO: Colour by Numbers */ /* handle this with event.key rather than event.code */
-  //   /* COLOUR PICKER */
-  //   case ''
-  // }
   
   if (codeMatch || keyMatch) event.preventDefault();
+  
   return;
 }

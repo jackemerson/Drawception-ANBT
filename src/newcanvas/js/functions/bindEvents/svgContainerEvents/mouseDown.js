@@ -32,7 +32,7 @@ export function mouseDown(event) {
 
       if (anbt.lastPalette !== isLeft) {
         strokeEnd();
-        strokeBegin(x, y, isLeft, eraser);     
+        strokeBegin(x, y, isLeft, eraser);    
         if (options.hideCross) ID('svgContainer').classList.add('hidecursor')
       }
       // return mouseUp(event)

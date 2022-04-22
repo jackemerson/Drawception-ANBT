@@ -53,7 +53,7 @@ export function softModifyBrushSize(step) {
   
   if ( (currentBrush === 0 && step === -1) ||
        (currentBrush === (globals.brushSizes.length-1) && step === 1)) { 
-         console.log(`No further steps: ${step}`);
+        //  console.log(`No further steps: ${step}`);
     return;
   } // can't step further in that direction
   
@@ -66,7 +66,7 @@ export function softModifyBrushSize(step) {
 
   incrementalSize = Math.min(MAX, Math.max(MIN, incrementalSize + step));
 
-  console.log(`Increment: ${incrementalSize}, Current: ${anbt.size}`);
+  // console.log(`Increment: ${incrementalSize}, Current: ${anbt.size}`);
   let currentDiff = Math.abs(currentSize - incrementalSize);
   let nextDiff = Math.abs(nextSize - incrementalSize);
 

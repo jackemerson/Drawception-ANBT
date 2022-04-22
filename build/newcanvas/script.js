@@ -1029,13 +1029,14 @@
   function strokeBegin(x, y, left = null, forceEraser = false) {
     if (anbt.locked) return;
     let color;
-    if (forceEraser) {
-      color = 'eraser';
-    } else if (left !== null) {
+    if (left !== null) {
       anbt.lastPalette = left;
-      color = left ? anbt.colors[0] : anbt.colors[1];
     } else {
       anbt.lastPalette = anbt.lastPalette ?? 1;
+    }
+    if (forceEraser) {
+      color = 'eraser';
+    } else {
       color = anbt.lastPalette ? anbt.colors[0] : anbt.colors[1];
     }
     const cls = color === 'eraser' ? color : null;
@@ -1719,7 +1720,6 @@
       (currentBrush === 0 && step === -1) ||
       (currentBrush === globals.brushSizes.length - 1 && step === 1)
     ) {
-      console.log(`No further steps: ${step}`);
       return;
     }
     let currentSize = Number(anbt.size);
@@ -1727,7 +1727,6 @@
     const MIN = globals.brushSizes[0];
     const MAX = globals.brushSizes[globals.brushSizes.length - 1];
     incrementalSize = Math.min(MAX, Math.max(MIN, incrementalSize + step));
-    console.log(`Increment: ${incrementalSize}, Current: ${anbt.size}`);
     let currentDiff = Math.abs(currentSize - incrementalSize);
     let nextDiff = Math.abs(nextSize - incrementalSize);
     if (nextDiff < currentDiff) {
@@ -1889,16 +1888,19 @@
         if (ID('setbackground').hidden) return;
         updateChooseBackground(!globals.chooseBackground);
         break;
-      case 'KeyE':
+      case 'KeyE': {
         if (event.ctrlKey || event.metaKey) return;
-        setColor(!(anbt.lastPalette ?? 1), 'eraser');
+        const whichColor = !(anbt.lastPalette ?? 1);
+        setColor(whichColor, 'eraser');
         updateColorIndicators();
+        console.log(`Eraser Key, ${anbt.colors[whichColor]}`);
         if (anbt.isStroking) {
           strokeEnd();
           const lastPoint = anbt.points[anbt.points.length - 1];
           strokeBegin(lastPoint.x, lastPoint.y);
         }
         break;
+      }
       case 'BracketLeft':
       case 'NumpadSubtract':
       case 'Minus':
@@ -2296,11 +2298,6 @@
         const lastPoint = anbt.points[anbt.points.length - 1];
         const leftUp = event.button === 0;
         strokeBegin(lastPoint.x, lastPoint.y, !leftUp);
-        console.log(
-          `Released: ${event.button ? 'right' : 'left'}, Still pressed: ${
-            event.buttons
-          }`
-        );
       } else {
         if (options.hideCross) {
           ID('svgContainer').classList.remove('hidecursor');

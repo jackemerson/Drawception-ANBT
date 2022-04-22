@@ -20,7 +20,7 @@ export function mouseUp(event) {
 
       strokeBegin(lastPoint.x, lastPoint.y, !leftUp);
       
-      console.log(`Released: ${event.button ? 'right' : 'left'}, Still pressed: ${event.buttons}`);
+      // console.log(`Released: ${event.button ? 'right' : 'left'}, Still pressed: ${event.buttons}`);
     } else { // no longer drawing
       if (options.hideCross) { ID('svgContainer').classList.remove('hidecursor'); }
       window.removeEventListener('mouseup', mouseUp)

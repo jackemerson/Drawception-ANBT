@@ -9,15 +9,18 @@ export function strokeBegin(x, y, left=null, forceEraser=false) {
   
   
   let color;
-  if (forceEraser) {
-    color = 'eraser';
-  } else if (left !== null) {
+  
+  if (left !== null) {
     anbt.lastPalette = left;
-    color = left ? anbt.colors[0] : anbt.colors[1];
-  } else {
-    // in case we call strokeBegin without knowledge of original input, e.g., by altering brush stroke
+  } else { // in case we call strokeBegin without knowledge of original input, e.g., by altering brush stroke
     anbt.lastPalette = anbt.lastPalette ?? 1;
+  }
+
+  if (forceEraser) {
+    color = 'eraser'
+  } else {
     color = anbt.lastPalette ? anbt.colors[0] : anbt.colors[1];
+    // we've just set lastPalette (though it's global so uhh)
   }
 
   const cls = color === 'eraser' ? color : null
