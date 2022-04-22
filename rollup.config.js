@@ -107,12 +107,12 @@ export default [
         output: 'build/newcanvas/style.css',
         outputStyle: 'compressed'
       }),
-      commonjs(),
-      resolve(),
-      cleanup(),
       eslint({
         exclude: ['/build/*.js']
       }),
+      commonjs(),
+      resolve(),
+      cleanup(),
       prettier({
         cwd: __dirname,
         semi: true

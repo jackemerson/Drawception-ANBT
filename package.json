@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prebuild": "del-cli ./src/versioninfo.js",
-    "build":     "rollup -c",
+    "build": "rollup -c",
     "postbuild": "del-cli ./src/versioninfo.js"
   },
   "author": "GromPE",
@@ -17,6 +17,7 @@
     "@rollup/plugin-eslint": "^8.0.2",
     "@rollup/plugin-node-resolve": "^13.2.1",
     "@rollup/pluginutils": "^4.2.1",
+    "eslint": "^8.13.0",
     "gitinfo": "^2.4.0",
     "node-sass": "^7.0.1",
     "rollup": "^1.20.0||^2.0.0",
