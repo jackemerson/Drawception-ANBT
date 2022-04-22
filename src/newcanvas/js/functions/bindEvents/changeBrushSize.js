@@ -3,7 +3,6 @@ import { globals } from '../../globals'
 import { setSize } from '../anbt/setSize'
 import { strokeBegin } from '../anbt/strokeBegin'
 import { strokeEnd } from '../anbt/strokeEnd'
-import { ID } from '../idSelector'
 
 let incrementalSize = Number(anbt.size);
 
