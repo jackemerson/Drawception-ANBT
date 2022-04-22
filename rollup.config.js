@@ -59,8 +59,8 @@ export default [
      */
     output: {
       format: 'es',
-      file: 'src/versioninfo.js',
-      name: 'versioninfo',
+      file: 'src/versionInfo.js',
+      name: 'versionInfo',
       freeze: false,
       generatedCode: {constBindings: true},
     },
