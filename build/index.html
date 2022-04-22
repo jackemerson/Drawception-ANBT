@@ -2117,9 +2117,20 @@
         codeMatch = false;
         break;
     }
-    let regex = /^\d$/;
-    if (event.key.search(regex) === 0 && options.colorNumberShortcuts) {
-      const digit = Number(event.key);
+    let keyRegex = /^\d$/;
+    let codeRegex = /^(Numpad|Digit)[\d]$/;
+    let capture;
+    let digit = -1;
+    if (event.shiftKey) {
+      capture = event.code.search(codeRegex);
+      if (capture !== -1) {
+        digit = event.code[capture];
+      }
+    } else {
+      capture = event.key.search(keyRegex);
+      digit = Number(event.key);
+    }
+    if (digit !== -1 && options.colorNumberShortcuts) {
       keyMatch = true;
       if (event.ctrlKey || event.metaKey) {
         if ((0 < digit) & (digit <= 4)) {
