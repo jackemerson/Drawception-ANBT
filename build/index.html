@@ -1178,8 +1178,21 @@
     anbt.seekbarMove = func;
   }
 
+  const globals = {
+    rectangle: {},
+    touchSingle: false,
+    lastTouch: {},
+    lastSeenColorToHighlight: anbt.background,
+    brushSizes: [2, 6, 14, 42],
+    timerStart: 0,
+  };
+
   function setSize(size) {
     anbt.size = size;
+    const element = ID('tools').querySelector('.sel');
+    if (element) element.classList.remove('sel');
+    const index = globals.brushSizes.indexOf(size);
+    ID(`brush${index}`)?.classList.add('sel');
     moveCursor();
   }
 
@@ -1860,15 +1873,6 @@
     uploadToDrawception,
   };
 
-  const globals = {
-    rectangle: {},
-    touchSingle: false,
-    lastTouch: {},
-    lastSeenColorToHighlight: anbt.background,
-    brushSizes: [2, 6, 14, 42],
-    timerStart: 0,
-  };
-
   let incrementalSize = Number(anbt.size);
   function changeBrushSize(event) {
     event.preventDefault();
@@ -1877,9 +1881,6 @@
       .match(/\d+/)[0];
     setSize(Number(size));
     resetIncrement();
-    const element = ID('tools').querySelector('.sel');
-    if (element) element.classList.remove('sel');
-    event.currentTarget.classList.add('sel');
     if (!anbt.isStroking) return;
     strokeEnd();
     const lastPoint = anbt.points[anbt.points.length - 1];
